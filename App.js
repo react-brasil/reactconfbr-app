@@ -1,4 +1,5 @@
 import React from 'react';
+import Expo from 'expo';
 import {
   createRouter,
   NavigationProvider,
@@ -10,7 +11,7 @@ const Router = createRouter(() => ({
   home: () => HomeScreen,
 }));
 
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <NavigationProvider router={Router}>
