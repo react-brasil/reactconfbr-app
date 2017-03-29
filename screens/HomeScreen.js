@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 
-class HomeScreen extends React.Component {
+export default class HomeScreen extends React.Component {
 
   static route = {
     navigationBar: {
