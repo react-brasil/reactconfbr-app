@@ -5,11 +5,7 @@ import {
   NavigationProvider,
   StackNavigation,
 } from '@expo/ex-navigation';
-import HomeScreen from './screens/HomeScreen';
-
-const Router = createRouter(() => ({
-  home: () => HomeScreen,
-}));
+import Router from './src/navigation/Router';
 
 export default class App extends React.Component {
   render() {
