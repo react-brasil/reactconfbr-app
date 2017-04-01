@@ -13,13 +13,19 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "lint": "eslint ."
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/ex-navigation": "^2.9.4",
+    "babel-eslint": "^7.2.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.10.3",
+    "eslint-plugin-react-native": "^2.3.1",
     "expo": "^15.1.0",
     "react": "~15.4.0",
     "react-native": "0.42.3"
