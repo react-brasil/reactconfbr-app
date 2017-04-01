@@ -9,7 +9,7 @@ const Router = createRouter(() => ({
 	home: () => Home,
 	schedule: () => Schedule,
 	location: () => Location,
-	about: () => About
+	about: () => About,
 }))
 
 export default Router;

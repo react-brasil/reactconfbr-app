@@ -3,7 +3,7 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import Router from '../navigation/Router';
 import { Button } from '../components';
@@ -11,8 +11,8 @@ import { Button } from '../components';
 export default class Home extends Component {
   static route = {
     navigationBar: {
-      title: 'Home'
-		}
+      title: 'Home',
+		},
 	}
 
   _goToScreen = name => () => {
@@ -45,11 +45,11 @@ const styles = {
     flex: 1,
     backgroundColor: '#161616',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   logoStyle: {
     marginBottom: 40,
     width: 144, 
-    height: 130
-  }
+    height: 130,
+  },
 }
