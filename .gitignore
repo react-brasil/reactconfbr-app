@@ -158,3 +158,6 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/node,macos,webstorm,visualstudiocode
+
+# WebStorm
+.idea
