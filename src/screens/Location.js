@@ -6,6 +6,7 @@ import {
   Linking,
   Platform,
   Alert,
+  View,
 } from 'react-native';
 import { MapView } from 'expo';
 
@@ -51,7 +52,7 @@ class Location extends PureComponent {
           />
         </MapView>
 			</ScrollView>
-    )
+    );
   }
 }
 

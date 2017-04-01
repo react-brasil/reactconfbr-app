@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Text,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 
 const Button = ({ onPress, children }) => {
@@ -35,8 +35,8 @@ const styles = {
     fontWeight: '900',
     fontSize: 20,
     paddingTop: 10,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
 }
 
 export { Button };
