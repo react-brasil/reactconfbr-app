@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
   Image,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import Router from '../navigation/Router';

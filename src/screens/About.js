@@ -12,10 +12,19 @@ export default class About extends Component {
 	}
 
   render() {
+    const { containerStyle } = styles;
     return (
-			<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+			<View style={containerStyle}>
 				<Text onPress={this.handlePress}>About!</Text>
 			</View>
     )
   }
+}
+
+const styles = {
+  containerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
 }

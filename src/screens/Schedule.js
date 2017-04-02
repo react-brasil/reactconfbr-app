@@ -12,10 +12,19 @@ export default class Schedule extends Component {
 	}
 
   render() {
+    const { containerStyle } = styles;
     return (
-			<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+			<View style={containerStyle}>
 				<Text onPress={this.handlePress}>Schedule!</Text>
 			</View>
     )
   }
+}
+
+const styles = {
+  containerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
 }

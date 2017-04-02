@@ -1,7 +1,5 @@
 import React from 'react';
-import Expo from 'expo';
 import {
-  createRouter,
   NavigationProvider,
   StackNavigation,
 } from '@expo/ex-navigation';

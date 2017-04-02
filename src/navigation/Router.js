@@ -1,4 +1,3 @@
-import Expo from 'expo';
 import { createRouter } from '@expo/ex-navigation';
 import Home from '../screens/Home';
 import Schedule from '../screens/Schedule';

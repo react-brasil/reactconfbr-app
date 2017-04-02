@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import {
-  ScrollView,
-  Text,
-  StyleSheet,
+  Alert,
   Linking,
   Platform,
-  Alert,
-  View,
+  ScrollView,
+  StyleSheet,
+  Text,
 } from 'react-native';
 import { MapView } from 'expo';
 
