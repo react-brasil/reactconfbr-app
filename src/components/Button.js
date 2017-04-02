@@ -3,13 +3,14 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
+import Globals from '../Globals';
 
 const Button = ({ onPress, children }) => {
   const { buttonStyle, textStyle } = styles;
   
   return (
-    <TouchableHighlight underlayColor={'#202020'} onPress={onPress} style={buttonStyle}>
-      <Text selectionColor={'#61DAFB'} style={textStyle}>
+    <TouchableHighlight underlayColor={Globals.colors.$dark_gray} onPress={onPress} style={buttonStyle}>
+      <Text selectionColor={Globals.colors.$primary_blue} style={textStyle}>
         {children}
       </Text>
     </TouchableHighlight>
@@ -19,10 +20,10 @@ const Button = ({ onPress, children }) => {
 const styles = {
   buttonStyle: {
     alignSelf: 'stretch',
-    backgroundColor: '#61DAFB',
+    backgroundColor: Globals.colors.$primary_blue,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: '#61DAFB',
+    borderColor: Globals.colors.$primary_blue,
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 70,
@@ -30,7 +31,7 @@ const styles = {
   },
   textStyle: {
     alignSelf: 'center',
-    color: '#161616',
+    color: Globals.colors.$primary_black,
     fontFamily: 'Roboto',
     fontWeight: '900',
     fontSize: 20,

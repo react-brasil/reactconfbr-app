@@ -9,4 +9,10 @@ export default {
       longitudeDelta: 0.0421,
     },
   },
+
+  colors: {
+    $dark_gray: '#262626',
+    $primary_blue: '#61DAFB',
+    $primary_black: '#232323',
+  }
 };
