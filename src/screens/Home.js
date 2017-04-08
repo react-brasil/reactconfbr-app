@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 import Router from '../navigation/Router';
-import { Button } from '../components';
+import { BackgroundImage, Button } from '../components';
 
 export default class Home extends Component {
   static route = {
@@ -21,27 +21,29 @@ export default class Home extends Component {
     const { containerStyle, logoStyle } = styles;
 
     return (
-			<View style={containerStyle}>
-        <Image source={require('../../assets/images/logo.png')} style={logoStyle}/>
-        <Button onPress={this._goToScreen('schedule')}>
-          AGENDA
-        </Button>
-        <Button onPress={this._goToScreen('location')}>
-          COMO CHEGAR
-        </Button>
-        <Button onPress={this._goToScreen('about')}>
-          SOBRE
-        </Button>
-			</View>
+      <BackgroundImage>
+        <View style={containerStyle}>
+          <Image source={require('../../assets/images/logo.png')} style={logoStyle}/>
+          <Button onPress={this._goToScreen('schedule')}>
+            AGENDA
+          </Button>
+          <Button onPress={this._goToScreen('location')}>
+            COMO CHEGAR
+          </Button>
+          <Button onPress={this._goToScreen('about')}>
+            SOBRE
+          </Button>
+        </View>
+      </BackgroundImage>
     )
   }
 }
 
+// TODO: change logo's black to #161616
 
 const styles = {
   containerStyle: {
     flex: 1,
-    backgroundColor: '#161616',
     alignItems: 'center',
     justifyContent: 'center',
   },

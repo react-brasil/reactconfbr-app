@@ -11,8 +11,8 @@ export default {
   },
 
   colors: {
-    $dark_gray: '#262626',
-    $primary_blue: '#61DAFB',
-    $primary_black: '#232323',
-  }
+    dark_gray: '#262626',
+    primary_blue: '#61DAFB',
+    primary_black: 'rgb(22, 22, 22)',
+  },
 };

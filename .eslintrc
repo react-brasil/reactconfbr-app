@@ -12,7 +12,7 @@
   ],
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
-    "comma-dangle": [2, "always-multiline"],
+    "comma-dangle": 0,
     "quotes": [2, "single", { "allowTemplateLiterals": true }],
     "react/prop-types": 0,
     "react/jsx-no-bind": 0,

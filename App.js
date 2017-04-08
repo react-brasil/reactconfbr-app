@@ -14,8 +14,8 @@ export default class App extends React.Component {
           initialRoute={Router.getRoute('home')}
           defaultRouteConfig={{
             navigationBar: {
-              backgroundColor: Globals.colors.$primary_black,
-              tintColor: Globals.colors.$primary_blue,
+              backgroundColor: Globals.colors.primary_black,
+              tintColor: Globals.colors.primary_blue,
             },
           }}
         />
