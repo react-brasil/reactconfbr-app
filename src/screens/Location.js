@@ -14,7 +14,7 @@ import Globals from '../Globals';
 class Location extends PureComponent {
   static route = {
     navigationBar: {
-      title: 'Como Chegar',
+      title: 'COMO CHEGAR',
 		},
 	};
 

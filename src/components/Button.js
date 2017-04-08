@@ -9,7 +9,7 @@ const Button = ({ onPress, children }) => {
   const { buttonStyle, textStyle } = styles;
   
   return (
-    <TouchableHighlight underlayColor={Globals.colors.dark_gray} onPress={onPress} style={buttonStyle}>
+    <TouchableHighlight underlayColor={Globals.colors.primary_black} onPress={onPress} style={buttonStyle}>
       <Text selectionColor={Globals.colors.primary_blue} style={textStyle}>
         {children}
       </Text>
@@ -31,7 +31,7 @@ const styles = {
   },
   textStyle: {
     alignSelf: 'center',
-    color: Globals.colors.primary_black,
+    color: Globals.colors.dark_gray,
     fontFamily: 'Roboto',
     fontWeight: '900',
     fontSize: 20,

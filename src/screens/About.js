@@ -7,7 +7,7 @@ import {
 export default class About extends Component {
   static route = {
     navigationBar: {
-      title: 'About',
+      title: 'SOBRE',
 		},
 	}
 

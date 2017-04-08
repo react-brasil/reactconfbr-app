@@ -7,7 +7,7 @@ import {
 export default class Schedule extends Component {
   static route = {
     navigationBar: {
-      title: 'Schedule',
+      title: 'AGENDA',
 		},
 	}
 

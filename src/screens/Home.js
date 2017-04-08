@@ -7,11 +7,11 @@ import Router from '../navigation/Router';
 import { BackgroundImage, Button } from '../components';
 
 export default class Home extends Component {
-  static route = {
-    navigationBar: {
-      title: 'Home',
-		},
-	}
+  // static route = {
+  //   navigationBar: {
+  //     title: 'REACT CONF BRASIL',
+	// 	},
+	// }
 
   _goToScreen = name => () => {
     this.props.navigator.push(Router.getRoute(name));
