@@ -9,7 +9,7 @@ const Button = ({ onPress, children }) => {
   const { buttonStyle, textStyle } = styles;
   
   return (
-    <TouchableHighlight underlayColor={Globals.colors.primary_black} onPress={onPress} style={buttonStyle}>
+    <TouchableHighlight underlayColor={Globals.colors.highlight_blue_transp} onPress={onPress} style={buttonStyle}>
       <Text selectionColor={Globals.colors.primary_blue} style={textStyle}>
         {children}
       </Text>
@@ -20,10 +20,10 @@ const Button = ({ onPress, children }) => {
 const styles = {
   buttonStyle: {
     alignSelf: 'stretch',
-    backgroundColor: Globals.colors.primary_blue,
+    backgroundColor: Globals.colors.highlight_blue,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: Globals.colors.primary_blue,
+    borderColor: Globals.colors.highlight_blue,
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 70,

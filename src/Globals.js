@@ -12,7 +12,11 @@ export default {
 
   colors: {
     dark_gray: '#262626',
-    primary_blue: '#61DAFB',
+    gray: '#808080',
+    primary_blue: 'rgba(97, 218, 251, 1)',
+    highlight_blue: 'rgba(33, 221, 255, 1)',
+    highlight_blue_transp: 'rgba(33, 221, 255, 0.72)',
     primary_black: 'rgb(22, 22, 22)',
+    white: '#fff'
   },
 };
