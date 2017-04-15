@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
     height: null,
     resizeMode: 'cover'
   }
-})
+});
 
 export { BackgroundImage };

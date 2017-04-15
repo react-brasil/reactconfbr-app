@@ -9,7 +9,7 @@ export default class About extends Component {
     navigationBar: {
       title: 'SOBRE',
 		},
-	}
+	};
 
   render() {
     const { containerStyle } = styles;
@@ -27,4 +27,4 @@ const styles = {
     justifyContent: 'center',
     flex: 1,
   },
-}
+};

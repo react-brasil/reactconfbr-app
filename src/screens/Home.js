@@ -15,7 +15,7 @@ export default class Home extends Component {
 
   _goToScreen = name => () => {
     this.props.navigator.push(Router.getRoute(name));
-  }
+  };
 
   render() {
     const { containerStyle, logoStyle } = styles;
@@ -52,4 +52,4 @@ const styles = {
     width: 144, 
     height: 130,
   },
-}
+};
