@@ -16,7 +16,7 @@ class App extends Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      'Roboto': require('./assets/fonts/Roboto.ttf'),
+      'Raleway': require('./assets/fonts/Raleway.ttf'),
     });
 
     this.setState({
