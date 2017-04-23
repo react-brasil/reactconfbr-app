@@ -32,7 +32,7 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: Globals.colors.dark_gray,
-    fontFamily: 'Roboto',
+    fontFamily: 'Raleway',
     fontWeight: '900',
     fontSize: 20,
     paddingTop: 10,
