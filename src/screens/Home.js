@@ -28,11 +28,10 @@ export default class Home extends Component {
           <Image source={require('../../assets/images/logo.png')} style={logo}/>
           <Text style={textReact}>
             REACT
+            <Text style={textConf}>
+              CONFBR
+            </Text>
           </Text>
-          <Text style={textConf}>
-            CONFBR
-          </Text>
-          
           
           <Button onPress={this._goToScreen('schedule')}>
             AGENDA
@@ -43,6 +42,7 @@ export default class Home extends Component {
           <Button onPress={this._goToScreen('about')}>
             SOBRE
           </Button>
+          
         </View>
       </BackgroundImage>
     )
@@ -58,13 +58,15 @@ const styles = {
     justifyContent: 'center',
   },
   logo: {
-    marginBottom: 10,
+    marginBottom: 20,
     width: 144, 
     height: 130,
   },
   textReact: {
+    fontSize: 20,
     color: Globals.colors.white,
     fontFamily: 'OpenSans-ExtraBold',
+    marginBottom: 20,
   },
   textConf: {
     color: Globals.colors.primary_blue,
