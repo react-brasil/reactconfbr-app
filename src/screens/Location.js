@@ -37,7 +37,7 @@ class Location extends PureComponent {
     return (
 			<ScrollView contentContainerStyle={styles.container}>
 				<Text style={styles.locationInfo}>
-          A React Conf Brasil acontecerá no {Globals.location.place} ({Globals.location.address})
+          A React Conf Brasil acontecerá {Globals.location.place} ({Globals.location.address})
         </Text>
 
         <MapView

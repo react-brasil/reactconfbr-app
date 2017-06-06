@@ -1,7 +1,7 @@
 export default {
   location: {
-    place: 'SENAI Santa Cecília',
-    address: 'XXXXX, 13 - Bairro, São Paulo/SP',
+    place: 'em local a ser definido',
+    address: 'São Paulo/SP',
     coordinate: {
       latitude: -23.5365517,
       longitude: -46.6463026,
