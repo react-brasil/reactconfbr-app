@@ -16,7 +16,8 @@ class App extends Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      'Raleway': require('./assets/fonts/Raleway.ttf'),
+      'OpenSans-ExtraBold': require('./assets/fonts/OpenSans-ExtraBold.ttf'),
+      'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
     });
 
     this.setState({
@@ -38,6 +39,7 @@ class App extends Component {
               navigationBar: {
                 backgroundColor: Globals.colors.primary_black,
                 tintColor: Globals.colors.primary_blue,
+                fontFamily: 'OpenSans-ExtraBold',
               },
             }}
           />

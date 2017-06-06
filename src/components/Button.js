@@ -32,7 +32,7 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: Globals.colors.dark_gray,
-    fontFamily: 'Raleway',
+    fontFamily: 'OpenSans-ExtraBold',
     fontWeight: '900',
     fontSize: 20,
     paddingTop: 10,
