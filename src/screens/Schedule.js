@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Image,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Text, View } from 'react-native';
 import Timeline from 'react-native-timeline-listview';
 import Globals from '../Globals';
 
 export default class Schedule extends Component {
-  static route = {
-    navigationBar: {
-      title: 'AGENDA',
-    },
+  static navigationOptions = {
+    title: 'AGENDA'
   };
 
   constructor() {
@@ -25,44 +19,54 @@ export default class Schedule extends Component {
         time: '10:00',
         title: 'Keynote com Dan Abramov',
         description: 'Abertura do evento',
-        imageUrl: 'https://pbs.twimg.com/profile_images/826786122638426114/PR4tsq-i.jpg'
+        imageUrl:
+          'https://pbs.twimg.com/profile_images/826786122638426114/PR4tsq-i.jpg'
       },
       {
         time: '10:30',
         title: 'Vue é moda, React é foda',
-        description: 'João da Silva conta sobre o que é ter estilo programando em React.',
+        description:
+          'João da Silva conta sobre o que é ter estilo programando em React.',
         imageUrl: 'http://quemdisse.com.br/autores/sergiomalandro.jpg'
       },
       {
         time: '11:30',
         title: 'Relay da Rapaziada',
-        description: 'Grande Lucas Bento mandando uma talk sinistra pra galera sobre relay.',
-        imageUrl: 'https://pbs.twimg.com/profile_images/715628494882017284/8TUBc3v3.jpg'
+        description:
+          'Grande Lucas Bento mandando uma talk sinistra pra galera sobre relay.',
+        imageUrl:
+          'https://pbs.twimg.com/profile_images/715628494882017284/8TUBc3v3.jpg'
       },
-      { time: '13:00', title: 'Almoço' },
-    ]
+      { time: '13:00', title: 'Almoço' }
+    ];
   }
-  
+
   renderDetail(rowData) {
     const { descriptionContainer, image, textDescription, title } = styles;
-    let detailTitle = <Text style={title}>{rowData.title}</Text>;
+    let detailTitle = (
+      <Text style={title}>
+        {rowData.title}
+      </Text>
+    );
     let desc = null;
-    
+
     if (rowData.description && rowData.imageUrl) {
       desc = (
         <View style={descriptionContainer}>
-          <Image source={{uri: rowData.imageUrl}} style={image} />
-          <Text style={textDescription}>{rowData.description}</Text>
+          <Image source={{ uri: rowData.imageUrl }} style={image} />
+          <Text style={textDescription}>
+            {rowData.description}
+          </Text>
         </View>
-      )
+      );
     }
-    
+
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {detailTitle}
         {desc}
       </View>
-    )
+    );
   }
 
   render() {
@@ -81,7 +85,7 @@ export default class Schedule extends Component {
           style={list}
         />
       </View>
-    )
+    );
   }
 }
 
@@ -105,7 +109,7 @@ const styles = {
   },
   list: {
     flex: 1,
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   options: {
     paddingTop: 5
