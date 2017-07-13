@@ -1,3 +1,4 @@
+//@flow
 import { StackNavigator } from 'react-navigation';
 import Globals from '../Globals';
 import Home from '../screens/Home';

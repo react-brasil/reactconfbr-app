@@ -1,9 +1,17 @@
+//@flow
 import React, { Component } from 'react';
 import { Image, Text, View } from 'react-native';
 import { BackgroundImage, Button } from '../components';
 import Globals from '../Globals';
 
+import type { NavigationScreenProp } from 'react-navigation/src/TypeDefinition';
+
+type Props = {
+  navigation: NavigationScreenProp<*, *>
+}
+
 export default class Home extends Component {
+  props: Props;
   _goToScreen = name => () => {
     const { navigate } = this.props.navigation;
     navigate(name);

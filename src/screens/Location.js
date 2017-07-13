@@ -1,3 +1,4 @@
+//@flow
 import React, { PureComponent } from 'react';
 import {
   Alert,
@@ -7,6 +8,8 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
+
+// $FlowFixMe
 import { MapView } from 'expo';
 
 import Globals from '../Globals';

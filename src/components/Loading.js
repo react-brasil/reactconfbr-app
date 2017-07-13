@@ -1,11 +1,12 @@
-import React, { PropTypes } from 'react';
+//@flow
+import React from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
-const Loading = ({ fullScreen }) => {
-  propTypes = {
-    fullScreen: PropTypes.bool,
-  };
+type Props = {
+  fullScreen?: boolean
+}
 
+const Loading = ({ fullScreen } : Props ) => {
   if (fullScreen) {
     return (
       <View style={styles.container}>

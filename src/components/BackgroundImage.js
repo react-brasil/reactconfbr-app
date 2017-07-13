@@ -1,8 +1,16 @@
+//@flow
 import React, { Component } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import Globals from '../Globals';
 
+import type { Children } from 'react';
+
+type Props = {
+  children?: Children
+}
+
 class BackgroundImage extends Component {
+  props: Props;
   render() {
     return (
       <Image source={require('../../assets/images/dotted-layer.png')} style={styles.backgroundImage}>

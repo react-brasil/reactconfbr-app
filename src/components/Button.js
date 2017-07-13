@@ -1,3 +1,4 @@
+//@flow
 import React from 'react';
 import {
   Text,
@@ -5,7 +6,14 @@ import {
 } from 'react-native';
 import Globals from '../Globals';
 
-const Button = ({ onPress, children }) => {
+import type { Children } from 'react';
+
+type Props = {
+  onPress: () => void,
+  children?: Children
+}
+
+const Button = ({ onPress, children } : Props) => {
   const { buttonStyle, textStyle } = styles;
   
   return (
