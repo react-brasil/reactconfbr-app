@@ -4,16 +4,16 @@ import { Image, Text, View } from 'react-native';
 import Timeline from 'react-native-timeline-listview';
 import Globals from '../Globals';
 
-type SchenduleType = {
+type ScheduleType = {
   time: string,
   title: string,
   description?: string,
   imageUrl?: string
 }
 
-type Schendules = Array<SchenduleType>;
+type Schedules = Array<ScheduleType>;
 
-const data: Schendules = [
+const data: Schedules = [
     { time: '09:00', title: 'Credenciamento' },
     { time: '09:30', title: 'Café da manhã e networking' },
     {
@@ -46,7 +46,7 @@ export default class Schedule extends Component {
     title: 'AGENDA'
   };
 
-  renderDetail = (rowData : SchenduleType) => {
+  renderDetail = (rowData : ScheduleType) => {
     const { descriptionContainer, image, textDescription, title } = styles;
     let detailTitle = (
       <Text style={title}>

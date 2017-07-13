@@ -10,8 +10,7 @@ type Props = {
   navigation: NavigationScreenProp<*, *>
 }
 
-export default class Home extends Component {
-  props: Props;
+export default class Home extends Component<void, Props, void> {
   _goToScreen = name => () => {
     const { navigate } = this.props.navigation;
     navigate(name);

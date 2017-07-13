@@ -9,8 +9,7 @@ type Props = {
   children?: Children
 }
 
-class BackgroundImage extends Component {
-  props: Props;
+class BackgroundImage extends Component<void, Props, void> {
   render() {
     return (
       <Image source={require('../../assets/images/dotted-layer.png')} style={styles.backgroundImage}>
