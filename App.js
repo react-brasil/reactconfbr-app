@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StatusBar } from 'react-native';
 import StackNavigator from './src/navigation/Router';
 import { Font } from 'expo';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -21,6 +22,8 @@ class App extends Component {
   }
 
   render() {
+    StatusBar.setBarStyle('light-content', true)
+    
     if (!this.state.isReady) {
       return <Loading fullScreen={true} />;
     }
