@@ -10,7 +10,7 @@ const navigationOptions = () => ({
   headerTintColor: Globals.colors.primary_blue,
   headerStyle: {
     backgroundColor: Globals.colors.primary_black,
-    marginTop: 25
+    paddingTop: 25
   },
   headerTitleStyle: {
     color: Globals.colors.primary_blue,
