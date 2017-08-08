@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Image, Text, View } from 'react-native';
 import { BackgroundImage, Button } from '../components';
 import Globals from '../Globals';
+import I18n from '../i18n';
 
 import type { NavigationScreenProp } from 'react-navigation/src/TypeDefinition';
 
@@ -31,9 +32,9 @@ export default class Home extends Component<void, Props, void> {
             <Text style={textConf}>CONFBR</Text>
           </Text>
 
-          <Button onPress={this._goToScreen('schedule')}>AGENDA</Button>
-          <Button onPress={this._goToScreen('location')}>COMO CHEGAR</Button>
-          <Button onPress={this._goToScreen('about')}>SOBRE</Button>
+          <Button onPress={this._goToScreen('schedule')}>{ I18n.t('schedule') }</Button>
+          <Button onPress={this._goToScreen('location')}>{ I18n.t('howToGet') }</Button>
+          <Button onPress={this._goToScreen('about')}>{ I18n.t('about') }</Button>
         </View>
       </BackgroundImage>
     );
