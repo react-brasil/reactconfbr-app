@@ -1,5 +1,6 @@
 //@flow
 import React, { PureComponent } from 'react';
+import I18n from '../i18n';
 import {
   Alert,
   Linking,
@@ -16,7 +17,7 @@ import Globals from '../Globals';
 
 class Location extends PureComponent {
   static navigationOptions = {
-    title: 'COMO CHEGAR'
+    title: I18n.t('location')
   };
 
   handleOpenAddress = async () => {
@@ -30,8 +31,8 @@ class Location extends PureComponent {
     const canOpenMaps = await Linking.canOpenURL(mapsUrl);
     if (!canOpenMaps) {
       return Alert.alert(
-        'Erro',
-        'Não foi possível abrir um aplicativo de mapas'
+        I18n.t('error'),
+        I18n.t('noMapApp')
       );
     }
 
@@ -43,7 +44,7 @@ class Location extends PureComponent {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.locationInfo}>
-          A React Conf Brasil acontecerá {Globals.location.place} ({Globals.location.address})
+          { I18n.t('locationDescription') } {Globals.location.place} ({Globals.location.address})
         </Text>
 
         <MapView

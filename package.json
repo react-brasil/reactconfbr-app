@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "flow-bin": "0.38.0",
     "jest-expo": "^0.3.0",
     "react-native-scripts": "0.0.25",
-    "react-test-renderer": "~15.4.1",
-    "flow-bin": "0.38.0"
+    "react-test-renderer": "~15.4.1"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "expo": "^15.1.0",
     "react": "~15.4.0",
     "react-native": "0.42.3",
+    "react-native-i18n": "1.0.0",
     "react-native-timeline-listview": "^0.2.0",
     "react-navigation": "^1.0.0-beta.11"
   }
