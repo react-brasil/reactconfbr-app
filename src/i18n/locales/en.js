@@ -1,7 +1,10 @@
 const en = {
   'schedule': 'Schedule',
-  'howToGet': 'How to get',
-  'about': 'About'
+  'location': 'Location',
+  'about': 'About',
+  'error': 'Error',
+  'noMapApp': 'Could not open map application',
+  'locationDescription': 'The React Conf Brazil will happen'
 };
 
 export default en;

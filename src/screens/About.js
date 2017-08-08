@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import I18n from '../i18n';
 
 @connectActionSheet
 class About extends Component {
   static navigationOptions = {
-    title: 'SOBRE'
+    title: I18n.t('about')
   };
 
   render() {

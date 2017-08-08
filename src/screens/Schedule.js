@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Image, Text, View } from 'react-native';
 import Timeline from 'react-native-timeline-listview';
 import Globals from '../Globals';
+import I18n from '../i18n';
 
 type ScheduleType = {
   time: string,
@@ -43,7 +44,7 @@ const data: Schedules = [
 
 export default class Schedule extends Component {
   static navigationOptions = {
-    title: 'AGENDA'
+    title: I18n.t('schedule')
   };
 
   renderDetail = (rowData : ScheduleType) => {

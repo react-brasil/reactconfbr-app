@@ -33,7 +33,7 @@ export default class Home extends Component<void, Props, void> {
           </Text>
 
           <Button onPress={this._goToScreen('schedule')}>{ I18n.t('schedule') }</Button>
-          <Button onPress={this._goToScreen('location')}>{ I18n.t('howToGet') }</Button>
+          <Button onPress={this._goToScreen('location')}>{ I18n.t('location') }</Button>
           <Button onPress={this._goToScreen('about')}>{ I18n.t('about') }</Button>
         </View>
       </BackgroundImage>
