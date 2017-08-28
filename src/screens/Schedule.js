@@ -15,30 +15,30 @@ type ScheduleType = {
 type Schedules = Array<ScheduleType>;
 
 const data: Schedules = [
-    { time: '09:00', title: 'Credenciamento' },
-    { time: '09:30', title: 'Café da manhã e networking' },
+    { time: '09:00', title: 'Registration' },
+    { time: '09:30', title: 'Breakfast and networking' },
     {
       time: '10:00',
-      title: 'Keynote com Dan Abramov',
-      description: 'Abertura do evento',
+      title: 'Keynote with Dan Abramov',
+      description: 'Event opening',
       imageSrc:
         'https://pbs.twimg.com/profile_images/826786122638426114/PR4tsq-i.jpg'
     },
     {
       time: '10:30',
-      title: 'Vue é moda, React é foda',
+      title: 'Vue é moda, React é foda aka Vue is strong, React is da bomb',
       description:
-        'João da Silva conta sobre o que é ter estilo programando em React.',
+        'Bender Bendix Rodriguez talks about the awesomeness of coding with React',
      imageSrc: require('../../assets/images/bender.jpg')
     },
     {
       time: '11:30',
-      title: 'Relay da Rapaziada',
+      title: 'Relay your way',
       description:
-        'Grande Lucas Bento mandando uma talk sinistra pra galera sobre relay.',
+        'Great Lucas Bento will give us a great talk on the latest and greatest about relay.',
       imageSrc: require('../../assets/images/lucasbento.jpg')
     },
-    { time: '13:00', title: 'Almoço' }
+    { time: '13:00', title: 'Lunch' }
   ];
 
 export default class Schedule extends Component {
