@@ -9,7 +9,7 @@ type ScheduleType = {
   time: string,
   title: string,
   description?: string,
-  imageUrl?: string
+  imageSrc?: string
 }
 
 type Schedules = Array<ScheduleType>;
@@ -21,7 +21,7 @@ const data: Schedules = [
       time: '10:00',
       title: 'Keynote com Dan Abramov',
       description: 'Abertura do evento',
-      imageUrl:
+      imageSrc:
         'https://pbs.twimg.com/profile_images/826786122638426114/PR4tsq-i.jpg'
     },
     {
@@ -29,15 +29,14 @@ const data: Schedules = [
       title: 'Vue é moda, React é foda',
       description:
         'João da Silva conta sobre o que é ter estilo programando em React.',
-      imageUrl: 'http://quemdisse.com.br/autores/sergiomalandro.jpg'
+     imageSrc: require('../../assets/images/bender.jpg')
     },
     {
       time: '11:30',
       title: 'Relay da Rapaziada',
       description:
         'Grande Lucas Bento mandando uma talk sinistra pra galera sobre relay.',
-      imageUrl:
-        'https://pbs.twimg.com/profile_images/715628494882017284/8TUBc3v3.jpg'
+      imageSrc: require('../../assets/images/lucasbento.jpg')
     },
     { time: '13:00', title: 'Almoço' }
   ];
@@ -56,10 +55,10 @@ export default class Schedule extends Component {
     );
     let desc = null;
 
-    if (rowData.description && rowData.imageUrl) {
+    if (rowData.description && rowData.imageSrc) {
       desc = (
         <View style={descriptionContainer}>
-          <Image source={{ uri: rowData.imageUrl }} style={image} />
+          <Image source={typeof rowData.imageSrc === 'string' ? { uri: rowData.imageSrc } : rowData.imageSrc } style={image} />
           <Text style={textDescription}>
             {rowData.description}
           </Text>
