@@ -1,5 +1,7 @@
 # React Conf BR app [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/she-dev/reactconfbr-app/issues) ![status in progress](https://img.shields.io/badge/status-in%20progress-yellow.svg)
 
+![](http://i.imgur.com/gTwZGKH.png) ![](http://i.imgur.com/EItLWVZ.png)
+
 ## What
 This is the event app for the first React Conference in Latin America that will take place in Brazil.   
 It's built using [create-react-native-app](https://github.com/react-community/create-react-native-app) to explore the possibilities of this tool.
