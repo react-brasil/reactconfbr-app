@@ -1,4 +1,5 @@
 {
-  "name": "reactConf",
-  "displayName": "reactConf"
+  "expo": {
+    "sdkVersion": "15.0.0"
+  }
 }
