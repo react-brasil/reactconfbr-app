@@ -12,7 +12,7 @@ const RelayApp = StackNavigator(
     UserDetail: { screen: UserDetail },
   },
   {
-    initialRouteName: 'UserCreate',
+    initialRouteName: 'UserList',
   },
 );
 
