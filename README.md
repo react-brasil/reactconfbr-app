@@ -1,43 +1,34 @@
-# React Conf BR app [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/she-dev/reactconfbr-app/issues) ![status in progress](https://img.shields.io/badge/status-in%20progress-yellow.svg)
+# React Native + React-Navigation + Relay Modern
 
-![](http://i.imgur.com/gTwZGKH.png) ![](http://i.imgur.com/EItLWVZ.png)
+This is a sample repository that shows how to integrate React Native with [ReactNavigation](https://github.com/react-community/react-navigation) and [Relay Modern](https://facebook.github.io/relay/).
 
-## What
-This is the event app for the first React Conference in Latin America that will take place in Brazil.   
-It's built using [create-react-native-app](https://github.com/react-community/create-react-native-app) to explore the possibilities of this tool.
+For the Relay-Classic Version see this [branch](https://github.com/sibelius/ReactNavigationRelayModern/tree/relay-classic) 
 
-### React Conf Brasil
-**Where:** São Paulo, Brazil    
-**When:** October 7th 2017  
-http://reactconfbr.com.br/
+It is connecting to this boilerplate code [graphql-dataloader-boilerplate](https://github.com/entria/graphql-dataloader-boilerplate)
 
-## Running
-After cloning this repository open the terminal and run:
+![alt tag](./demo/demo.gif)
 
-`npm install`
+## Description
+- `data/` contains schema(.json/.graphql) of your GraphQL server. It will be used by Relay to compile your *graphql* queries to code
+- `yarn relay` or `yarn relay:watch` are used to convert *graphql* literals into generated files. The second command watch changes when `data/` files are udpated
 
-### Android
-To run it in the Android simulator make sure it's already open and updated then run:
-    
-`npm run android`
+[`.babelrc`](.babelrc) for Relay Modern
+```json
+{
+  "plugins": [
+    ["relay", {"schema": "data/schema.json"}]
+  ],
+}
+```
 
-### iOS
-To run it in the iOS simulator (Mac only):
+### Relay Environment
+The file [src/createRelayEnvironment.js](src/createRelayEnvironment.js) creates a Relay Environment and a Network instance that configures Relay with a function to fetch queries from the remote server
 
-`npm run ios`
+### ReactNavigation + Relay Modern
+1. You should use a Relay Container such as *[FragmentContainer](https://facebook.github.io/relay/docs/fragment-container.html)*, *[PaginationContainer](https://facebook.github.io/relay/docs/pagination-container.html)* or others in any component that will be `pushed` into a `StackNavigation`
+   - For instance, check [UserList#createPaginationContainer](./src/UserList.js#L111)
 
-### Your device
-Make sure to have [Expo](https://docs.expo.io/versions/latest/introduction/installation.html#mobile-client-expo-for-ios-and-android) installed on your mobile
+- Pushing a route that uses Relay and depends on a parameter [UserList#navigate](./src/UserList.js#L88)
 
-`npm start`
-    
-Open Expo on your mobile and scan the QR code shown in the terminal.
-
-Check [create-react-native-app docs](https://github.com/react-community/create-react-native-app#getting-started) for more details.
-
-## Contributing
-
-**Contributions are welcome.** Fork this repository and send your pull request describing what you have done, which platform you were testing on (iOS or Android) and providing screenshots if relevant.    
-If your pull request relates to an issue include it if possible.
-
-Priority is cleaning up [issues](https://github.com/she-dev/reactconfbr-app/issues) and facilitating contribution (focus on i18n and clearness).
+- Define that your route will need a parameter from react-navigation like these [UserDetail#query](./src/UserDetail.js#L57)
+- You also need to define it inside `variables` [UserDetail#variables](./src/UserDetail.js#L63)

@@ -1,51 +1,31 @@
 //@flow
 import React from 'react';
-import {
-  Text,
-  TouchableHighlight,
-} from 'react-native';
-import Globals from '../Globals';
+import styled from 'styled-components/native';
 
-import type { Children } from 'react';
+const Wrapper = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 50;
+  border-bottom-left-radius: 20;
+  border-bottom-right-radius: 20;
+  border-top-left-radius: 20;
+  border-top-right-radius: 20;
+  margin-top: 20;
+  background-color: #42a5f5;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 type Props = {
-  onPress: () => void,
-  children?: Children
-}
-
-const Button = ({ onPress, children } : Props) => {
-  const { buttonStyle, textStyle } = styles;
-  
-  return (
-    <TouchableHighlight underlayColor={Globals.colors.highlight_blue_transp} onPress={onPress} style={buttonStyle}>
-      <Text selectionColor={Globals.colors.primary_blue} style={textStyle}>
-        {children}
-      </Text>
-    </TouchableHighlight>
-  );
+  onPress?: (void) => void,
+  children?: Node
 };
 
-const styles = {
-  buttonStyle: {
-    alignSelf: 'stretch',
-    backgroundColor: Globals.colors.highlight_blue,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: Globals.colors.highlight_blue,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 70,
-    marginRight: 70,
-  },
-  textStyle: {
-    alignSelf: 'center',
-    color: Globals.colors.dark_gray,
-    fontFamily: 'OpenSans-ExtraBold',
-    fontWeight: '900',
-    fontSize: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-};
+const Button = (props: Props) => (
+  <Wrapper onPress={() => props.onPress()}>
+    {props.children}
+  </Wrapper>
+);
 
-export { Button };
+export default Button;

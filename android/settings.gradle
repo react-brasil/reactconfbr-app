@@ -1,0 +1,3 @@
+rootProject.name = 'reactConf'
+
+include ':app'
