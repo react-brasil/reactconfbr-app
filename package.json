@@ -1,38 +1,63 @@
 {
-  "name": "reactconfbr-app",
-  "version": "0.1.0",
-  "private": true,
-  "devDependencies": {
-    "flow-bin": "0.38.0",
-    "jest-expo": "^0.3.0",
-    "react-native-scripts": "0.0.25",
-    "react-test-renderer": "~15.4.1"
-  },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
-  "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch",
-    "lint": "eslint ."
-  },
-  "jest": {
-    "preset": "jest-expo"
+  "name": "ReactNavigationRelay",
+  "description": "React Navigation + Relay working example",
+  "version": "0.0.1",
+  "author": {
+    "name": "Sibelius Seraphini",
+    "email": "sibeliusseraphini@gmail.com",
+    "url": "https://github.com/sibelius"
   },
   "dependencies": {
-    "@expo/react-native-action-sheet": "^0.3.1",
-    "babel-eslint": "^7.2.1",
-    "dtrace-provider": "^0.8.1",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "hoist-non-react-statics": "^1.2.0",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4",
+    "react-navigation": "1.0.0-beta.9",
+    "react-relay": "1.4.1",
+    "relay-compiler": "^1.5.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "19.0.0",
+    "babel-plugin-relay": "1.0.1-rc.3",
+    "babel-preset-react-native": "1.9.1",
     "eslint": "^3.19.0",
+    "eslint-plugin-flowtype": "^2.32.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.10.3",
-    "eslint-plugin-react-native": "^2.3.1",
-    "expo": "^15.1.0",
-    "react": "~15.4.0",
-    "react-native": "0.42.3",
-    "react-native-i18n": "1.0.0",
-    "react-native-timeline-listview": "^0.2.0",
-    "react-navigation": "^1.0.0-beta.11"
+    "eslint-plugin-react-native": "^2.3.2",
+    "jest": "18.1.0",
+    "lint-staged": "^3.4.0",
+    "prettier": "^1.2.2",
+    "react-devtools": "^2.1.0",
+    "react-test-renderer": "16.0.0-alpha.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote true --trailing-comma all --print-width 80",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint:staged",
+  "private": true,
+  "repository": {
+    "url": "git@github.com:sibelius/ReactNavigationRelay.git",
+    "type": "git"
+  },
+  "scripts": {
+    "android:apk": "cd android && ./gradlew assembleRelease",
+    "android:install": "adb install android/app/build/outputs/apk/app-release.apk",
+    "clear": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
+    "devtools": "react-devtools",
+    "lint": "eslint src",
+    "lint:staged": "lint-staged",
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql",
+    "relay:watch": "yarn relay -- --watch",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
   }
 }
