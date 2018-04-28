@@ -1,11 +1,11 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import UserCreate from './UserCreate';
 import UserList from './UserList';
 import UserDetail from './UserDetail';
 
-const RelayApp = StackNavigator(
+const InnerAppRouter = StackNavigator(
   {
     UserCreate: { screen: UserCreate },
     UserList: { screen: UserList },
@@ -13,6 +13,23 @@ const RelayApp = StackNavigator(
   },
   {
     initialRouteName: 'UserList',
+  },
+);
+
+const RelayApp = StackNavigator(
+  {
+    InnerAppRouter: {
+      screen: DrawerNavigator(
+        {
+          MainApp: {
+            screen: InnerAppRouter,
+          },
+        },
+      ),
+    },
+  },
+  {
+    headerMode: 'none',
   },
 );
 
