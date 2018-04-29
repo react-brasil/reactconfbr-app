@@ -61,19 +61,15 @@ type State = {};
 @withNavigation
 export default class LoginScreen extends Component<any, Props, State> {
   state = {
+    name: '',
     email: '',
     password: '',
-    confirmPassword: '',
   }
 
-  handleRegisterClick = async () => {
-    const { email, password, confirmPassword } = this.state;
-    if ( password !== confirmPassword) {
-      console.log('register password === confirmPassword');
-      return;
-    }
-
+  handleRegisterPress = async () => {
+    const { name, email, password } = this.state;
     const input = {
+      name,
       email,
       password,
     };
@@ -113,19 +109,21 @@ export default class LoginScreen extends Component<any, Props, State> {
         <TextWrapper>
           <BigText>Create an Account</BigText>
           <Input
+            placeholder="Name"
+            onChangeText={(text) => this.setState({ name: text })}
+          />
+          <Input
             placeholder="Email"
+            onChangeText={(text) => this.setState({ email: text })}
           />
           <Input
             placeholder="Password"
             secureTextEntry
-          />
-          <Input
-            placeholder="Confirm Password"
-            secureTextEntry
+            onChangeText={(text) => this.setState({ password: text })}
           />
         </TextWrapper>
         <ButtonsWrapper>
-          <Button fill>
+          <Button fill onPress={this.handleRegisterPress}>
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>

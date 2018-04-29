@@ -25,7 +25,7 @@ type Props = {
 
 const Input = (props: Props) => (
   <InputWrapper>
-    <RegisterTextInput placeholderTextColor="#000000" {...props}/>
+    <RegisterTextInput placeholderTextColor="#000000" autoCapitalize = 'none' {...props}/>
   </InputWrapper>
 );
 
