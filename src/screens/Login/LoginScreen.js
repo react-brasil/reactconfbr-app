@@ -74,10 +74,12 @@ export default class LoginScreen extends Component<any, Props, State> {
   };
 
   render() {
+    const { navigation } = this.props;
+
     return (
       <Wrapper>
         <Header>
-          <ForgotButton>
+          <ForgotButton onPress={() => navigation.pop()}>
             <ForgotText>{'<=='}</ForgotText>
           </ForgotButton>
           <ForgotButton>

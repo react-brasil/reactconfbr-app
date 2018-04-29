@@ -85,6 +85,7 @@ export default class AuthScreen extends Component<any, Props, State> {
   }
 
   render() {
+    const { navigation } = this.props;
     const spin = this.animationValue.interpolate({
       inputRange: [0, 1],
       outputRange: ['0deg', '360deg'],
@@ -93,7 +94,7 @@ export default class AuthScreen extends Component<any, Props, State> {
     return (
       <Wrapper>
         <Header>
-          <LoginButton>
+          <LoginButton onPress={() => navigation.navigate('LoginScreen')}>
             <LoginText>Login</LoginText>
           </LoginButton>
         </Header>
@@ -113,7 +114,7 @@ export default class AuthScreen extends Component<any, Props, State> {
             <FacebookLogo />
             <ButtonText>Continue with Facebook</ButtonText>
           </Button>
-          <Button>
+          <Button onPress={() => navigation.navigate('RegisterScreen')}>
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>
