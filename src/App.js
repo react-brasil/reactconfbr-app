@@ -3,9 +3,13 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
 
+//Authentication screens
 import AuthScreen from './screens/Auth/AuthScreen';
 import LoginScreen from './screens/Login/LoginScreen';
 import RegisterScreen from './screens/Register/RegisterScreen';
+
+//App Screens
+import EventsScreen from './screens/Events/EventsScreen';
 
 import UserCreate from './UserCreate';
 import UserList from './UserList';
@@ -16,6 +20,9 @@ const InnerAppRouter = StackNavigator(
     AuthScreen: { screen: AuthScreen },
     LoginScreen: { screen: LoginScreen },
     RegisterScreen: { screen: RegisterScreen },
+
+    EventsScreen: { screen: EventsScreen },
+
     UserCreate: { screen: UserCreate },
     UserList: { screen: UserList },
     UserDetail: { screen: UserDetail },

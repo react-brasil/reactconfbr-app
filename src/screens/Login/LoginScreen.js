@@ -69,8 +69,6 @@ export default class LoginScreen extends Component<any, Props, State> {
       console.log('error');
       return;
     }
-    
-
   };
 
   render() {

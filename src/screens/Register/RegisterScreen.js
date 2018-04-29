@@ -75,13 +75,15 @@ export default class LoginScreen extends Component<any, Props, State> {
     };
 
     const onCompleted = async (res) => {
-      const response = res && res.Register;
+      const { navigation } = this.props;
+      const response = res && res.RegisterEmail;
       const token = response && response.token;
-
+      console.log('register sucess res', res);
       if (response && response.error) {
         console.log('Register onCompleted error', response.error);
       } else if (token) {
         await AsyncStorage.setItem('token', token);
+        navigation.navigate('EventsScreen');
       }
     };
 
@@ -91,9 +93,6 @@ export default class LoginScreen extends Component<any, Props, State> {
 
     RegisterMutation.commit(input, onCompleted, onError);
   };
-
-
-
 
   render() {
     const { navigation } = this.props;
