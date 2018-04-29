@@ -10,6 +10,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import UserCreate from './UserCreate';
 import UserList from './UserList';
 import UserDetail from './UserDetail';
+
 const InnerAppRouter = StackNavigator(
   {
     AuthScreen: { screen: AuthScreen },
@@ -20,7 +21,7 @@ const InnerAppRouter = StackNavigator(
     UserDetail: { screen: UserDetail },
   },
   {
-    initialRouteName: 'LoginScreen',
+    initialRouteName: 'AuthScreen',
     navigationOptions: {
       header: null,
     },

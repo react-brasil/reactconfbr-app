@@ -57,7 +57,7 @@ type Props = {};
 type State = {};
 
 @withNavigation
-export default class AuthScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<any, Props, State> {
   render() {
     return (
       <Wrapper>

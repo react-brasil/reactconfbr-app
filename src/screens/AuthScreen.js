@@ -14,6 +14,9 @@ const Wrapper = styled.View`
 `;
 
 const LoginButton = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: center;
+  align-items: flex-end;
 `;
 
 const LoginText = styled.Text`
