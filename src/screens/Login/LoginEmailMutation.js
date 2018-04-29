@@ -2,8 +2,8 @@ import { commitMutation, graphql } from 'react-relay';
 import env from '../../createRelayEnvironment';
 
 const mutation = graphql`
-  mutation LoginMutation($input: LoginInput!) {
-    Login(input: $input) {
+  mutation LoginEmailMutation($input: LoginEmailInput!) {
+    LoginEmail(input: $input) {
       error
       token
     }

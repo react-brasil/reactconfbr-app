@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import RegisterMutation from './RegisterMutation';
+import RegisterMutation from './RegisterEmailMutation';
 
 const Wrapper = styled.View`
   flex: 1;
