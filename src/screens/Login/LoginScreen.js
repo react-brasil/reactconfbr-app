@@ -1,12 +1,15 @@
 // @flow
 
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
+
 import styled from 'styled-components/native'
 import { withNavigation } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import LoginMutation from './LoginEmailMutation';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -64,11 +67,30 @@ export default class LoginScreen extends Component<any, Props, State> {
   };
 
   handleLoginPress = async () => {
-    const { login, password } = this.state;
-    if ( !login || !password ) {
-      console.log('error');
-      return;
-    }
+    const { email, password } = this.state;
+    const input = {
+      email,
+      password,
+    };
+
+    const onCompleted = async (res) => {
+      const { navigation } = this.props;
+      const response = res && res.LoginEmail;
+      const token = response && response.token;
+      console.log('login sucess res', res);
+      if (response && response.error) {
+        console.log('Login onCompleted error', response.error);
+      } else if (token) {
+        await AsyncStorage.setItem('token', token);
+        navigation.navigate('EventsScreen');
+      }
+    };
+
+    const onError = () => {
+      console.log('Register onError')
+    };
+
+    LoginMutation.commit(input, onCompleted, onError);
   };
 
   render() {
@@ -88,10 +110,12 @@ export default class LoginScreen extends Component<any, Props, State> {
           <BigText>Login</BigText>
           <Input
             placeholder="Email"
+            onChangeText={(text) => this.setState({ email: text })}
           />
           <Input
             placeholder="Password"
             secureTextEntry
+            onChangeText={(text) => this.setState({ password: text })}
           />
         </TextWrapper>
         <ButtonsWrapper>
