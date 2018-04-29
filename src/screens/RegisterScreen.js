@@ -6,6 +6,7 @@ import { withNavigation } from 'react-navigation';
 
 import Header from '../components/common/Header';
 import Button from '../components/Button';
+import Input from '../components/Input';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -13,49 +14,41 @@ const Wrapper = styled.View`
   padding: 20px;
 `;
 
-const LoginButton = styled.TouchableOpacity`
+const ForgotButton = styled.TouchableOpacity`
 `;
 
-const LoginText = styled.Text`
+const ArrowImage = styled.Image.attrs({
+  source: { uri: 'http://www.stickpng.com/assets/images/585e4695cb11b227491c3373.png' },
+})`
+  width: 90px;
+  height: 15px;
+`;
+
+const ForgotText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
   font-weight: 900;
-  font-size: 18px;
+  font-size: 24px;
   text-align: right;
 `;
 
 const TextWrapper = styled.View`
-  flex: 2;
-`;
-
-const ReactLogo = styled.Image.attrs({
-  source: { uri: 'https://8sph.azureedge.net/media/Default/_Profiles/8f14fafe/ae24358d/reactjs.png?v=636119954010000000' },
-})`
-  width: 100px;
-  height: 88px;
+  flex: 3;
 `;
 
 const BigText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
   font-size: 34px;
   font-weight: 900;
-  margin-top: 20px;
+  padding: 20px 0 20px 0;
 `;
 
 const ButtonsWrapper = styled.View`
-  flex: 2;
-  justify-content: flex-start;
-`;
-
-const FacebookLogo = styled.Image.attrs({
-  source: { uri: 'https://s3.amazonaws.com/freebiesupply/large/2x/facebook-logo-black-transparent.png' },
-})`
-  width: 20px;
-  height: 28px;
-  margin: 0 15px 5px 0;
+  flex: 1;
+  justify-content: flex-end;
 `;
 
 const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
+  color: ${props => props.theme.colors.primaryColor};
   font-size: 20px;
 `;
 
@@ -64,25 +57,34 @@ type Props = {};
 type State = {};
 
 @withNavigation
-export default class AuthScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<any, Props, State> {
   render() {
     return (
       <Wrapper>
         <Header>
-          <LoginButton>
-            <LoginText>Login</LoginText>
-          </LoginButton>
+          <ForgotButton>
+            <ForgotText>{'<=='}</ForgotText>
+          </ForgotButton>
+          <ForgotButton>
+            <ForgotText>Login</ForgotText>
+          </ForgotButton>
         </Header>
         <TextWrapper>
-          <ReactLogo />
-          <BigText>Welcome to React Brasil Events</BigText>
+          <BigText>Create an Account</BigText>
+          <Input
+            placeholder="Email"
+          />
+          <Input
+            placeholder="Password"
+            secureTextEntry
+          />
+          <Input
+            placeholder="Confirm Password"
+            secureTextEntry
+          />
         </TextWrapper>
         <ButtonsWrapper>
-          <Button>
-            <FacebookLogo />
-            <ButtonText>Continue with Facebook</ButtonText>
-          </Button>
-          <Button>
+          <Button fill>
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>
