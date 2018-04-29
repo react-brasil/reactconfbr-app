@@ -1,6 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
+import { Animated, Easing } from 'react-native';
+
 import styled from 'styled-components/native'
 import { withNavigation } from 'react-navigation';
 
@@ -28,13 +30,6 @@ const LoginText = styled.Text`
 
 const TextWrapper = styled.View`
   flex: 2;
-`;
-
-const ReactLogo = styled.Image.attrs({
-  source: { uri: 'https://8sph.azureedge.net/media/Default/_Profiles/8f14fafe/ae24358d/reactjs.png?v=636119954010000000' },
-})`
-  width: 100px;
-  height: 88px;
 `;
 
 const BigText = styled.Text`
@@ -68,7 +63,33 @@ type State = {};
 
 @withNavigation
 export default class AuthScreen extends Component<any, Props, State> {
+  constructor() {
+    super()
+    this.animationValue = new Animated.Value(0);
+  }
+
+  componentDidMount() {
+    this.spin();
+  }
+
+  spin() {
+    this.animationValue.setValue(0);
+    Animated.timing(
+      this.animationValue,
+      {
+        toValue: 1,
+        duration: 8500,
+        easing: Easing.linear,
+      }
+    ).start(() => this.spin());
+  }
+
   render() {
+    const spin = this.animationValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg'],
+    });
+
     return (
       <Wrapper>
         <Header>
@@ -77,7 +98,14 @@ export default class AuthScreen extends Component<any, Props, State> {
           </LoginButton>
         </Header>
         <TextWrapper>
-          <ReactLogo />
+          <Animated.Image
+            style={{
+              width: 100,
+              height: 88,
+              transform: [{ rotate: spin }],
+            }}
+            source={{uri: 'https://8sph.azureedge.net/media/Default/_Profiles/8f14fafe/ae24358d/reactjs.png?v=636119954010000000'}}
+          />
           <BigText>Welcome to React Brasil Events</BigText>
         </TextWrapper>
         <ButtonsWrapper>
