@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components/native'
 import { withNavigation } from 'react-navigation';
 
-import Header from '../components/common/Header';
-import Button from '../components/Button';
+import Header from '../../components/common/Header';
+import Button from '../../components/Button';
 
 const Wrapper = styled.View`
   flex: 1;

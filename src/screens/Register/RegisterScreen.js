@@ -1,12 +1,14 @@
 // @flow
 
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import styled from 'styled-components/native'
 import { withNavigation } from 'react-navigation';
 
-import Header from '../components/common/Header';
-import Button from '../components/Button';
-import Input from '../components/Input';
+import Header from '../../components/common/Header';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
+import RegisterMutation from './RegisterMutation';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -58,6 +60,45 @@ type State = {};
 
 @withNavigation
 export default class LoginScreen extends Component<any, Props, State> {
+  state = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+  }
+
+  handleRegisterClick = async () => {
+    const { email, password, confirmPassword } = this.state;
+    if ( password !== confirmPassword) {
+      console.log('register password === confirmPassword');
+      return;
+    }
+
+    const input = {
+      email,
+      password,
+    };
+
+    const onCompleted = async (res) => {
+      const response = res && res.Register;
+      const token = response && response.token;
+
+      if (response && response.error) {
+        console.log('Register onCompleted error', response.error);
+      } else if (token) {
+        await AsyncStorage.setItem('token', token);
+      }
+    };
+
+    const onError = () => {
+      console.log('Register onError')
+    };
+
+    RegisterMutation.commit(input, onCompleted, onError);
+  };
+
+
+
+
   render() {
     return (
       <Wrapper>
@@ -66,11 +107,11 @@ export default class LoginScreen extends Component<any, Props, State> {
             <ForgotText>{'<=='}</ForgotText>
           </ForgotButton>
           <ForgotButton>
-            <ForgotText>Forgot Password</ForgotText>
+            <ForgotText>Login</ForgotText>
           </ForgotButton>
         </Header>
         <TextWrapper>
-          <BigText>Login</BigText>
+          <BigText>Create an Account</BigText>
           <Input
             placeholder="Email"
           />
@@ -78,10 +119,14 @@ export default class LoginScreen extends Component<any, Props, State> {
             placeholder="Password"
             secureTextEntry
           />
+          <Input
+            placeholder="Confirm Password"
+            secureTextEntry
+          />
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill>
-            <ButtonText>Login</ButtonText>
+            <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>
       </Wrapper>

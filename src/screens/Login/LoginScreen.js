@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components/native'
 import { withNavigation } from 'react-navigation';
 
-import Header from '../components/common/Header';
-import Button from '../components/Button';
-import Input from '../components/Input';
+import Header from '../../components/common/Header';
+import Button from '../../components/Button';
+import Input from '../../components/Input';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -58,6 +58,21 @@ type State = {};
 
 @withNavigation
 export default class LoginScreen extends Component<any, Props, State> {
+  state = {
+    login: '',
+    password: '',
+  };
+
+  handleLoginPress = async () => {
+    const { login, password } = this.state;
+    if ( !login || !password ) {
+      console.log('error');
+      return;
+    }
+    
+
+  };
+
   render() {
     return (
       <Wrapper>
@@ -66,11 +81,11 @@ export default class LoginScreen extends Component<any, Props, State> {
             <ForgotText>{'<=='}</ForgotText>
           </ForgotButton>
           <ForgotButton>
-            <ForgotText>Login</ForgotText>
+            <ForgotText>Forgot Password</ForgotText>
           </ForgotButton>
         </Header>
         <TextWrapper>
-          <BigText>Create an Account</BigText>
+          <BigText>Login</BigText>
           <Input
             placeholder="Email"
           />
@@ -78,14 +93,10 @@ export default class LoginScreen extends Component<any, Props, State> {
             placeholder="Password"
             secureTextEntry
           />
-          <Input
-            placeholder="Confirm Password"
-            secureTextEntry
-          />
         </TextWrapper>
         <ButtonsWrapper>
-          <Button fill>
-            <ButtonText>Create an Account</ButtonText>
+          <Button fill onPress={this.handleLoginPress}>
+            <ButtonText>Login</ButtonText>
           </Button>
         </ButtonsWrapper>
       </Wrapper>

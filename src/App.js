@@ -3,9 +3,9 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
 
-import AuthScreen from './screens/AuthScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
+import AuthScreen from './screens/Auth/AuthScreen';
+import LoginScreen from './screens/Login/LoginScreen';
+import RegisterScreen from './screens/Register/RegisterScreen';
 
 import UserCreate from './UserCreate';
 import UserList from './UserList';
