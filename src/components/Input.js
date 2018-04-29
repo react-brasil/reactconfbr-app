@@ -5,9 +5,9 @@ import styled from 'styled-components/native';
 
 const InputWrapper = styled.View`
   height: 40;
-  border-bottom-color: gray;
+  border-bottom-color: ${props => props.theme.colors.secondaryColor};
   border-bottom-width: 1;
-  margin: 20px;
+  margin-top: 30px;
 `;
 
 const RegisterTextInput = styled.TextInput`
@@ -25,7 +25,7 @@ type Props = {
 
 const Input = (props: Props) => (
   <InputWrapper>
-    <RegisterTextInput {...props}/>
+    <RegisterTextInput placeholderTextColor="#000000" {...props}/>
   </InputWrapper>
 );
 
