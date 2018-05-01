@@ -3,11 +3,12 @@
 import React, { Component } from 'react';
 import { Animated, Easing } from 'react-native';
 
-import styled from 'styled-components/native'
+import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
+import { IMAGES } from '../../utils/design/images';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -23,8 +24,8 @@ const LoginButton = styled.TouchableOpacity`
 
 const LoginText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
-  font-weight: 900;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: 24px;
   text-align: right;
 `;
 
@@ -35,17 +36,28 @@ const TextWrapper = styled.View`
 const BigText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
   font-size: 34px;
-  font-weight: 900;
+  font-weight: 800;
   margin-top: 20px;
 `;
 
 const ButtonsWrapper = styled.View`
-  flex: 2;
+  flex: 3;
   justify-content: flex-start;
 `;
 
+const BottomFixedReactLogo = styled.Image.attrs({
+  source: IMAGES.REACT,
+})`
+  width: 303;
+  height: 271.39;
+  position: absolute;
+  right: -100;
+  bottom: -90;
+  tint-color: rgba(0,0,0,0.1);
+`;
+
 const FacebookLogo = styled.Image.attrs({
-  source: { uri: 'https://s3.amazonaws.com/freebiesupply/large/2x/facebook-logo-black-transparent.png' },
+  source: IMAGES.FB,
 })`
   width: 20px;
   height: 28px;
@@ -55,6 +67,14 @@ const FacebookLogo = styled.Image.attrs({
 const ButtonText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
   font-size: 20px;
+  font-weight: 600;
+`;
+
+const AnimatedImage = styled(Animated.Image).attrs({
+  source: IMAGES.REACT,
+})`
+  width: 100;
+  height: 88;
 `;
 
 type Props = {};
@@ -64,7 +84,7 @@ type State = {};
 @withNavigation
 export default class AuthScreen extends Component<any, Props, State> {
   constructor() {
-    super()
+    super();
     this.animationValue = new Animated.Value(0);
   }
 
@@ -74,14 +94,11 @@ export default class AuthScreen extends Component<any, Props, State> {
 
   spin() {
     this.animationValue.setValue(0);
-    Animated.timing(
-      this.animationValue,
-      {
-        toValue: 1,
-        duration: 8500,
-        easing: Easing.linear,
-      }
-    ).start(() => this.spin());
+    Animated.timing(this.animationValue, {
+      toValue: 1,
+      duration: 8500,
+      easing: Easing.linear,
+    }).start(() => this.spin());
   }
 
   render() {
@@ -99,13 +116,10 @@ export default class AuthScreen extends Component<any, Props, State> {
           </LoginButton>
         </Header>
         <TextWrapper>
-          <Animated.Image
+          <AnimatedImage
             style={{
-              width: 100,
-              height: 88,
               transform: [{ rotate: spin }],
             }}
-            source={{uri: 'https://8sph.azureedge.net/media/Default/_Profiles/8f14fafe/ae24358d/reactjs.png?v=636119954010000000'}}
           />
           <BigText>Welcome to React Brasil Events</BigText>
         </TextWrapper>
@@ -118,6 +132,7 @@ export default class AuthScreen extends Component<any, Props, State> {
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>
+        <BottomFixedReactLogo />
       </Wrapper>
     );
   }

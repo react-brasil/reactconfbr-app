@@ -7,22 +7,19 @@ const Wrapper = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50;
-  border-bottom-left-radius: 50;
-  border-bottom-right-radius: 50;
-  border-top-left-radius: 50;
-  border-top-right-radius: 50;
+  height: 60;
+  border-radius: 50;
   margin-top: 20;
-  background-color: ${props => props.fill ? props.theme.colors.secondaryColor : 'transparent'};
+  background-color: ${props => (props.fill ? props.theme.colors.secondaryColor : 'transparent')};
   margin-left: auto;
   margin-right: auto;
   border: 2px solid ${props => props.theme.colors.secondaryColor};
 `;
 
 type Props = {
-  onPress?: (void) => void,
+  onPress?: void => void,
   children?: Node,
-  fill?: boolean
+  fill?: boolean,
 };
 
 const Button = (props: Props) => (

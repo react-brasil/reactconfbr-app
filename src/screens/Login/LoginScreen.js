@@ -3,13 +3,15 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
-import styled from 'styled-components/native'
+import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import LoginMutation from './LoginEmailMutation';
+
+import { IMAGES } from '../../utils/design/images';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -20,17 +22,10 @@ const Wrapper = styled.View`
 const ForgotButton = styled.TouchableOpacity`
 `;
 
-const ArrowImage = styled.Image.attrs({
-  source: { uri: 'http://www.stickpng.com/assets/images/585e4695cb11b227491c3373.png' },
-})`
-  width: 90px;
-  height: 15px;
-`;
-
 const ForgotText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
-  font-weight: 900;
-  font-size: 24px;
+  font-weight: bold;
+  font-size: 20px;
   text-align: right;
 `;
 
@@ -40,19 +35,41 @@ const TextWrapper = styled.View`
 
 const BigText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
-  font-size: 34px;
-  font-weight: 900;
+  font-size: 36px;
+  font-weight: bold;
   padding: 20px 0 20px 0;
 `;
 
 const ButtonsWrapper = styled.View`
   flex: 1;
   justify-content: flex-end;
+  padding-horizontal: 5;
 `;
 
 const ButtonText = styled.Text`
   color: ${props => props.theme.colors.primaryColor};
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold
+`;
+
+const BottomFixedReactLogo = styled.Image.attrs({
+  source: IMAGES.REACT,
+})`
+  width: 303;
+  height: 271.39;
+  position: absolute;
+  right: -100;
+  bottom: -90;
+  tint-color: rgba(0,0,0,0.1);
+`;
+
+const Arrow = styled.Image.attrs({
+  source: IMAGES.ARROW,
+})`
+  width: 30;
+  height: 24;
+  margin-top: 5;
+  tint-color: black;
 `;
 
 type Props = {};
@@ -73,7 +90,7 @@ export default class LoginScreen extends Component<any, Props, State> {
       password,
     };
 
-    const onCompleted = async (res) => {
+    const onCompleted = async res => {
       const { navigation } = this.props;
       const response = res && res.LoginEmail;
       const token = response && response.token;
@@ -87,7 +104,7 @@ export default class LoginScreen extends Component<any, Props, State> {
     };
 
     const onError = () => {
-      console.log('Register onError')
+      console.log('Register onError');
     };
 
     LoginMutation.commit(input, onCompleted, onError);
@@ -100,7 +117,7 @@ export default class LoginScreen extends Component<any, Props, State> {
       <Wrapper>
         <Header>
           <ForgotButton onPress={() => navigation.pop()}>
-            <ForgotText>{'<=='}</ForgotText>
+            <Arrow />
           </ForgotButton>
           <ForgotButton>
             <ForgotText>Forgot Password</ForgotText>
@@ -110,12 +127,12 @@ export default class LoginScreen extends Component<any, Props, State> {
           <BigText>Login</BigText>
           <Input
             placeholder="Email"
-            onChangeText={(text) => this.setState({ email: text })}
+            onChangeText={text => this.setState({ email: text })}
           />
           <Input
             placeholder="Password"
             secureTextEntry
-            onChangeText={(text) => this.setState({ password: text })}
+            onChangeText={text => this.setState({ password: text })}
           />
         </TextWrapper>
         <ButtonsWrapper>
@@ -123,6 +140,7 @@ export default class LoginScreen extends Component<any, Props, State> {
             <ButtonText>Login</ButtonText>
           </Button>
         </ButtonsWrapper>
+        <BottomFixedReactLogo />
       </Wrapper>
     );
   }
