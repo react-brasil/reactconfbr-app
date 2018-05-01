@@ -9,6 +9,7 @@ import { withNavigation } from 'react-navigation';
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import { IMAGES } from '../../utils/design/images';
+import { ROUTENAMES } from '../../navigation/RouteNames';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -111,7 +112,7 @@ export default class AuthScreen extends Component<any, Props, State> {
     return (
       <Wrapper>
         <Header>
-          <LoginButton onPress={() => navigation.navigate('LoginScreen')}>
+          <LoginButton onPress={() => navigation.navigate(ROUTENAMES.LOGIN)}>
             <LoginText>Login</LoginText>
           </LoginButton>
         </Header>
@@ -128,7 +129,7 @@ export default class AuthScreen extends Component<any, Props, State> {
             <FacebookLogo />
             <ButtonText>Continue with Facebook</ButtonText>
           </Button>
-          <Button onPress={() => navigation.navigate('RegisterScreen')}>
+          <Button onPress={() => navigation.navigate(ROUTENAMES.REGISTER)}>
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>

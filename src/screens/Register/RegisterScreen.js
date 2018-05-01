@@ -11,6 +11,7 @@ import Input from '../../components/Input';
 import RegisterMutation from './RegisterEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
+import { ROUTENAMES } from '../../navigation/RouteNames';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -100,7 +101,7 @@ export default class LoginScreen extends Component<any, Props, State> {
         console.log('Register onCompleted error', response.error);
       } else if (token) {
         await AsyncStorage.setItem('token', token);
-        navigation.navigate('EventsScreen');
+        navigation.navigate(ROUTENAMES.EVENTS);
       }
     };
 
@@ -120,7 +121,7 @@ export default class LoginScreen extends Component<any, Props, State> {
           <ForgotButton onPress={() => navigation.pop()}>
             <Arrow />
           </ForgotButton>
-          <ForgotButton onPress={() => navigation.navigate('LoginScreen')}>
+          <ForgotButton onPress={() => navigation.navigate(ROUTENAMES.LOGIN)}>
             <ForgotText>Login</ForgotText>
           </ForgotButton>
         </Header>

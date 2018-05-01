@@ -12,6 +12,7 @@ import Input from '../../components/Input';
 import LoginMutation from './LoginEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
+import { ROUTENAMES } from '../../navigation/RouteNames';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -99,7 +100,7 @@ export default class LoginScreen extends Component<any, Props, State> {
         console.log('Login onCompleted error', response.error);
       } else if (token) {
         await AsyncStorage.setItem('token', token);
-        navigation.navigate('EventsScreen');
+        navigation.navigate(ROUTENAMES.EVENTS);
       }
     };
 
