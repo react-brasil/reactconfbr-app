@@ -5,31 +5,17 @@ import UserCreate from './UserCreate';
 import UserList from './UserList';
 import UserDetail from './UserDetail';
 
-const InnerAppRouter = StackNavigator(
-  {
-    UserCreate: { screen: UserCreate },
-    UserList: { screen: UserList },
-    UserDetail: { screen: UserDetail },
-  },
-  {
-    initialRouteName: 'UserList',
-  },
-);
-
 const RelayApp = StackNavigator(
   {
     InnerAppRouter: {
       screen: DrawerNavigator(
         {
-          MainApp: {
-            screen: InnerAppRouter,
-          },
+          UserCreate: { screen: UserCreate },
+          UserList: { screen: UserList },
         },
       ),
     },
-  },
-  {
-    headerMode: 'none',
+    UserDetail: { screen: UserDetail },
   },
 );
 
