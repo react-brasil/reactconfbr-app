@@ -1,10 +1,34 @@
-import React from 'react';
+import * as React from 'react';
+import { AsyncStorage } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
-import { RelayApp } from './navigation/Router';
+import { createRootNavigator } from './navigation/Router';
 
-const ThemedApp = () => (
-  <ThemeProvider theme={theme}><RelayApp /></ThemeProvider>
-);
+type State = {
+  token: '',
+};
 
-export default () => <ThemedApp />;
+class ThemedApp extends React.Component<*, State> {
+  state = {
+    token: '',
+  };
+  componentWillMount() {
+    AsyncStorage.getItem('token').then(value => {
+      this.setState({
+        token: value,
+      });
+    });
+  }
+  render() {
+    const { token } = this.state;
+
+    const Launch = createRootNavigator(token);
+    return (
+      <ThemeProvider theme={theme}>
+        <Launch />
+      </ThemeProvider>
+    );
+  }
+}
+
+export default ThemedApp;

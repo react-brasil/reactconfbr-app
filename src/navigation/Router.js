@@ -1,23 +1,23 @@
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
-
+// @flow
+import {
+  StackNavigator,
+  DrawerNavigator,
+  SwitchNavigator,
+} from 'react-navigation';
 //ROUTES HELPER
 import { ROUTENAMES } from './RouteNames';
-
-//Authentication screens
+// Authentications
 import AuthScreen from '../screens/Auth/AuthScreen';
 import LoginScreen from '../screens/Login/LoginScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
-
-//App Screens
+// Logged Screens
 import EventsScreen from '../screens/Events/EventsScreen';
 
-const InnerAppRouter = StackNavigator(
+const NonLoggedAppRouter = StackNavigator(
   {
     [ROUTENAMES.AUTH]: { screen: AuthScreen },
     [ROUTENAMES.LOGIN]: { screen: LoginScreen },
     [ROUTENAMES.REGISTER]: { screen: RegisterScreen },
-
-    [ROUTENAMES.EVENTS]: { screen: EventsScreen },
   },
   {
     initialRouteName: ROUTENAMES.AUTH,
@@ -27,17 +27,32 @@ const InnerAppRouter = StackNavigator(
   }
 );
 
-export const RelayApp = StackNavigator(
+const LoggedAppRouter = StackNavigator(
   {
-    InnerAppRouter: {
+    InnerAppDrawer: {
       screen: DrawerNavigator({
-        MainApp: {
-          screen: InnerAppRouter,
-        },
+        [ROUTENAMES.EVENTS]: { screen: EventsScreen },
       }),
     },
+    [ROUTENAMES.EVENTS]: { screen: EventsScreen },
   },
   {
-    headerMode: 'none',
+    initialRouteName: ROUTENAMES.EVENTS,
+    navigationOptions: {
+      header: null,
+    },
   }
 );
+
+export const createRootNavigator = (token: string) =>
+  SwitchNavigator(
+    {
+      [ROUTENAMES.LOGGED_APP]: LoggedAppRouter,
+      [ROUTENAMES.NON_LOGGED_APP]: NonLoggedAppRouter,
+    },
+    {
+      initialRouteName: token
+        ? ROUTENAMES.LOGGED_APP
+        : ROUTENAMES.NON_LOGGED_APP,
+    }
+  );
