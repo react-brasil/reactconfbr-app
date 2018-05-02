@@ -23,7 +23,7 @@ type Props = {
 };
 
 const Button = (props: Props) => (
-  <Wrapper onPress={() => props.onPress()} {...props}>
+  <Wrapper onPress={props.onPress} {...props}>
     {props.children}
   </Wrapper>
 );
