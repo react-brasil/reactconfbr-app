@@ -4,28 +4,33 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 const InputWrapper = styled.View`
-  height: 40;
-  border-bottom-color: gray;
-  border-bottom-width: 1;
-  margin: 20px;
+  padding: 10px;
+  border-bottom-color: ${props => props.theme.colors.secondaryColor};
+  border-bottom-width: 2.5;
+  margin-top: 30px;
 `;
 
 const RegisterTextInput = styled.TextInput`
   height: 40;
   width: 100%;
+  font-size: 20;
 `;
 
 type Props = {
   name?: string,
   placeholder?: string,
   value?: string,
-  onChangeText?: (string) => void,
+  onChangeText?: string => void,
   secureTextEntry?: boolean,
 };
 
 const Input = (props: Props) => (
   <InputWrapper>
-    <RegisterTextInput {...props}/>
+    <RegisterTextInput
+      placeholderTextColor="black"
+      autoCapitalize="none"
+      {...props}
+    />
   </InputWrapper>
 );
 

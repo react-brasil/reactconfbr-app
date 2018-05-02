@@ -1,22 +1,34 @@
-import React from 'react';
-import { StackNavigator, DrawerNavigator } from 'react-navigation';
+import * as React from 'react';
+import { AsyncStorage } from 'react-native';
+import { ThemeProvider } from 'styled-components';
+import theme from './utils/design/theme';
+import { createRootNavigator } from './navigation/Router';
 
-import UserCreate from './UserCreate';
-import UserList from './UserList';
-import UserDetail from './UserDetail';
+type State = {
+  token: '',
+};
 
-const RelayApp = StackNavigator(
-  {
-    InnerAppRouter: {
-      screen: DrawerNavigator(
-        {
-          UserCreate: { screen: UserCreate },
-          UserList: { screen: UserList },
-        },
-      ),
-    },
-    UserDetail: { screen: UserDetail },
-  },
-);
+class ThemedApp extends React.Component<*, State> {
+  state = {
+    token: '',
+  };
+  componentWillMount() {
+    AsyncStorage.getItem('token').then(value => {
+      this.setState({
+        token: value,
+      });
+    });
+  }
+  render() {
+    const { token } = this.state;
 
-export default () => <RelayApp />;
+    const Launch = createRootNavigator(token);
+    return (
+      <ThemeProvider theme={theme}>
+        <Launch />
+      </ThemeProvider>
+    );
+  }
+}
+
+export default ThemedApp;
