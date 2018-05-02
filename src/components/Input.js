@@ -14,6 +14,7 @@ const RegisterTextInput = styled.TextInput`
   height: 40;
   width: 100%;
   font-size: 20;
+  padding-top:2;
 `;
 
 type Props = {
@@ -28,6 +29,7 @@ const Input = (props: Props) => (
   <InputWrapper>
     <RegisterTextInput
       placeholderTextColor="black"
+      underlineColorAndroid="rgba(0,0,0,0)"
       autoCapitalize="none"
       {...props}
     />
