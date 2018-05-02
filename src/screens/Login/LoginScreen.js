@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import styled from 'styled-components/native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, SwitchNavigator } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
@@ -12,7 +12,9 @@ import Input from '../../components/Input';
 import LoginMutation from './LoginEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
+import { LoggedAppRouter } from '../../navigation/Router';
 import { ROUTENAMES } from '../../navigation/RouteNames';
+import ErrorModal from '../../components/ErrorModal';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -45,6 +47,7 @@ const ButtonsWrapper = styled.View`
   flex: 1;
   justify-content: flex-end;
   padding-horizontal: 5;
+  z-index: 3;
 `;
 
 const ButtonText = styled.Text`
@@ -62,6 +65,7 @@ const BottomFixedReactLogo = styled.Image.attrs({
   right: -100;
   bottom: -90;
   tint-color: rgba(0,0,0,0.1);
+  z-index: 1;
 `;
 
 const Arrow = styled.Image.attrs({
@@ -75,44 +79,70 @@ const Arrow = styled.Image.attrs({
 
 type Props = {};
 
-type State = {};
+type State = {
+  login: string,
+  password: string,
+  errorText: string,
+};
 
 @withNavigation
 export default class LoginScreen extends Component<any, Props, State> {
   state = {
     login: '',
     password: '',
+    errorText: '',
   };
 
   handleLoginPress = async () => {
     const { email, password } = this.state;
+    const { navigation } = this.props;
+
+    if (!email || !password) {
+      return this.setState({
+        errorText: 'Favor preencher todos os campos',
+      });
+    }
+
     const input = {
       email,
       password,
     };
 
     const onCompleted = async res => {
-      const { navigation } = this.props;
       const response = res && res.LoginEmail;
       const token = response && response.token;
       console.log('login sucess res', res);
       if (response && response.error) {
         console.log('Login onCompleted error', response.error);
+        this.setState({
+          errorText: response.error,
+        });
       } else if (token) {
         await AsyncStorage.setItem('token', token);
-        navigation.navigate(ROUTENAMES.EVENTS);
+        navigation.navigate(ROUTENAMES.LOGGED_APP);
       }
     };
 
     const onError = () => {
       console.log('Register onError');
+
+      this.setState({
+        errorText: 'Verifique sua conexão com a internet e tente novamente',
+      });
     };
 
     LoginMutation.commit(input, onCompleted, onError);
   };
 
+  closeModal = () => {
+    this.setState({
+      errorText: '',
+    });
+  };
+
   render() {
     const { navigation } = this.props;
+    const { errorText } = this.state;
 
     return (
       <Wrapper>
@@ -142,6 +172,11 @@ export default class LoginScreen extends Component<any, Props, State> {
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
+        <ErrorModal
+          visible={errorText ? true : false}
+          errorText={errorText}
+          onRequestClose={this.closeModal}
+        />
       </Wrapper>
     );
   }

@@ -63,6 +63,7 @@ const FacebookLogo = styled.Image.attrs({
   width: 20px;
   height: 28px;
   margin: 0 15px 5px 0;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
 const ButtonText = styled.Text`
@@ -76,6 +77,7 @@ const AnimatedImage = styled(Animated.Image).attrs({
 })`
   width: 100;
   height: 88;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
 type Props = {};
