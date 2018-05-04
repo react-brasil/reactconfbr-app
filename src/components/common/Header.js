@@ -12,7 +12,7 @@ const Wrapper = styled.View`
 
 type Props = {
   onPress?: (void) => void,
-  children?: Node
+  children?: any,
 };
 
 const Header = (props: Props) => (

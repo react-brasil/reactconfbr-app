@@ -74,21 +74,23 @@ const Arrow = styled.Image.attrs({
   width: 30;
   height: 24;
   margin-top: 5;
-  tint-color: black;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
-type Props = {};
+type Props = {
+  navigation: Object,
+};
 
 type State = {
-  login: string,
+  email: string,
   password: string,
   errorText: string,
 };
 
 @withNavigation
-export default class LoginScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<Props, State> {
   state = {
-    login: '',
+    email: '',
     password: '',
     errorText: '',
   };
@@ -111,9 +113,7 @@ export default class LoginScreen extends Component<any, Props, State> {
     const onCompleted = async res => {
       const response = res && res.LoginEmail;
       const token = response && response.token;
-      console.log('login sucess res', res);
       if (response && response.error) {
-        console.log('Login onCompleted error', response.error);
         this.setState({
           errorText: response.error,
         });
@@ -124,8 +124,6 @@ export default class LoginScreen extends Component<any, Props, State> {
     };
 
     const onError = () => {
-      console.log('Register onError');
-
       this.setState({
         errorText: 'Verifique sua conexão com a internet e tente novamente',
       });

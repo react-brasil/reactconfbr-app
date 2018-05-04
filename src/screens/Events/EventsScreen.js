@@ -48,12 +48,14 @@ const ButtonText = styled.Text`
   font-size: 20px;
 `;
 
-type Props = {};
+type Props = {
+  navigation: Object,
+};
 
 type State = {};
 
 @withNavigation
-export default class AuthScreen extends Component<any, Props, State> {
+export default class AuthScreen extends Component<Props, State> {
 
   render() {
     const { navigation } = this.props;

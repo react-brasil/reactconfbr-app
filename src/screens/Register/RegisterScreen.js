@@ -73,10 +73,12 @@ const Arrow = styled.Image.attrs({
   width: 30;
   height: 24;
   margin-top: 5;
-  tint-color: black;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
-type Props = void;
+type Props = {
+  navigation: Object,
+};
 
 type State = {
   name: string,
@@ -86,7 +88,8 @@ type State = {
 };
 
 @withNavigation
-export default class LoginScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<Props, State> {
+
   state = {
     name: '',
     email: '',

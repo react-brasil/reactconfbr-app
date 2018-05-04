@@ -17,8 +17,8 @@ const Wrapper = styled.TouchableOpacity`
 `;
 
 type Props = {
-  onPress?: void => void,
-  children?: Node,
+  onPress?: any,
+  children?: any,
   fill?: boolean,
 };
 

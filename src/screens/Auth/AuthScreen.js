@@ -63,7 +63,13 @@ const FacebookLogo = styled.Image.attrs({
   width: 20px;
   height: 28px;
   margin: 0 15px 5px 0;
-  tint-color: ${props => props.theme.colors.secondaryColor};
+  tint-color: ${props => props.theme.colors.primaryColor};
+`;
+
+const FacebookButtonText = styled.Text`
+  color: ${props => props.theme.colors.primaryColor};
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 const ButtonText = styled.Text`
@@ -127,9 +133,9 @@ export default class AuthScreen extends Component<any, Props, State> {
           <BigText>Welcome to React Brasil Events</BigText>
         </TextWrapper>
         <ButtonsWrapper>
-          <Button>
+          <Button fill>
             <FacebookLogo />
-            <ButtonText>Continue with Facebook</ButtonText>
+            <FacebookButtonText>Continue with Facebook</FacebookButtonText>
           </Button>
           <Button onPress={() => navigation.navigate(ROUTENAMES.REGISTER)}>
             <ButtonText>Create an Account</ButtonText>
