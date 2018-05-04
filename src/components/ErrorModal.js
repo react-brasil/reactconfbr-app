@@ -63,7 +63,7 @@ type Props = {
 };
 
 const ErrorModal = ({ errorText, visible, timeout, onRequestClose }: Props) => {
-  if (timeout) {
+  if (timeout && visible === true) {
     setTimeout(() => {
       onRequestClose();
     }, timeout);
