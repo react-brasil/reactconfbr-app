@@ -15,7 +15,7 @@ const ErrorView = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${props => props.theme.colors.errorViewColor};
+  background-color: white;
   border-radius: 7px;
   ${Platform.select({ ios: css`
       shadow-color: grey;
@@ -41,7 +41,7 @@ const CloseButton = styled.TouchableOpacity`
 
 const ErrorText = styled.Text`
   flex: 6;
-  color: white;
+  color: ${props => props.theme.colors.errorViewColor};
   font-weight: bold;
   margin-horizontal: 10;
   font-size: 16;
@@ -50,7 +50,7 @@ const ErrorText = styled.Text`
 const CloseIcon = styled.Image.attrs({
   source: IMAGES.CLOSE,
 })`
-  tint-color: white;
+  tint-color: ${props => props.theme.colors.errorViewColor};
   width: 25;
   height: 25;
 `;
