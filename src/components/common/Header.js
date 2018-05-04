@@ -7,11 +7,11 @@ const Wrapper = styled.View`
   align-items: center;
   justify-content: space-between;
   height: 50;
-  background-color: ${props => props.theme.colors.primaryColor};
+  background-color: transparent;
 `;
 
 type Props = {
-  onPress?: (void) => void,
+  onPress?: void => void,
   children?: any,
 };
 
