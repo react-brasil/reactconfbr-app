@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, SafeAreaView } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
@@ -10,6 +10,8 @@ import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
+import LinearGradient from 'react-native-linear-gradient';
+import GradientWrapper from '../../components/GradientWrapper';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -86,6 +88,15 @@ const AnimatedImage = styled(Animated.Image).attrs({
   tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
+const WrapperGradient = styled(LinearGradient).attrs({
+  colors: ['rgb(41, 123, 247)', '#651FFF'],
+  start: { x: 0.0, y: 0.25 },
+  end: { x: 0.5, y: 1.0 },
+})`
+  flex: 1;
+  padding: 20px;
+`;
+
 type Props = {};
 
 type State = {};
@@ -118,7 +129,7 @@ export default class AuthScreen extends Component<any, Props, State> {
     });
 
     return (
-      <Wrapper>
+      <GradientWrapper>
         <Header>
           <LoginButton onPress={() => navigation.navigate(ROUTENAMES.LOGIN)}>
             <LoginText>Login</LoginText>
@@ -142,7 +153,7 @@ export default class AuthScreen extends Component<any, Props, State> {
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }

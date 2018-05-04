@@ -13,7 +13,7 @@ import RegisterMutation from './RegisterEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
-import { LoggedAppRouter } from '../../navigation/Router';
+import GradientWrapper from '../../components/GradientWrapper';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -89,7 +89,6 @@ type State = {
 
 @withNavigation
 export default class LoginScreen extends Component<Props, State> {
-
   state = {
     name: '',
     email: '',
@@ -150,7 +149,7 @@ export default class LoginScreen extends Component<Props, State> {
     const { errorText } = this.state;
 
     return (
-      <Wrapper>
+      <GradientWrapper error={errorText ? true : false}>
         <Header>
           <ForgotButton onPress={() => navigation.pop()}>
             <Arrow />
@@ -185,8 +184,9 @@ export default class LoginScreen extends Component<Props, State> {
           visible={errorText ? true : false}
           errorText={errorText}
           onRequestClose={this.closeModal}
+          timeout={6000}
         />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }

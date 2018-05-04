@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import styled from 'styled-components/native';
-import { withNavigation, SwitchNavigator } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
@@ -12,15 +12,9 @@ import Input from '../../components/Input';
 import LoginMutation from './LoginEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
-import { LoggedAppRouter } from '../../navigation/Router';
 import { ROUTENAMES } from '../../navigation/RouteNames';
 import ErrorModal from '../../components/ErrorModal';
-
-const Wrapper = styled.View`
-  flex: 1;
-  background-color: ${props => props.theme.colors.primaryColor}
-  padding: 20px;
-`;
+import GradientWrapper from '../../components/GradientWrapper';
 
 const ForgotButton = styled.TouchableOpacity`
 `;
@@ -143,7 +137,7 @@ export default class LoginScreen extends Component<Props, State> {
     const { errorText } = this.state;
 
     return (
-      <Wrapper>
+      <GradientWrapper error={errorText ? true : false}>
         <Header>
           <ForgotButton onPress={() => navigation.pop()}>
             <Arrow />
@@ -174,8 +168,9 @@ export default class LoginScreen extends Component<Props, State> {
           visible={errorText ? true : false}
           errorText={errorText}
           onRequestClose={this.closeModal}
+          timeout={6000}
         />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }
