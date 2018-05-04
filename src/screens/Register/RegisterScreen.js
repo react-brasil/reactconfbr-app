@@ -50,7 +50,7 @@ const ButtonsWrapper = styled.View`
 `;
 
 const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
+  color: ${props => (!props.error ? props.theme.colors.primaryColor : props.theme.colors.errorViewColor)};
   font-size: 24px;
   font-weight: bold
 `;
@@ -176,7 +176,9 @@ export default class LoginScreen extends Component<Props, State> {
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill onPress={this.handleRegisterPress}>
-            <ButtonText>Create an Account</ButtonText>
+            <ButtonText error={errorText ? true : false}>
+              Create an Account
+            </ButtonText>
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />

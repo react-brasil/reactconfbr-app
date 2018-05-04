@@ -44,12 +44,6 @@ const ButtonsWrapper = styled.View`
   z-index: 3;
 `;
 
-const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
-  font-size: 24px;
-  font-weight: bold
-`;
-
 const BottomFixedReactLogo = styled.Image.attrs({
   source: IMAGES.REACT,
 })`
@@ -60,6 +54,12 @@ const BottomFixedReactLogo = styled.Image.attrs({
   bottom: -90;
   tint-color: rgba(0,0,0,0.1);
   z-index: 1;
+`;
+
+const ButtonText = styled.Text`
+  color: ${props => (!props.error ? props.theme.colors.primaryColor : props.theme.colors.errorViewColor)};
+  font-size: 24px;
+  font-weight: bold
 `;
 
 const Arrow = styled.Image.attrs({
@@ -160,7 +160,7 @@ export default class LoginScreen extends Component<Props, State> {
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill onPress={this.handleLoginPress}>
-            <ButtonText>Login</ButtonText>
+            <ButtonText error={errorText ? true : false}>Login</ButtonText>
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
