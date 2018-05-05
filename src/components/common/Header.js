@@ -7,12 +7,12 @@ const Wrapper = styled.View`
   align-items: center;
   justify-content: space-between;
   height: 50;
-  background-color: ${props => props.theme.colors.primaryColor};
+  background-color: transparent;
 `;
 
 type Props = {
-  onPress?: (void) => void,
-  children?: Node
+  onPress?: void => void,
+  children?: any,
 };
 
 const Header = (props: Props) => (

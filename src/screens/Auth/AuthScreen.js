@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, SafeAreaView } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
@@ -10,6 +10,8 @@ import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
+import LinearGradient from 'react-native-linear-gradient';
+import GradientWrapper from '../../components/GradientWrapper';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -63,7 +65,13 @@ const FacebookLogo = styled.Image.attrs({
   width: 20px;
   height: 28px;
   margin: 0 15px 5px 0;
-  tint-color: ${props => props.theme.colors.secondaryColor};
+  tint-color: ${props => props.theme.colors.primaryColor};
+`;
+
+const FacebookButtonText = styled.Text`
+  color: ${props => props.theme.colors.primaryColor};
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 const ButtonText = styled.Text`
@@ -78,6 +86,15 @@ const AnimatedImage = styled(Animated.Image).attrs({
   width: 100;
   height: 88;
   tint-color: ${props => props.theme.colors.secondaryColor};
+`;
+
+const WrapperGradient = styled(LinearGradient).attrs({
+  colors: ['rgb(41, 123, 247)', '#651FFF'],
+  start: { x: 0.0, y: 0.25 },
+  end: { x: 0.5, y: 1.0 },
+})`
+  flex: 1;
+  padding: 20px;
 `;
 
 type Props = {};
@@ -112,7 +129,7 @@ export default class AuthScreen extends Component<any, Props, State> {
     });
 
     return (
-      <Wrapper>
+      <GradientWrapper>
         <Header>
           <LoginButton onPress={() => navigation.navigate(ROUTENAMES.LOGIN)}>
             <LoginText>Login</LoginText>
@@ -127,16 +144,16 @@ export default class AuthScreen extends Component<any, Props, State> {
           <BigText>Welcome to React Brasil Events</BigText>
         </TextWrapper>
         <ButtonsWrapper>
-          <Button>
+          <Button fill>
             <FacebookLogo />
-            <ButtonText>Continue with Facebook</ButtonText>
+            <FacebookButtonText>Continue with Facebook</FacebookButtonText>
           </Button>
           <Button onPress={() => navigation.navigate(ROUTENAMES.REGISTER)}>
             <ButtonText>Create an Account</ButtonText>
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }

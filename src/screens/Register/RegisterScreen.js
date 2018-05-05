@@ -13,7 +13,7 @@ import RegisterMutation from './RegisterEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
-import { LoggedAppRouter } from '../../navigation/Router';
+import GradientWrapper from '../../components/GradientWrapper';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -50,7 +50,7 @@ const ButtonsWrapper = styled.View`
 `;
 
 const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
+  color: ${props => (!props.error ? props.theme.colors.primaryColor : props.theme.colors.errorViewColor)};
   font-size: 24px;
   font-weight: bold
 `;
@@ -73,10 +73,12 @@ const Arrow = styled.Image.attrs({
   width: 30;
   height: 24;
   margin-top: 5;
-  tint-color: black;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
-type Props = void;
+type Props = {
+  navigation: Object,
+};
 
 type State = {
   name: string,
@@ -86,7 +88,7 @@ type State = {
 };
 
 @withNavigation
-export default class LoginScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<Props, State> {
   state = {
     name: '',
     email: '',
@@ -147,7 +149,7 @@ export default class LoginScreen extends Component<any, Props, State> {
     const { errorText } = this.state;
 
     return (
-      <Wrapper>
+      <GradientWrapper error={errorText ? true : false}>
         <Header>
           <ForgotButton onPress={() => navigation.pop()}>
             <Arrow />
@@ -174,7 +176,9 @@ export default class LoginScreen extends Component<any, Props, State> {
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill onPress={this.handleRegisterPress}>
-            <ButtonText>Create an Account</ButtonText>
+            <ButtonText error={errorText ? true : false}>
+              Create an Account
+            </ButtonText>
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
@@ -182,8 +186,9 @@ export default class LoginScreen extends Component<any, Props, State> {
           visible={errorText ? true : false}
           errorText={errorText}
           onRequestClose={this.closeModal}
+          timeout={6000}
         />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }

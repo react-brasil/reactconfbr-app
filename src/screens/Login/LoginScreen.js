@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 
 import styled from 'styled-components/native';
-import { withNavigation, SwitchNavigator } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
@@ -12,15 +12,9 @@ import Input from '../../components/Input';
 import LoginMutation from './LoginEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
-import { LoggedAppRouter } from '../../navigation/Router';
 import { ROUTENAMES } from '../../navigation/RouteNames';
 import ErrorModal from '../../components/ErrorModal';
-
-const Wrapper = styled.View`
-  flex: 1;
-  background-color: ${props => props.theme.colors.primaryColor}
-  padding: 20px;
-`;
+import GradientWrapper from '../../components/GradientWrapper';
 
 const ForgotButton = styled.TouchableOpacity`
 `;
@@ -50,12 +44,6 @@ const ButtonsWrapper = styled.View`
   z-index: 3;
 `;
 
-const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
-  font-size: 24px;
-  font-weight: bold
-`;
-
 const BottomFixedReactLogo = styled.Image.attrs({
   source: IMAGES.REACT,
 })`
@@ -68,27 +56,35 @@ const BottomFixedReactLogo = styled.Image.attrs({
   z-index: 1;
 `;
 
+const ButtonText = styled.Text`
+  color: ${props => (!props.error ? props.theme.colors.primaryColor : props.theme.colors.errorViewColor)};
+  font-size: 24px;
+  font-weight: bold
+`;
+
 const Arrow = styled.Image.attrs({
   source: IMAGES.ARROW,
 })`
   width: 30;
   height: 24;
   margin-top: 5;
-  tint-color: black;
+  tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
-type Props = {};
+type Props = {
+  navigation: Object,
+};
 
 type State = {
-  login: string,
+  email: string,
   password: string,
   errorText: string,
 };
 
 @withNavigation
-export default class LoginScreen extends Component<any, Props, State> {
+export default class LoginScreen extends Component<Props, State> {
   state = {
-    login: '',
+    email: '',
     password: '',
     errorText: '',
   };
@@ -111,9 +107,7 @@ export default class LoginScreen extends Component<any, Props, State> {
     const onCompleted = async res => {
       const response = res && res.LoginEmail;
       const token = response && response.token;
-      console.log('login sucess res', res);
       if (response && response.error) {
-        console.log('Login onCompleted error', response.error);
         this.setState({
           errorText: response.error,
         });
@@ -124,8 +118,6 @@ export default class LoginScreen extends Component<any, Props, State> {
     };
 
     const onError = () => {
-      console.log('Register onError');
-
       this.setState({
         errorText: 'Verifique sua conexão com a internet e tente novamente',
       });
@@ -145,7 +137,7 @@ export default class LoginScreen extends Component<any, Props, State> {
     const { errorText } = this.state;
 
     return (
-      <Wrapper>
+      <GradientWrapper error={errorText ? true : false}>
         <Header>
           <ForgotButton onPress={() => navigation.pop()}>
             <Arrow />
@@ -168,7 +160,7 @@ export default class LoginScreen extends Component<any, Props, State> {
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill onPress={this.handleLoginPress}>
-            <ButtonText>Login</ButtonText>
+            <ButtonText error={errorText ? true : false}>Login</ButtonText>
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
@@ -176,8 +168,9 @@ export default class LoginScreen extends Component<any, Props, State> {
           visible={errorText ? true : false}
           errorText={errorText}
           onRequestClose={this.closeModal}
+          timeout={6000}
         />
-      </Wrapper>
+      </GradientWrapper>
     );
   }
 }

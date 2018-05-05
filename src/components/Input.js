@@ -10,7 +10,11 @@ const InputWrapper = styled.View`
   margin-top: 30px;
 `;
 
-const RegisterTextInput = styled.TextInput`
+const RegisterTextInput = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryColor,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  autoCapitalize: 'none',
+})`
   height: 40;
   width: 100%;
   font-size: 20;
@@ -27,12 +31,7 @@ type Props = {
 
 const Input = (props: Props) => (
   <InputWrapper>
-    <RegisterTextInput
-      placeholderTextColor="black"
-      underlineColorAndroid="rgba(0,0,0,0)"
-      autoCapitalize="none"
-      {...props}
-    />
+    <RegisterTextInput {...props} />
   </InputWrapper>
 );
 

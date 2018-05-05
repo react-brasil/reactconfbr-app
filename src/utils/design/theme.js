@@ -1,7 +1,8 @@
 export default {
   colors: {
-    primaryColor: '#00FF19',
-    secondaryColor: '#000000',
+    primaryColor: '#2979FF',
+    secondaryColor: '#ffffff',
     errorViewColor: '#ed2121',
+    gradient: ['rgb(41, 123, 247)', '#651FFF'],
   },
 };
