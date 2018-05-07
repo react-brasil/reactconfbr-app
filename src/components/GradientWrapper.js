@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -20,6 +20,7 @@ type Props = {
 
 const GradientWrapper = ({ children, error }: Props) => (
   <Wrapper error={error}>
+    <StatusBar barStyle="light-content" />
     <SafeAreaView />
     {children}
   </Wrapper>

@@ -19,6 +19,7 @@ const RegisterTextInput = styled.TextInput.attrs({
   width: 100%;
   font-size: 20;
   padding-top:2;
+  color: white;
 `;
 
 type Props = {
