@@ -1,84 +1,128 @@
 // @flow
 
 import React, { Component } from 'react';
-
-import styled from 'styled-components/native'
+import { StatusBar, ScrollView } from 'react-native';
+import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
 
-import Header from '../../components/common/Header';
-import Button from '../../components/Button';
+import LoggedHeader from '../../components/LoggedHeader';
+import ActionButton from '../../components/ActionButton';
+import EventCard from '../../components/EventCard';
 
 const Wrapper = styled.View`
   flex: 1;
-  background-color: ${props => props.theme.colors.primaryColor}
-  padding: 20px;
-`;
-
-const LoginButton = styled.TouchableOpacity`
-  flex: 1;
-  justify-content: center;
-  align-items: flex-end;
-`;
-
-const LoginText = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-weight: 900;
-  font-size: 18px;
-  text-align: right;
-`;
-
-const TextWrapper = styled.View`
-  flex: 2;
-`;
-
-const BigText = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-size: 34px;
-  font-weight: 900;
-  margin-top: 20px;
-`;
-
-const ButtonsWrapper = styled.View`
-  flex: 2;
-  justify-content: flex-start;
-`;
-
-const ButtonText = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-size: 20px;
+  background-color: white
 `;
 
 type Props = {
   navigation: Object,
 };
 
-type State = {};
+type State = {
+  searchText: string,
+  searchVisible: boolean,
+};
 
-@withNavigation
-export default class AuthScreen extends Component<Props, State> {
+const UserArrayMock = [
+  {
+    name: 'Francisco Rhodes',
+    image: 'https://i.imgur.com/Gi7x0nZ.png',
+  },
+  {
+    name: 'Raymond Brooks',
+    image: 'https://i.imgur.com/3I2V6lU.png',
+  },
+  {
+    name: 'Michelle McCartney',
+    image: 'https://i.imgur.com/Fcx8lCu.png',
+  },
+  {
+    name: 'Heather Nolan',
+    image: 'https://i.imgur.com/C3YDUHi.png',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+  {
+    name: 'Erik Edwards',
+    image: 'https://i.imgur.com/ZQXbX2t.jpg',
+  },
+];
 
+class EventsScreen extends Component<Props, State> {
+  state = {
+    searchText: '',
+    searchVisible: false,
+  };
+  changeSearchText = (search: string) => {
+    this.setState({
+      searchText: search,
+    });
+  };
+  setVisible = () => {
+    const { searchVisible } = this.state;
+    this.setState({
+      searchVisible: !searchVisible,
+    });
+  };
   render() {
     const { navigation } = this.props;
-
+    const { searchText, searchVisible } = this.state;
     return (
       <Wrapper>
-        <Header>
-          <LoginButton onPress={() => navigation.navigate('LoginScreen')}>
-            <LoginText>Events Screen</LoginText>
-          </LoginButton>
-        </Header>
-        <TextWrapper>
-          <BigText>This is the events screen</BigText>
-        </TextWrapper>
-        <ButtonsWrapper>
-          <Button>
-            <ButtonText>events</ButtonText>
-          </Button>
-          <Button onPress={() => navigation.navigate('RegisterScreen')}>
-            <ButtonText>screen</ButtonText>
-          </Button>
-        </ButtonsWrapper>
+        <StatusBar barStyle="light-content" />
+        <LoggedHeader
+          title="Events"
+          searchValue={searchText}
+          searchVisible={searchVisible}
+          showSearch={this.setVisible}
+          onChangeSearch={search => this.changeSearchText(search)}
+        />
+        <ScrollView>
+          <EventCard
+            title="React Conf"
+            description="A primeira conferência do ecossistema React da América Latina."
+            bgImage="https://i.imgur.com/IetnYn7.png"
+            atendees={UserArrayMock}
+          />
+        </ScrollView>
+        <ActionButton />
       </Wrapper>
     );
   }
 }
+
+export default withNavigation(EventsScreen);
