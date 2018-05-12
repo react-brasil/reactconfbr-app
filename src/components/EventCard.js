@@ -77,7 +77,8 @@ const UserImage = styled.Image`
   width: 30;
   height: 30;
   border-radius: 15;
-  border: 2px solid white;
+  border-color: white;
+  border-width: 2px;
   margin-left: ${props => props.invading};
 `;
 
@@ -171,6 +172,7 @@ const EventCard = ({
                         source={{
                           uri: atendee.image,
                         }}
+                        key={i}
                       />
                     : <UserInitials invading={-7}>
                         <Initials>{getInitials(atendee.name)}</Initials>
