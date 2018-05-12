@@ -1,4 +1,4 @@
-package com.reactnavigationrelay;
+package com.reactconf;
 
 import android.app.Application;
 
