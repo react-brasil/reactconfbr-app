@@ -93,7 +93,7 @@ type Props = {
   searchValue: string,
   onChangeSearch: (search: string) => void,
   showSearch: () => void,
-  searchVisible: boolean,
+  IsSearchVisible: boolean,
   pills: Array<Pills>,
 };
 
@@ -102,19 +102,19 @@ const LoggedHeader = ({
   searchValue,
   onChangeSearch,
   showSearch,
-  searchVisible,
+  IsSearchVisible,
 }: Props) => (
   <Wrapper>
     <SafeAreaView />
     <TitleAndIcon>
-      {!searchVisible
+      {!IsSearchVisible
         ? <Title>{title}</Title>
         : <SearchInput
             value={searchValue}
             onChangeSearch={search => onChangeSearch(search)}
           />}
       <Button onPress={showSearch}>
-        <Icon visible={searchVisible} />
+        <Icon visible={IsSearchVisible} />
       </Button>
     </TitleAndIcon>
     <PillsContainer horizontal>

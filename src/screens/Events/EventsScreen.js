@@ -20,7 +20,7 @@ type Props = {
 
 type State = {
   searchText: string,
-  searchVisible: boolean,
+  IsSearchVisible: boolean,
 };
 
 const UserArrayMock = [
@@ -85,7 +85,7 @@ const UserArrayMock = [
 class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
-    searchVisible: false,
+    IsSearchVisible: false,
   };
   changeSearchText = (search: string) => {
     this.setState({
@@ -93,21 +93,21 @@ class EventsScreen extends Component<Props, State> {
     });
   };
   setVisible = () => {
-    const { searchVisible } = this.state;
+    const { IsSearchVisible } = this.state;
     this.setState({
-      searchVisible: !searchVisible,
+      IsSearchVisible: !IsSearchVisible,
     });
   };
   render() {
     const { navigation } = this.props;
-    const { searchText, searchVisible } = this.state;
+    const { searchText, IsSearchVisible } = this.state;
     return (
       <Wrapper>
         <StatusBar barStyle="light-content" />
         <LoggedHeader
           title="Events"
           searchValue={searchText}
-          searchVisible={searchVisible}
+          IsSearchVisible={IsSearchVisible}
           showSearch={this.setVisible}
           onChangeSearch={search => this.changeSearchText(search)}
         />
