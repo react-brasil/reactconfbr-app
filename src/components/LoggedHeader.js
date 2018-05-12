@@ -58,9 +58,10 @@ const SearchInput = styled.TextInput.attrs({
   autoCapitalize: false,
   autoCorrect: false,
   autoFocus: true,
-  placeholderTextColor: '#fff',
+  placeholderTextColor: props => props.theme.colors.secondaryColor,
   underlineColorAndroid: 'transparent',
   placeholder: 'Search here...',
+  selectionColor: props => props.theme.colors.secondaryColor,
 })`
   font-size: 30;
   font-weight: bold;
