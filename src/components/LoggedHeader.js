@@ -58,9 +58,10 @@ const SearchInput = styled.TextInput.attrs({
   autoCapitalize: false,
   autoCorrect: false,
   autoFocus: true,
-  placeholderTextColor: '#fff',
+  placeholderTextColor: props => props.theme.colors.secondaryColor,
   underlineColorAndroid: 'transparent',
   placeholder: 'Search here...',
+  selectionColor: props => props.theme.colors.secondaryColor,
 })`
   font-size: 30;
   font-weight: bold;
@@ -93,7 +94,7 @@ type Props = {
   searchValue: string,
   onChangeSearch: (search: string) => void,
   showSearch: () => void,
-  searchVisible: boolean,
+  IsSearchVisible: boolean,
   pills: Array<Pills>,
 };
 
@@ -102,19 +103,19 @@ const LoggedHeader = ({
   searchValue,
   onChangeSearch,
   showSearch,
-  searchVisible,
+  IsSearchVisible,
 }: Props) => (
   <Wrapper>
     <SafeAreaView />
     <TitleAndIcon>
-      {!searchVisible
+      {!IsSearchVisible
         ? <Title>{title}</Title>
         : <SearchInput
             value={searchValue}
             onChangeSearch={search => onChangeSearch(search)}
           />}
       <Button onPress={showSearch}>
-        <Icon visible={searchVisible} />
+        <Icon visible={IsSearchVisible} />
       </Button>
     </TitleAndIcon>
     <PillsContainer horizontal>

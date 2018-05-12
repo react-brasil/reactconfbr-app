@@ -31,12 +31,10 @@ const Icon = styled.Image.attrs({
   transform: rotate(45deg);
 `;
 
-type Props = {
-  action: () => void,
-};
+type Props = {};
 
-const ActionButton = ({ action }: Props) => (
-  <Wrapper onPress={action}>
+const ActionButton = (props: Props) => (
+  <Wrapper {...props}>
     <Icon />
   </Wrapper>
 );
