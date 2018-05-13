@@ -3,16 +3,17 @@ input AddEventInput {
   title: String!
 
   """event description"""
-  description: String!
+  description: String
 
   """event date"""
   date: String!
 
   """event date"""
-  publicLimit: String!
+  publicLimit: String
 
   """event image"""
   image: String
+  location: location
   schedule: [schedule]
   clientMutationId: String
 }
@@ -35,6 +36,12 @@ type ChangePasswordPayload {
   error: String
   me: User
   clientMutationId: String
+}
+
+"""event location"""
+input location {
+  cep: String
+  geolocation: [String]
 }
 
 input LoginEmailInput {
