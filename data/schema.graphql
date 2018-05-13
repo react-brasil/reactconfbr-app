@@ -13,13 +13,37 @@ input AddEventInput {
 
   """event image"""
   image: String
+  location: location
   schedule: [schedule]
   clientMutationId: String
 }
 
 type AddEventPayload {
+  message: String
   error: String
-  me: User
+  event: Event
+  clientMutationId: String
+}
+
+input AttendToEventInput {
+  eventId: ID!
+  clientMutationId: String
+}
+
+type AttendToEventPayload {
+  message: String
+  error: String
+  clientMutationId: String
+}
+
+input CantGoToEventInput {
+  eventId: ID!
+  clientMutationId: String
+}
+
+type CantGoToEventPayload {
+  message: String
+  error: String
   clientMutationId: String
 }
 
@@ -37,6 +61,58 @@ type ChangePasswordPayload {
   clientMutationId: String
 }
 
+"""Event data"""
+type Event implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  title: String
+  description: String
+  date: String
+  location: String
+  publicLimit: String
+
+  """event image"""
+  image: String
+
+  """schedule"""
+  schedule: [Schedule]
+
+  """Users that attended to the event"""
+  publicList: [User]
+
+  """Users that cant go to the event"""
+  notGoingList: [User]
+
+  """Users that are waiting for places on the event"""
+  waitList: [User]
+}
+
+"""A connection to a list of items."""
+type EventConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EventEdge]
+  count: Int
+}
+
+"""An edge in a connection."""
+type EventEdge {
+  """The item at the end of the edge"""
+  node: Event
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""event location"""
+input location {
+  cep: String
+  geolocation: [String]
+}
+
 input LoginEmailInput {
   email: String!
   password: String!
@@ -49,11 +125,25 @@ type LoginEmailPayload {
   clientMutationId: String
 }
 
+input MoveToPresenceListInput {
+  eventId: ID!
+  clientMutationId: String
+}
+
+type MoveToPresenceListPayload {
+  message: String
+  error: String
+  clientMutationId: String
+}
+
 type Mutation {
   LoginEmail(input: LoginEmailInput!): LoginEmailPayload
   RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
   ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
   AddEvent(input: AddEventInput!): AddEventPayload
+  AttendToEvent(input: AttendToEventInput!): AttendToEventPayload
+  CantGoToEvent(input: CantGoToEventInput!): CantGoToEventPayload
+  MoveToPresenceList(input: MoveToPresenceListInput!): MoveToPresenceListPayload
 }
 
 """An object with an ID"""
@@ -85,6 +175,8 @@ type Query {
     id: ID!
   ): Node
   me: User
+  events(after: String, first: Int, before: String, last: Int, search: String): EventConnection
+  event(id: ID!): Event
   user(id: ID!): User
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
 }
@@ -110,6 +202,15 @@ input schedule {
   time: String
 }
 
+"""Represents Schedules"""
+type Schedule {
+  _id: String
+  talker: String
+  title: String
+  description: String
+  time: String
+}
+
 type Subscription {
   UserAdded: UserAddedPayload
 }
@@ -121,6 +222,7 @@ type User implements Node {
   _id: String
   name: String
   email: String
+  role: String
   active: Boolean
 }
 
