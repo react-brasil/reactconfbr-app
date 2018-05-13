@@ -23,7 +23,7 @@ const ForgotButton = styled.TouchableOpacity`
 `;
 
 const ImageWrapper = styled(GradientWrapper)`
-  flex: 1;
+  flex: 0.6;
   padding: 20px;
   shadow-color: grey;
   shadow-offset: 0px 10px;
@@ -66,9 +66,24 @@ const Edit = styled.Image.attrs({
   tint-color: ${props => props.theme.colors.secondaryColor};
 `;
 
-const TimeLineWrapper = styled.View`
-  flex: 4;
+
+const BodyWrapper = styled.View`
+  flex: 6;
   background-color: ${props => props.theme.colors.secondaryColor};
+`;
+
+const TimeLineWrapper = styled.View`
+  margin: 20px;
+  margin: 20px 28px 20px 28px;
+  background-color: ${props => props.theme.colors.secondaryColor};
+  margin-top: -40px;
+  border-radius: 20px;
+  border-radius: 20;
+  shadow-offset: { width: 0, height: 0 };
+  shadow-opacity: 0.15;
+  shadow-radius: 20;
+  elevation: 1;
+  min-height: 300px;
 `;
 
 const HeaderWrapper = styled.View`
@@ -79,7 +94,7 @@ const HeaderWrapper = styled.View`
 const TimeLine = styled.ScrollView.attrs({
   contentContainerStyle: () => ({
     zIndex: 9,
-    margin: 20,
+    marginTop: 20,
   }),
 })``;
 
@@ -191,28 +206,17 @@ export default class LoginScreen extends Component<Props, State> {
           </HeaderWrapper>
 
           <TextWrapper>
-            <Description>Rua augusta, 876</Description>
-            <Description>17/04/2018 18:30h</Description>
+            <Description></Description>
+            <Description></Description>
           </TextWrapper>
         </ImageWrapper>
-        <TimeLineWrapper>
-          <TimeLine>
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-            {this.renderTalk('React native animations', 'Jabur', '8:00')}
-          </TimeLine>
-        </TimeLineWrapper>
+        <BodyWrapper>
+          <TimeLineWrapper>
+            <TimeLine>
+              {this.renderTalk('React native animations', 'Jabur', '8:00')}
+            </TimeLine>
+          </TimeLineWrapper>
+        </BodyWrapper>
         <ActionButton onPress={() => this.setState({ scheduleCount: this.state.scheduleCount + 1 })}/>
       </Wrapper>
     );
