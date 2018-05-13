@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
@@ -30,13 +30,6 @@ const ImageWrapper = styled(GradientWrapper)`
 
 const TextWrapper = styled.View`
   margin-top: auto;
-`;
-
-const Title = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-size: 36px;
-  font-weight: bold;
-  text-align: center;
 `;
 
 const InputTitle = styled.TextInput.attrs({
@@ -83,7 +76,7 @@ const BodyWrapper = styled.View`
 const TimeLineWrapper = styled.View`
   margin: 20px 28px 20px 28px;
   background-color: ${props => props.theme.colors.secondaryColor};
-  margin-top: -40px;
+  margin-top: -30px;
   border-radius: 20px;
   border-radius: 20;
   shadow-offset: { width: 0, height: 0 };
@@ -94,7 +87,7 @@ const TimeLineWrapper = styled.View`
 `;
 
 const HeaderWrapper = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 `;
 
@@ -123,7 +116,16 @@ const InputTalkTitle = styled.TextInput.attrs({
   height: 40;
   width: 100%;
   font-size: 20;
-  color: ${props => props.theme.colors.primaryColor};
+`;
+
+const InputEventInfos = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.secondaryColor,
+  color: props => props.theme.colors.secondaryColor,
+  autoCapitalize: 'none',
+})`
+  font-size: 20;
 `;
 
 const InputInfoText = styled.TextInput.attrs({
@@ -173,6 +175,7 @@ const InfosText = styled.Text`
 
 const Row = styled.View`
   flex-direction: row;
+  justify-content: space-between;
 `;
 
 type Props = {
@@ -183,6 +186,8 @@ type State = {
   title: string,
   errorText: string,
   schedules: Array<Object>,
+  date: string,
+  location: Object,
 };
 
 
@@ -193,13 +198,37 @@ export default class LoginScreen extends Component<Props, State> {
     title: '',
     errorText: '',
     schedules: [],
+    date: '',
+    location: { cep: '', geoLocation: [] },
   };
 
-  save = () => {
+  save = async () => {
+    const { schedules, title, date, location } = this.state;
+    const { navigation } = this.props;
 
-  }
+    const input = {
+      title,
+      schedules,
+      date,
+      location,
+    };
 
-  //{title: ,author: ,date: }
+    console.log('input', input)
+
+    const onCompleted = async res => {
+      const response = res && res.AddEvent;
+      console.log('response onCompleted', response);
+    };
+
+    const onError = () => {
+      this.setState({
+        errorText: 'Verifique sua conexão com a internet e tente novamente',
+      });
+    };
+
+    AddEventMutation.commit(input, onCompleted, onError);
+  };
+
   closeModal = () => {
     this.setState({
       errorText: '',
@@ -244,22 +273,34 @@ export default class LoginScreen extends Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { schedules } = this.state;
+    const { schedules, errorText, location } = this.state;
     return (
       <Wrapper>
         <ImageWrapper>
           <SafeAreaView />
           <HeaderWrapper>
-            <ForgotButton onPress={() => navigation.pop()}>
-              <Arrow />
-            </ForgotButton>
-            <InputTitle
-              placeholder="Event Title"
-              onChangeText={(text) => this.setState({ title: text })}
-            />
-            <ForgotButton onPress={() => navigation.pop()}>
-              <Edit />
-            </ForgotButton>
+            <Row>
+              <ForgotButton onPress={() => navigation.pop()}>
+                <Arrow />
+              </ForgotButton>
+              <InputTitle
+                placeholder="Event Title"
+                onChangeText={(text) => this.setState({ title: text })}
+              />
+              <ForgotButton onPress={() => navigation.pop()}>
+                <Edit />
+              </ForgotButton>
+            </Row>
+            <Row>
+              <InputEventInfos
+                placeholder="Event cep..."
+                onChangeText={(text) => this.setState({ location: { ...location, cep: text } })}
+              />
+              <InputEventInfos
+                placeholder="Event date..."
+                onChangeText={(text) => this.setState({ date: text })}
+              />
+            </Row>
           </HeaderWrapper>
           <TextWrapper>
             <Description></Description>
@@ -303,6 +344,12 @@ export default class LoginScreen extends Component<Props, State> {
         </BodyWrapper>
         {schedules.length > 0 && <SaveButton onPress={() => this.save()}/>}
         <ActionButton onPress={() => this.addSchedule()}/>
+        <ErrorModal
+          visible={errorText ? true : false}
+          errorText={errorText}
+          onRequestClose={this.closeModal}
+          timeout={6000}
+        />
       </Wrapper>
     );
   }
