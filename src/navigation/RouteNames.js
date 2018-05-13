@@ -6,4 +6,5 @@ export const ROUTENAMES = {
   LOGIN: 'LoginScreen',
   REGISTER: 'RegisterScreen',
   EVENTS: 'EventsScreen',
+  NEW_EVENT: 'NewEventScreen',
 };
