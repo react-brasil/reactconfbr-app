@@ -208,9 +208,6 @@ export default class LoginScreen extends Component<Props, State> {
 
     const input = {
       title,
-      schedules,
-      date,
-      location,
     };
 
     console.log('input', input)
