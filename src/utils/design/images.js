@@ -6,4 +6,5 @@ export const IMAGES = {
   SAVE: require('./assets/save.png'),
   SEARCH: require('./assets/search.png'),
   EDIT: require('./assets/edit.png'),
+  IMAGE: require('./assets/image.png'),
 };
