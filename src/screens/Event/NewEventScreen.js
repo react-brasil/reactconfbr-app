@@ -1,20 +1,17 @@
 // @flow
 
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
 
-import Header from '../../components/common/Header';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
 import ActionButton from '../../components/ActionButton';
-
+import SaveButton from '../../components/SaveButton';
 import { IMAGES } from '../../utils/design/images';
-import { ROUTENAMES } from '../../navigation/RouteNames';
 import ErrorModal from '../../components/ErrorModal';
 import GradientWrapper from '../../components/GradientWrapper';
+import AddEventMutation from './AddEventMutation';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -40,6 +37,17 @@ const Title = styled.Text`
   font-size: 36px;
   font-weight: bold;
   text-align: center;
+`;
+
+const InputTitle = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.secondaryColor,
+  color: props => props.theme.colors.primaryColor,
+  autoCapitalize: 'none',
+})`
+  font-size: 36;
+  color: ${props => props.theme.colors.secondaryColor};
 `;
 
 const Description = styled.Text`
@@ -73,7 +81,6 @@ const BodyWrapper = styled.View`
 `;
 
 const TimeLineWrapper = styled.View`
-  margin: 20px;
   margin: 20px 28px 20px 28px;
   background-color: ${props => props.theme.colors.secondaryColor};
   margin-top: -40px;
@@ -106,11 +113,30 @@ const Talk = styled.View`
   flex-direction: row;
 `;
 
-const TalkTitle = styled.Text`
+const InputTalkTitle = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.primaryColor,
+  color: props => props.theme.colors.primaryColor,
+  autoCapitalize: 'none',
+})`
+  height: 40;
+  width: 100%;
+  font-size: 20;
   color: ${props => props.theme.colors.primaryColor};
-  font-weight: bold;
-  font-size: 20px;
 `;
+
+const InputInfoText = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.primaryColor,
+  color: props => props.theme.colors.primaryColor,
+  autoCapitalize: 'none',
+})`
+  font-size: 14;
+  color: ${props => props.theme.colors.primaryColor};
+`;
+
 
 const IconWrapper = styled.View`
   flex: 1;
@@ -133,9 +159,9 @@ const ContentWrapper = styled.View`
 `;
 
 const BasicInfosWrapper = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: flex-start;
   margin-top: 5px;
 `;
 
@@ -145,52 +171,80 @@ const InfosText = styled.Text`
   font-size: 14px;
 `;
 
+const Row = styled.View`
+  flex-direction: row;
+`;
 
 type Props = {
   navigation: Object,
 };
 
 type State = {
-  scheduleCount: number,
-  email: string,
-  password: string,
+  title: string,
   errorText: string,
+  schedules: Array<Object>,
 };
+
 
 
 @withNavigation
 export default class LoginScreen extends Component<Props, State> {
   state = {
-    email: '',
-    password: '',
+    title: '',
     errorText: '',
-    scheduleCount: 1,
+    schedules: [],
   };
 
+  save = () => {
+
+  }
+
+  //{title: ,author: ,date: }
   closeModal = () => {
     this.setState({
       errorText: '',
     });
   };
 
-  renderTalk = (title, author, date) => (
-    <Talk>
-      <IconWrapper>
-        <Ball />
-      </IconWrapper>
-      <ContentWrapper>
-        <TalkTitle>{title}</TalkTitle>
-        <BasicInfosWrapper>
-          <InfosText>By: {author}</InfosText>
-          <InfosText>{date}</InfosText>
-        </BasicInfosWrapper>
-      </ContentWrapper>
-    </Talk>
-  );
+  handleChangeInputField = (value: string, index: number, element: string) => {
+    const schedules = [...this.state.schedules];
+    let newSchedules;
+    switch (element) {
+      case 'title':
+        newSchedules = Object.assign({}, schedules[index], {
+          title: value,
+        });
+        break;
+      case 'author':
+        newSchedules = Object.assign({}, schedules[index], {
+          author: value,
+        });
+        break;
+      case 'date':
+        newSchedules = Object.assign({}, schedules[index], {
+          date: value,
+        });
+        break;
+      default:
+        break;
+    }
+    schedules[index] = newSchedules;
+    this.setState({ schedules });
+  };
+
+  addSchedule = () => {
+    const newRange = { title: '', author: '',  date: '' };
+    this.setState({ schedules: [...this.state.schedules, newRange] });
+  };
+
+  removeSchedule = (index: number) => {
+    const newschedules = [...this.state.schedules.filter((s, id) => index !== id)];
+    this.setState({ schedules: newschedules });
+  };
 
   render() {
     const { navigation } = this.props;
-
+    const { schedules } = this.state;
     return (
       <Wrapper>
         <ImageWrapper>
@@ -199,12 +253,14 @@ export default class LoginScreen extends Component<Props, State> {
             <ForgotButton onPress={() => navigation.pop()}>
               <Arrow />
             </ForgotButton>
-            <Title>Event Title</Title>
+            <InputTitle
+              placeholder="Event Title"
+              onChangeText={(text) => this.setState({ title: text })}
+            />
             <ForgotButton onPress={() => navigation.pop()}>
               <Edit />
             </ForgotButton>
           </HeaderWrapper>
-
           <TextWrapper>
             <Description></Description>
             <Description></Description>
@@ -213,11 +269,40 @@ export default class LoginScreen extends Component<Props, State> {
         <BodyWrapper>
           <TimeLineWrapper>
             <TimeLine>
-              {this.renderTalk('React native animations', 'Jabur', '8:00')}
+              {schedules.map((schedule, index) => (
+                <Talk>
+                  <IconWrapper>
+                    <Ball />
+                  </IconWrapper>
+                  <ContentWrapper>
+                    <InputTalkTitle
+                      placeholder="Talk title"
+                      onChangeText={(text) => this.handleChangeInputField(text, index, 'title')}
+                    />
+                    <BasicInfosWrapper>
+                      <Row>
+                        <InfosText>By: </InfosText>
+                        <InputInfoText
+                          placeholder=" Author name"
+                          onChangeText={(text) => this.handleChangeInputField(text, index, 'author')}
+                        />
+                      </Row>
+                      <Row style={{ marginTop: 5 }}>
+                      <InfosText>At: </InfosText>
+                        <InputInfoText
+                          placeholder=" ex: 8:00"
+                          onChangeText={(text) => this.handleChangeInputField(text, index, 'date')}
+                        />
+                      </Row>
+                    </BasicInfosWrapper>
+                  </ContentWrapper>
+                </Talk>
+              ))}
             </TimeLine>
           </TimeLineWrapper>
         </BodyWrapper>
-        <ActionButton onPress={() => this.setState({ scheduleCount: this.state.scheduleCount + 1 })}/>
+        {schedules.length > 0 && <SaveButton onPress={() => this.save()}/>}
+        <ActionButton onPress={() => this.addSchedule()}/>
       </Wrapper>
     );
   }

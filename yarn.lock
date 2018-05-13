@@ -811,7 +811,7 @@ babel-generator@^6.18.0, babel-generator@^6.22.0:
     source-map "^0.5.0"
     trim-right "^1.0.1"
 
-babel-generator@^6.24.1, babel-generator@^6.26.0:
+babel-generator@^6.26.0:
   version "6.26.1"
   resolved "https://registry.yarnpkg.com/babel-generator/-/babel-generator-6.26.1.tgz#1844408d3b8f0d35a404ea7ac180f087a601bd90"
   dependencies:
@@ -3214,9 +3214,9 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6,
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphql@^0.11.3:
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.11.7.tgz#e5abaa9cb7b7cccb84e9f0836bf4370d268750c6"
+graphql@^0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.12.3.tgz#11668458bbe28261c0dcb6e265f515ba79f6ce07"
   dependencies:
     iterall "1.1.3"
 
@@ -5622,14 +5622,14 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-relay@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-1.4.1.tgz#61f7b5802d70446e154490f9d0fceec9150ebda5"
+react-relay@1.5.1:
+  version "1.5.0-rc.1"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-1.5.0-rc.1.tgz#cf2816f249d30c97f00bd57b454ac132a5ab431b"
   dependencies:
     babel-runtime "^6.23.0"
     fbjs "^0.8.14"
     prop-types "^15.5.8"
-    relay-runtime "1.4.1"
+    relay-runtime "1.5.0-rc.1"
 
 react-test-renderer@16.0.0-alpha.6:
   version "16.0.0-alpha.6"
@@ -5825,11 +5825,11 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-relay-compiler@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-1.4.1.tgz#10e83f0f5de8db3d000851a4c0e435e7dd1deb95"
+relay-compiler@1.5.1:
+  version "1.5.0-rc.1"
+  resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-1.5.0-rc.1.tgz#609d38ff7a817a9df508be62cfe376b4619c1093"
   dependencies:
-    babel-generator "^6.24.1"
+    babel-generator "^6.26.0"
     babel-polyfill "^6.20.0"
     babel-preset-fbjs "^2.1.4"
     babel-runtime "^6.23.0"
@@ -5840,23 +5840,18 @@ relay-compiler@1.4.1:
     fast-glob "^1.0.1"
     fb-watchman "^2.0.0"
     fbjs "^0.8.14"
-    graphql "^0.11.3"
+    graphql "^0.12.3"
     immutable "~3.7.6"
-    relay-runtime "1.4.1"
+    relay-runtime "1.5.0-rc.1"
     signedsource "^1.0.0"
     yargs "^9.0.0"
 
-relay-debugger-react-native-runtime@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/relay-debugger-react-native-runtime/-/relay-debugger-react-native-runtime-0.0.10.tgz#0ef36012a1fba928962205514b46f635c652f235"
-
-relay-runtime@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-1.4.1.tgz#f88dcd0a422700a04563f291f570e4ce368e36d0"
+relay-runtime@1.5.0-rc.1:
+  version "1.5.0-rc.1"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-1.5.0-rc.1.tgz#9f2b31f59ef7d2b42028237df1aa1182b54b0c78"
   dependencies:
     babel-runtime "^6.23.0"
     fbjs "^0.8.14"
-    relay-debugger-react-native-runtime "0.0.10"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
