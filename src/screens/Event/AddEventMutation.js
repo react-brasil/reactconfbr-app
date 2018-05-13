@@ -6,10 +6,9 @@ import {
 } from './__generated__/AddEventMutation.graphql';
 
 const mutation = graphql`
-  mutation AddEventMutation($input: RegisterEmailInput!) {
+  mutation AddEventMutation($input: AddEventInput!) {
     AddEvent(input: $input) {
       error
-      token
     }
   }
 `;
