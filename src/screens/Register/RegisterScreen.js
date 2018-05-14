@@ -3,23 +3,18 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import styled from 'styled-components/native';
-import { withNavigation, SwitchNavigator } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
+import { withContext } from '../../Context';
+import type { ContextType } from '../../Context';
 
 import Header from '../../components/common/Header';
 import Button from '../../components/Button';
-import ErrorModal from '../../components/ErrorModal';
 import Input from '../../components/Input';
 import RegisterMutation from './RegisterEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
 import GradientWrapper from '../../components/GradientWrapper';
-
-const Wrapper = styled.View`
-  flex: 1;
-  background-color: ${props => props.theme.colors.primaryColor}
-  padding: 20px;
-`;
 
 const ForgotButton = styled.TouchableOpacity`
 `;
@@ -78,6 +73,7 @@ const Arrow = styled.Image.attrs({
 
 type Props = {
   navigation: Object,
+  context: ContextType,
 };
 
 type State = {
@@ -88,7 +84,7 @@ type State = {
 };
 
 @withNavigation
-export default class LoginScreen extends Component<Props, State> {
+class RegisterScreen extends Component<Props, State> {
   state = {
     name: '',
     email: '',
@@ -98,12 +94,10 @@ export default class LoginScreen extends Component<Props, State> {
 
   handleRegisterPress = async () => {
     const { name, email, password } = this.state;
-    const { navigation } = this.props;
+    const { navigation, context } = this.props;
 
     if (!name || !email || !password) {
-      return this.setState({
-        errorText: 'Preencha todos os campos!',
-      });
+      context.openModal('Preencha todos os campos!');
     }
 
     const input = {
@@ -115,38 +109,24 @@ export default class LoginScreen extends Component<Props, State> {
     const onCompleted = async res => {
       const response = res && res.RegisterEmail;
       const token = response && response.token;
-      console.log('register sucess res', res);
       if (response && response.error) {
-        console.log('Register onCompleted error', response.error);
-        return this.setState({
-          errorText: response.error,
-        });
+        return context.openModal(response.error);
       } else if (token) {
-        console.log('Cadastro realizado com sucesso!');
         await AsyncStorage.setItem('token', token);
         navigation.navigate(ROUTENAMES.LOGGED_APP);
       }
     };
 
     const onError = () => {
-      console.log('Register onError');
-      return this.setState({
-        errorText: 'Verifique sua conexão com a internet e tente novamente',
-      });
+      return context.openModal('Verifique sua conexão com a internet e tente novamente');
     };
 
     RegisterMutation.commit(input, onCompleted, onError);
   };
 
-  closeModal = () => {
-    this.setState({
-      errorText: '',
-    });
-  };
-
   render() {
-    const { navigation } = this.props;
-    const { errorText } = this.state;
+    const { navigation, context } = this.props;
+    const { errorText } = context;
 
     return (
       <GradientWrapper error={errorText ? true : false}>
@@ -182,13 +162,9 @@ export default class LoginScreen extends Component<Props, State> {
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
-        <ErrorModal
-          visible={errorText ? true : false}
-          errorText={errorText}
-          onRequestClose={this.closeModal}
-          timeout={6000}
-        />
       </GradientWrapper>
     );
   }
 }
+
+export default withContext(RegisterScreen)
