@@ -19,7 +19,7 @@ const Wrapper = styled.View`
 const ForgotButton = styled.TouchableOpacity`
 `;
 
-const ImageWrapper = styled(GradientWrapper)`
+const ImageWrapper = styled(GradientWrapper) `
   flex: 0.6;
   padding: 20px;
   shadow-color: grey;
@@ -38,7 +38,7 @@ const InputTitle = styled.TextInput.attrs({
   selectionColor: props => props.theme.colors.secondaryColor,
   color: props => props.theme.colors.primaryColor,
   autoCapitalize: 'none',
-})`
+}) `
   font-size: 36;
   color: ${props => props.theme.colors.secondaryColor};
 `;
@@ -51,7 +51,7 @@ const Description = styled.Text`
 
 const Arrow = styled.Image.attrs({
   source: IMAGES.ARROW,
-})`
+}) `
   width: 30;
   height: 24;
   margin-top: 5;
@@ -60,7 +60,7 @@ const Arrow = styled.Image.attrs({
 
 const Edit = styled.Image.attrs({
   source: IMAGES.EDIT,
-})`
+}) `
   width: 20;
   height: 20;
   margin-top: 5;
@@ -96,7 +96,7 @@ const TimeLine = styled.ScrollView.attrs({
     zIndex: 9,
     marginTop: 20,
   }),
-})``;
+}) ``;
 
 const Talk = styled.View`
   height: 90px;
@@ -112,7 +112,7 @@ const InputTalkTitle = styled.TextInput.attrs({
   selectionColor: props => props.theme.colors.primaryColor,
   color: props => props.theme.colors.primaryColor,
   autoCapitalize: 'none',
-})`
+}) `
   height: 40;
   width: 100%;
   font-size: 20;
@@ -124,7 +124,7 @@ const InputEventInfos = styled.TextInput.attrs({
   selectionColor: props => props.theme.colors.secondaryColor,
   color: props => props.theme.colors.secondaryColor,
   autoCapitalize: 'none',
-})`
+}) `
   font-size: 20;
 `;
 
@@ -134,7 +134,7 @@ const InputInfoText = styled.TextInput.attrs({
   selectionColor: props => props.theme.colors.primaryColor,
   color: props => props.theme.colors.primaryColor,
   autoCapitalize: 'none',
-})`
+}) `
   font-size: 14;
   color: ${props => props.theme.colors.primaryColor};
 `;
@@ -195,6 +195,7 @@ type State = {
 @withNavigation
 export default class LoginScreen extends Component<Props, State> {
   state = {
+    image: '',
     title: '',
     errorText: '',
     schedules: [],
@@ -207,7 +208,30 @@ export default class LoginScreen extends Component<Props, State> {
     const { navigation } = this.props;
 
     const input = {
-      title,
+      title: "teste",
+      date: "xx/xx/xxxx",
+      image: "https://www.w3schools.com/w3css/img_lights.jpg",
+      description: "teste",
+      publicLimit: "20",
+      location: {
+        cep: "04750-030",
+        geolocation: ["12313", "12312312"],
+      },
+      schedule: [
+        {
+          time: "18h",
+          title: "Entrada e credenciamento",
+        },
+        {
+          talker: "Jabur",
+          time: "19h",
+          title: "Deep dive into animated",
+        },
+        {
+          time: "21h",
+          title: "Encerramento",
+        },
+      ],
     };
 
     console.log('input', input)
@@ -259,7 +283,7 @@ export default class LoginScreen extends Component<Props, State> {
   };
 
   addSchedule = () => {
-    const newRange = { title: '', author: '',  date: '' };
+    const newRange = { title: '', author: '', date: '' };
     this.setState({ schedules: [...this.state.schedules, newRange] });
   };
 
@@ -326,7 +350,7 @@ export default class LoginScreen extends Component<Props, State> {
                         />
                       </Row>
                       <Row style={{ marginTop: 5 }}>
-                      <InfosText>At: </InfosText>
+                        <InfosText>At: </InfosText>
                         <InputInfoText
                           placeholder=" ex: 8:00"
                           onChangeText={(text) => this.handleChangeInputField(text, index, 'date')}
@@ -339,8 +363,8 @@ export default class LoginScreen extends Component<Props, State> {
             </TimeLine>
           </TimeLineWrapper>
         </BodyWrapper>
-        {schedules.length > 0 && <SaveButton onPress={() => this.save()}/>}
-        <ActionButton onPress={() => this.addSchedule()}/>
+        {schedules.length > 0 && <SaveButton onPress={() => this.save()} />}
+        <ActionButton onPress={() => this.addSchedule()} />
         <ErrorModal
           visible={errorText ? true : false}
           errorText={errorText}
