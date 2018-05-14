@@ -1006,7 +1006,7 @@
               "deprecationReason": null
             },
             {
-              "name": "AddEvent",
+              "name": "EventAdd",
               "description": null,
               "args": [
                 {
@@ -1017,7 +1017,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "AddEventInput",
+                      "name": "EventAddInput",
                       "ofType": null
                     }
                   },
@@ -1026,7 +1026,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "AddEventPayload",
+                "name": "EventAddPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1423,7 +1423,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "AddEventInput",
+          "name": "EventAddInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -1612,7 +1612,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AddEventPayload",
+          "name": "EventAddPayload",
           "description": null,
           "fields": [
             {

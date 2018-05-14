@@ -11,7 +11,7 @@ import SaveButton from '../../components/SaveButton';
 import { IMAGES } from '../../utils/design/images';
 import ErrorModal from '../../components/ErrorModal';
 import GradientWrapper from '../../components/GradientWrapper';
-import AddEventMutation from './AddEventMutation';
+import EventAddMutation from './EventAddMutation';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -188,6 +188,10 @@ type State = {
   schedules: Array<Object>,
   date: string,
   location: Object,
+  date: string,
+  image: string,
+  description: string,
+  publicLimit: string
 };
 
 
@@ -201,44 +205,29 @@ export default class LoginScreen extends Component<Props, State> {
     schedules: [],
     date: '',
     location: { cep: '', geoLocation: [] },
+    description: '',
+    publicLimit: '',
   };
 
   save = async () => {
-    const { schedules, title, date, location } = this.state;
+    const { schedules, title, date, location, image, description, publicLimit } = this.state;
     const { navigation } = this.props;
 
     const input = {
-      title: "teste",
-      date: "xx/xx/xxxx",
-      image: "https://www.w3schools.com/w3css/img_lights.jpg",
-      description: "teste",
-      publicLimit: "20",
-      location: {
-        cep: "04750-030",
-        geolocation: ["12313", "12312312"],
-      },
-      schedule: [
-        {
-          time: "18h",
-          title: "Entrada e credenciamento",
-        },
-        {
-          talker: "Jabur",
-          time: "19h",
-          title: "Deep dive into animated",
-        },
-        {
-          time: "21h",
-          title: "Encerramento",
-        },
-      ],
+      title,
+      date,
+      image,
+      description,
+      publicLimit,
+      location,
+      schedules,
     };
 
     console.log('input', input)
 
     const onCompleted = async res => {
-      const response = res && res.AddEvent;
-      console.log('response onCompleted', response);
+      // const response = res && res.AddEvent;
+      console.log('res onCompleted', res);
     };
 
     const onError = () => {
@@ -247,7 +236,7 @@ export default class LoginScreen extends Component<Props, State> {
       });
     };
 
-    AddEventMutation.commit(input, onCompleted, onError);
+    EventAddMutation.commit(input, onCompleted, onError);
   };
 
   closeModal = () => {
@@ -332,7 +321,7 @@ export default class LoginScreen extends Component<Props, State> {
           <TimeLineWrapper>
             <TimeLine>
               {schedules.map((schedule, index) => (
-                <Talk>
+                <Talk key={index}>
                   <IconWrapper>
                     <Ball />
                   </IconWrapper>

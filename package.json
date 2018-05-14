@@ -14,13 +14,13 @@
     "react-native": "0.54.4",
     "react-native-linear-gradient": "^2.4.0",
     "react-navigation": "^1.5.11",
-    "react-relay": "1.5.0-rc.1",
+    "react-relay": "1.5.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-jest": "19.0.0",
-    "babel-plugin-relay": "1.0.1-rc.3",
+    "babel-plugin-relay": "1.5.0",
     "babel-preset-react-native": "1.9.1",
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.32.1",
@@ -32,7 +32,7 @@
     "prettier": "^1.2.2",
     "react-devtools": "^2.1.0",
     "react-test-renderer": "16.0.0-alpha.6",
-    "relay-compiler": "1.5.0-rc.1"
+    "relay-compiler": "1.5.0"
   },
   "jest": {
     "preset": "react-native"
