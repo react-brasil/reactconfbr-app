@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
+import { withContext } from '../../Context';
+import type { ContextType } from '../../Context';
 
 import ActionButton from '../../components/ActionButton';
 import SaveButton from '../../components/SaveButton';
@@ -12,6 +14,7 @@ import { IMAGES } from '../../utils/design/images';
 import ErrorModal from '../../components/ErrorModal';
 import GradientWrapper from '../../components/GradientWrapper';
 import EventAddMutation from './EventAddMutation';
+import TextInputMask from 'react-native-text-input-mask';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -118,14 +121,27 @@ const InputTalkTitle = styled.TextInput.attrs({
   font-size: 20;
 `;
 
-const InputEventInfos = styled.TextInput.attrs({
+const InputCep = styled(TextInputMask).attrs({
   placeholderTextColor: props => props.theme.colors.secondaryText,
   underlineColorAndroid: props => props.theme.colors.secondaryColor,
   selectionColor: props => props.theme.colors.secondaryColor,
   color: props => props.theme.colors.secondaryColor,
   autoCapitalize: 'none',
+  mask: '[00]-[000][000]',
 }) `
   font-size: 20;
+`;
+
+const InputDate = styled(TextInputMask).attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.secondaryColor,
+  color: props => props.theme.colors.secondaryColor,
+  autoCapitalize: 'none',
+  mask: '[00]/[00] [00]:[00]',
+}) `
+  font-size: 20;
+  margin-left: 20px;
 `;
 
 const InputInfoText = styled.TextInput.attrs({
@@ -180,6 +196,7 @@ const Row = styled.View`
 
 type Props = {
   navigation: Object,
+  context: ContextType,
 };
 
 type State = {
@@ -197,43 +214,48 @@ type State = {
 
 
 @withNavigation
-export default class LoginScreen extends Component<Props, State> {
+class EventAdd extends Component<Props, State> {
   state = {
     image: '',
     title: '',
     errorText: '',
     schedules: [],
     date: '',
-    location: { cep: '', geoLocation: [] },
+    location: { cep: '', geolocation: [] },
     description: '',
-    publicLimit: '',
+    publicLimit: '20',
   };
 
   save = async () => {
+    const { navigation, context } = this.props;
     const { schedules, title, date, location, image, description, publicLimit } = this.state;
-    const { navigation } = this.props;
 
     const input = {
       title,
       date,
+      location,
+      schedule: schedules,
+
+      // @TODO
       image,
       description,
       publicLimit,
-      location,
-      schedules,
     };
 
     console.log('input', input)
 
     const onCompleted = async res => {
-      // const response = res && res.AddEvent;
-      console.log('res onCompleted', res);
+      const response = res && res.EventAdd;
+      if (response && response.error) {
+        context.openModal('Verifique sua conexão com a internet e tente novamente');
+      } else {
+        context.openSuccessModal('Seu evento foi criado com sucesso');
+      }
+
     };
 
     const onError = () => {
-      this.setState({
-        errorText: 'Verifique sua conexão com a internet e tente novamente',
-      });
+      context.openModal('Verifique sua conexão com a internet e tente novamente');
     };
 
     EventAddMutation.commit(input, onCompleted, onError);
@@ -254,14 +276,14 @@ export default class LoginScreen extends Component<Props, State> {
           title: value,
         });
         break;
-      case 'author':
+      case 'talker':
         newSchedules = Object.assign({}, schedules[index], {
-          author: value,
+          talker: value,
         });
         break;
-      case 'date':
+      case 'time':
         newSchedules = Object.assign({}, schedules[index], {
-          date: value,
+          time: value,
         });
         break;
       default:
@@ -272,7 +294,7 @@ export default class LoginScreen extends Component<Props, State> {
   };
 
   addSchedule = () => {
-    const newRange = { title: '', author: '', date: '' };
+    const newRange = { title: '', talker: '', time: '' };
     this.setState({ schedules: [...this.state.schedules, newRange] });
   };
 
@@ -302,12 +324,12 @@ export default class LoginScreen extends Component<Props, State> {
               </ForgotButton>
             </Row>
             <Row>
-              <InputEventInfos
-                placeholder="Event cep..."
+              <InputCep
+                placeholder="00-0000000"
                 onChangeText={(text) => this.setState({ location: { ...location, cep: text } })}
               />
-              <InputEventInfos
-                placeholder="Event date..."
+              <InputDate
+                placeholder="DD/MM HH:MM"
                 onChangeText={(text) => this.setState({ date: text })}
               />
             </Row>
@@ -335,14 +357,14 @@ export default class LoginScreen extends Component<Props, State> {
                         <InfosText>By: </InfosText>
                         <InputInfoText
                           placeholder=" Author name"
-                          onChangeText={(text) => this.handleChangeInputField(text, index, 'author')}
+                          onChangeText={(text) => this.handleChangeInputField(text, index, 'talker')}
                         />
                       </Row>
                       <Row style={{ marginTop: 5 }}>
                         <InfosText>At: </InfosText>
                         <InputInfoText
                           placeholder=" ex: 8:00"
-                          onChangeText={(text) => this.handleChangeInputField(text, index, 'date')}
+                          onChangeText={(text) => this.handleChangeInputField(text, index, 'time')}
                         />
                       </Row>
                     </BasicInfosWrapper>
@@ -364,3 +386,5 @@ export default class LoginScreen extends Component<Props, State> {
     );
   }
 }
+
+export default withContext(EventAdd);
