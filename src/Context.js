@@ -4,6 +4,7 @@ import ErrorModal from './components/ErrorModal';
 export type ContextType = {
   token: string,
   errorText: string,
+  successText: string,
   closeModal: () => void,
   openModal: string => void,
 }
@@ -11,6 +12,7 @@ export type ContextType = {
 const ContextAPI = createContext({
   token: '',
   errorText: '',
+  successText: '',
   closeModal: () => {},
   openModal: () => {},
 }: ContextType);
@@ -24,19 +26,21 @@ export const withContext = (Comp: () => void) => (props: Object) => (
 class Provider extends React.Component {
   state = {
     errorText: '',
-    closeModal: () => this.setState({errorText: ''}),
+    closeModal: () => this.setState({ errorText: '', successText: '' }),
     openModal: (errorText) => this.setState({ errorText }),
+    openSuccessModal: (successText) => this.setState({ successText }),
   };
 
   render(){
-    const { errorText, closeModal } = this.state;
+    const { errorText, successText, closeModal } = this.state;
 
     return(
       <ContextAPI.Provider value={this.state}>
         {this.props.children}
         <ErrorModal
-          visible={errorText ? true : false}
+          visible={errorText || successText ? true : false}
           errorText={errorText}
+          successText={successText}
           onRequestClose={closeModal}
           timeout={6000}
         />

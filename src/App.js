@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
 import { createRootNavigator } from './navigation/Router';
 import Provider from './Context';
+console.disableYellowBox = true;
+
 
 type State = {
   token: '',
@@ -16,6 +18,7 @@ class ThemedApp extends React.Component<*, State> {
   };
 
   componentWillMount() {
+    AsyncStorage.clear();
     AsyncStorage.getItem('token').then(value => {
       this.setState({
         token: value,

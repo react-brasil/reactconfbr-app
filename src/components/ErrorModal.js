@@ -41,7 +41,7 @@ const CloseButton = styled.TouchableOpacity`
 
 const ErrorText = styled.Text`
   flex: 6;
-  color: ${props => props.theme.colors.errorViewColor};
+  color: ${props => props.error ? props.theme.colors.errorViewColor : props.theme.colors.primaryColor};
   font-weight: bold;
   margin-horizontal: 10;
   font-size: 16;
@@ -50,7 +50,7 @@ const ErrorText = styled.Text`
 const CloseIcon = styled.Image.attrs({
   source: IMAGES.CLOSE,
 })`
-  tint-color: ${props => props.theme.colors.errorViewColor};
+  tint-color: ${props => props.error ? props.theme.colors.errorViewColor : props.theme.colors.primaryColor};
   width: 25;
   height: 25;
 `;
@@ -62,7 +62,7 @@ type Props = {
   timeout: number,
 };
 
-const ErrorModal = ({ errorText, visible, timeout, onRequestClose }: Props) => {
+const ErrorModal = ({ successText, errorText, visible, timeout, onRequestClose }: Props) => {
   if (timeout && visible === true) {
     setTimeout(() => {
       onRequestClose();
@@ -77,11 +77,11 @@ const ErrorModal = ({ errorText, visible, timeout, onRequestClose }: Props) => {
       hardwareAccelerated
     >
       <ErrorView>
-        <ErrorText>
-          {errorText}
+        <ErrorText error={errorText}>
+          {errorText.length > 0 ? errorText : successText}
         </ErrorText>
         <CloseButton onPress={onRequestClose}>
-          <CloseIcon />
+          <CloseIcon error={errorText} />
         </CloseButton>
       </ErrorView>
     </Wrapper>
