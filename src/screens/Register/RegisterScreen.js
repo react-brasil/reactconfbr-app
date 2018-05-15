@@ -112,6 +112,7 @@ class RegisterScreen extends Component<Props, State> {
       if (response && response.error) {
         return context.openModal(response.error);
       } else if (token) {
+        this.props.context.openSuccessModal('Você cadastrou com sucesso');
         await AsyncStorage.setItem('token', token);
         navigation.navigate(ROUTENAMES.LOGGED_APP);
       }

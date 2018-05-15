@@ -4,6 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
 import { createRootNavigator } from './navigation/Router';
 import Provider from './Context';
+console.disableYellowBox = true;
+
 
 type State = {
   token: '',

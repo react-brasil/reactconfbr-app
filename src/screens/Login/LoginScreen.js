@@ -110,6 +110,7 @@ class LoginScreen extends Component<Props, State> {
       if (response && response.error) {
         this.props.context.openModal(response.error);
       } else if (token) {
+        this.props.context.openSuccessModal('Você logou com sucesso');
         await AsyncStorage.setItem('token', token);
         navigation.navigate(ROUTENAMES.LOGGED_APP);
       }
