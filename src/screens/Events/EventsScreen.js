@@ -1,13 +1,16 @@
 // @flow
 
 import React, { Component } from 'react';
+import { createRefetchContainer, graphql } from 'react-relay';
+import createQueryRenderer from '../../relay/RelayUtils';
+
 import { StatusBar, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
 
 import LoggedHeader from '../../components/LoggedHeader';
 import ActionButton from '../../components/ActionButton';
-import EventCard from '../../components/EventCard';
+import EventCard from '../../components/EventCardMVP';
 import { ROUTENAMES } from '../../navigation/RouteNames';
 
 const Wrapper = styled.View`
@@ -100,8 +103,11 @@ class EventsScreen extends Component<Props, State> {
     });
   };
   render() {
-    const { navigation } = this.props;
+    const { navigation, query } = this.props;
+    const { schedule, title, date, location, image, description, publicLimit } = query;
     const { searchText, IsSearchVisible } = this.state;
+
+    console.log('query', query);
     return (
       <Wrapper>
         <StatusBar barStyle="light-content" />
@@ -113,17 +119,58 @@ class EventsScreen extends Component<Props, State> {
           onChangeSearch={search => this.changeSearchText(search)}
         />
         <ScrollView>
-          <EventCard
-            title="React Conf"
-            description="A primeira conferência do ecossistema React da América Latina."
-            bgImage="https://i.imgur.com/IetnYn7.png"
-            atendees={UserArrayMock}
-          />
+          {query.events.edges.map(({node}) => (
+              <EventCard
+                title={node.title}
+                description={node.description}
+                publicLimit={node.publicLimit}
+              />
+            ))}
         </ScrollView>
-        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.NEW_EVENT)}/>
+        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)}/>
       </Wrapper>
     );
   }
 }
 
-export default withNavigation(EventsScreen);
+
+const EventsScreenRefetchContainer = createRefetchContainer(
+  EventsScreen,
+  {
+    query: graphql`
+      fragment EventsScreen_query on Query @argumentDefinitions(first: { type: "Int", defaultValue: 20 }) {
+        events(first: $first) @connection(key: "EventsScreen_events", filters: []) {
+          edges {
+            node {
+              id
+              schedule {
+                title
+                talker
+                time
+              }
+              title
+              date
+              location
+              image
+              description
+              publicLimit
+            }
+          }
+        }
+      }
+    `,
+  },
+  graphql`
+    query EventsScreenRefetchQuery {
+      ...EventsScreen_query
+    }
+  `,
+);
+
+export default createQueryRenderer(EventsScreenRefetchContainer, {
+  query: graphql`
+    query EventsScreenQuery {
+      ...EventsScreen_query
+    }
+  `,
+});
