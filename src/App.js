@@ -18,7 +18,6 @@ class ThemedApp extends React.Component<*, State> {
   };
 
   componentWillMount() {
-    AsyncStorage.clear();
     AsyncStorage.getItem('token').then(value => {
       this.setState({
         token: value,
