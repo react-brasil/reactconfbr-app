@@ -20,6 +20,7 @@ const Wrapper = styled.View`
 
 type Props = {
   navigation: Object,
+  relay: Object,
 };
 
 type State = {
@@ -91,11 +92,18 @@ class EventsScreen extends Component<Props, State> {
     searchText: '',
     IsSearchVisible: false,
   };
-  changeSearchText = (search: string) => {
-    this.setState({
-      searchText: search,
+
+  changeSearchText = (searchText: string) => {
+    const refetchVariables = fragmentVariables => ({
+      ...fragmentVariables,
+      search: searchText,
     });
+
+    this.props.relay.refetch(refetchVariables);
+
+    this.setState({ searchText });
   };
+
   setVisible = () => {
     const { IsSearchVisible } = this.state;
     this.setState({

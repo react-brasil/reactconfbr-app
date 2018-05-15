@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Wrapper = styled(LinearGradient).attrs({
-  colors: props => props.theme.colors.gradient,
+  colors: ['rgb(241, 123, 147)', '#F51FFF'],
   start: { x: 0.0, y: 0.25 },
   end: { x: 0.5, y: 1.0 },
 })`
@@ -98,16 +98,6 @@ const AtendeesNumberText = styled.Text`
   font-size: 15;
   color: black;
 `;
-
-const getInitials = (name: string) => {
-  return name
-    ? name
-        .split(' ')
-        .slice(0, 2)
-        .map(namePart => namePart.charAt(0).toUpperCase())
-        .join('')
-    : '';
-};
 
 type User = {
   image: string,
