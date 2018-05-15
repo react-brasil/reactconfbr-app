@@ -1,103 +1,250 @@
-input ChangePasswordInput {
-    oldPassword: String!
+input AttendToEventInput {
+  eventId: ID!
+  clientMutationId: String
+}
 
-    # user new password
-    password: String!
-    clientMutationId: String
+type AttendToEventPayload {
+  message: String
+  error: String
+  clientMutationId: String
+}
+
+input CantGoToEventInput {
+  eventId: ID!
+  clientMutationId: String
+}
+
+type CantGoToEventPayload {
+  message: String
+  error: String
+  clientMutationId: String
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+
+  """user new password"""
+  password: String!
+  clientMutationId: String
 }
 
 type ChangePasswordPayload {
-    error: String
-    me: User
-    clientMutationId: String
+  error: String
+  me: User
+  clientMutationId: String
+}
+
+"""Event data"""
+type Event implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  title: String
+  description: String
+  date: String
+  location: String
+  publicLimit: String
+
+  """event image"""
+  image: String
+
+  """schedule"""
+  schedule: [Schedule]
+
+  """Users that attended to the event"""
+  publicList: [User]
+
+  """Users that cant go to the event"""
+  notGoingList: [User]
+
+  """Users that are waiting for places on the event"""
+  waitList: [User]
+}
+
+input EventAddInput {
+  """event title"""
+  title: String!
+
+  """event description"""
+  description: String
+
+  """event date"""
+  date: String!
+
+  """event date"""
+  publicLimit: String
+
+  """event image"""
+  image: String
+  location: location
+  schedule: [schedule]
+  clientMutationId: String
+}
+
+type EventAddPayload {
+  message: String
+  error: String
+  event: Event
+  clientMutationId: String
+}
+
+"""A connection to a list of items."""
+type EventConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EventEdge]
+  count: Int
+}
+
+"""An edge in a connection."""
+type EventEdge {
+  """The item at the end of the edge"""
+  node: Event
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""event location"""
+input location {
+  cep: String
+  geolocation: [String]
 }
 
 input LoginEmailInput {
-    email: String!
-    password: String!
-    clientMutationId: String
+  email: String!
+  password: String!
+  clientMutationId: String
 }
 
 type LoginEmailPayload {
-    token: String
-    error: String
-    clientMutationId: String
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+input MoveToPresenceListInput {
+  eventId: ID!
+  clientMutationId: String
+}
+
+type MoveToPresenceListPayload {
+  message: String
+  error: String
+  clientMutationId: String
 }
 
 type Mutation {
-    LoginEmail(input: LoginEmailInput!): LoginEmailPayload
-    RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
-    ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+  LoginEmail(input: LoginEmailInput!): LoginEmailPayload
+  RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
+  ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+  EventAdd(input: EventAddInput!): EventAddPayload
+  AttendToEvent(input: AttendToEventInput!): AttendToEventPayload
+  CantGoToEvent(input: CantGoToEventInput!): CantGoToEventPayload
+  MoveToPresenceList(input: MoveToPresenceListInput!): MoveToPresenceListPayload
 }
 
-# An object with an ID
+"""An object with an ID"""
 interface Node {
-    # The id of the object.
-    id: ID!
+  """The id of the object."""
+  id: ID!
 }
 
-# Information about pagination in a connection.
+"""Information about pagination in a connection."""
 type PageInfo {
-    # When paginating forwards, are there more items?
-    hasNextPage: Boolean!
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
 
-    # When paginating backwards, are there more items?
-    hasPreviousPage: Boolean!
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
 
-    # When paginating backwards, the cursor to continue.
-    startCursor: String
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
 
-    # When paginating forwards, the cursor to continue.
-    endCursor: String
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
 }
 
-# The root of all... queries
-type Query implements Node {
-    # The ID of an object
+"""The root of all... queries"""
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
     id: ID!
-    me: User
-    user(id: ID!): User
-    users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+  ): Node
+  me: User
+  events(after: String, first: Int, before: String, last: Int, search: String): EventConnection
+  event(id: ID!): Event
+  user(id: ID!): User
+  users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
 }
 
 input RegisterEmailInput {
-    name: String!
-    email: String!
-    password: String!
-    clientMutationId: String
+  name: String!
+  email: String!
+  password: String!
+  clientMutationId: String
 }
 
 type RegisterEmailPayload {
-    token: String
-    error: String
-    clientMutationId: String
+  token: String
+  error: String
+  clientMutationId: String
 }
 
-# User data
+"""event schedule"""
+input schedule {
+  talker: String
+  title: String
+  description: String
+  time: String
+}
+
+"""Represents Schedules"""
+type Schedule {
+  _id: String
+  talker: String
+  title: String
+  description: String
+  time: String
+}
+
+type Subscription {
+  UserAdded: UserAddedPayload
+}
+
+"""User data"""
 type User implements Node {
-    # The ID of an object
-    id: ID!
-    _id: String
-    name: String
-    email: String
-    active: Boolean
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+  email: String
+  role: String
+  active: Boolean
 }
 
-# A connection to a list of items.
+type UserAddedPayload {
+  userEdge: UserEdge
+}
+
+"""A connection to a list of items."""
 type UserConnection {
-    # Information to aid in pagination.
-    pageInfo: PageInfo!
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
 
-    # A list of edges.
-    edges: [UserEdge]
-    count: Int
+  """A list of edges."""
+  edges: [UserEdge]
+  count: Int
 }
 
-# An edge in a connection.
+"""An edge in a connection."""
 type UserEdge {
-    # The item at the end of the edge
-    node: User
+  """The item at the end of the edge"""
+  node: User
 
-    # A cursor for use in pagination
-    cursor: String!
+  """A cursor for use in pagination"""
+  cursor: String!
 }

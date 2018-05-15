@@ -12,6 +12,7 @@ import LoginScreen from '../screens/Login/LoginScreen';
 import RegisterScreen from '../screens/Register/RegisterScreen';
 // Logged Screens
 import EventsScreen from '../screens/Events/EventsScreen';
+import EventAdd from '../screens/Event/EventAdd';
 
 const NonLoggedAppRouter = StackNavigator(
   {
@@ -32,12 +33,14 @@ const LoggedAppRouter = StackNavigator(
     InnerAppDrawer: {
       screen: DrawerNavigator({
         [ROUTENAMES.EVENTS]: { screen: EventsScreen },
+        [ROUTENAMES.NEW_EVENT]: { screen: EventAdd },
       }),
     },
     [ROUTENAMES.EVENTS]: { screen: EventsScreen },
+    [ROUTENAMES.NEW_EVENT]: { screen: EventAdd },
   },
   {
-    initialRouteName: ROUTENAMES.EVENTS,
+    initialRouteName: ROUTENAMES.NEW_EVENT,
     navigationOptions: {
       header: null,
     },

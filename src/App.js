@@ -1,17 +1,20 @@
-import * as React from 'react';
+import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import theme from './utils/design/theme';
 import { createRootNavigator } from './navigation/Router';
+import Provider from './Context';
 
 type State = {
   token: '',
 };
 
 class ThemedApp extends React.Component<*, State> {
+
   state = {
     token: '',
   };
+
   componentWillMount() {
     AsyncStorage.getItem('token').then(value => {
       this.setState({
@@ -24,9 +27,11 @@ class ThemedApp extends React.Component<*, State> {
 
     const Launch = createRootNavigator(token);
     return (
-      <ThemeProvider theme={theme}>
-        <Launch />
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <Provider>
+            <Launch />
+          </Provider>
+        </ThemeProvider>
     );
   }
 }

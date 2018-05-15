@@ -13,8 +13,9 @@ import LoginMutation from './LoginEmailMutation';
 
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
-import ErrorModal from '../../components/ErrorModal';
 import GradientWrapper from '../../components/GradientWrapper';
+import { withContext } from '../../Context';
+
 
 const ForgotButton = styled.TouchableOpacity`
 `;
@@ -73,6 +74,7 @@ const Arrow = styled.Image.attrs({
 
 type Props = {
   navigation: Object,
+  context: Object,
 };
 
 type State = {
@@ -82,7 +84,7 @@ type State = {
 };
 
 @withNavigation
-export default class LoginScreen extends Component<Props, State> {
+class LoginScreen extends Component<Props, State> {
   state = {
     email: '',
     password: '',
@@ -94,9 +96,7 @@ export default class LoginScreen extends Component<Props, State> {
     const { navigation } = this.props;
 
     if (!email || !password) {
-      return this.setState({
-        errorText: 'Favor preencher todos os campos',
-      });
+      console.log('this.props', this.props)
     }
 
     const input = {
@@ -108,9 +108,7 @@ export default class LoginScreen extends Component<Props, State> {
       const response = res && res.LoginEmail;
       const token = response && response.token;
       if (response && response.error) {
-        this.setState({
-          errorText: response.error,
-        });
+        this.props.context.openModal(response.error);
       } else if (token) {
         await AsyncStorage.setItem('token', token);
         navigation.navigate(ROUTENAMES.LOGGED_APP);
@@ -133,8 +131,8 @@ export default class LoginScreen extends Component<Props, State> {
   };
 
   render() {
-    const { navigation } = this.props;
-    const { errorText } = this.state;
+    const { navigation, context } = this.props;
+    const { errorText } = context;
 
     return (
       <GradientWrapper error={errorText ? true : false}>
@@ -164,13 +162,9 @@ export default class LoginScreen extends Component<Props, State> {
           </Button>
         </ButtonsWrapper>
         <BottomFixedReactLogo />
-        <ErrorModal
-          visible={errorText ? true : false}
-          errorText={errorText}
-          onRequestClose={this.closeModal}
-          timeout={6000}
-        />
       </GradientWrapper>
     );
   }
 }
+
+export default withContext(LoginScreen);

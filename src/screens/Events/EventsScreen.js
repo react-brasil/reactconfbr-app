@@ -8,6 +8,7 @@ import { withNavigation } from 'react-navigation';
 import LoggedHeader from '../../components/LoggedHeader';
 import ActionButton from '../../components/ActionButton';
 import EventCard from '../../components/EventCard';
+import { ROUTENAMES } from '../../navigation/RouteNames';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -119,7 +120,7 @@ class EventsScreen extends Component<Props, State> {
             atendees={UserArrayMock}
           />
         </ScrollView>
-        <ActionButton />
+        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.NEW_EVENT)}/>
       </Wrapper>
     );
   }
