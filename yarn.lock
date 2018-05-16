@@ -5606,6 +5606,10 @@ react-native-safe-area-view@^0.7.0:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-text-input-mask@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-text-input-mask/-/react-native-text-input-mask-0.7.0.tgz#2e4571560c47b3c9c0c3f360fd29b192b36a9694"
+
 react-native@0.55.1:
   version "0.55.1"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.55.1.tgz#0ca06b3e1bcb8ddfb56b916a3853d423f9ee6439"

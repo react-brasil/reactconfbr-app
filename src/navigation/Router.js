@@ -33,14 +33,14 @@ const LoggedAppRouter = StackNavigator(
     InnerAppDrawer: {
       screen: DrawerNavigator({
         [ROUTENAMES.EVENTS]: { screen: EventsScreen },
-        [ROUTENAMES.NEW_EVENT]: { screen: EventAdd },
+        [ROUTENAMES.EVENT_ADD]: { screen: EventAdd },
       }),
     },
     [ROUTENAMES.EVENTS]: { screen: EventsScreen },
-    [ROUTENAMES.NEW_EVENT]: { screen: EventAdd },
+    [ROUTENAMES.EVENT_ADD]: { screen: EventAdd },
   },
   {
-    initialRouteName: ROUTENAMES.NEW_EVENT,
+    initialRouteName: ROUTENAMES.EVENTS,
     navigationOptions: {
       header: null,
     },
