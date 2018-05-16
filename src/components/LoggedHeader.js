@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../utils/design/images';
-import * as Btn from './Button';
 
 const Wrapper = styled(LinearGradient).attrs({
   colors: ['#53B1FF', '#651FFF'],

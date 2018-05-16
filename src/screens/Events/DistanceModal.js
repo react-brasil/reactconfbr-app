@@ -2,77 +2,84 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Wrapper = styled.View`
 `;
 
-const ModalContent = styled.View`
-  background-color: ${props => props.theme.colors.secondaryColor};
+const ModalContent = styled(LinearGradient).attrs({
+  colors: ['#53B1FF', '#651FFF'],
+  start: { x: 0, y: 1 },
+  end: { x: 1, y: 1 },
+})`
   flex-direction: column;
-  height: 200px;
+  height: 150px;
   border-radius: 5px;
   shadow-color: grey;
   shadow-offset: 0px 0px;
-  shadow-radius: 20px;
-  shadow-opacity: 1;
+  shadow-radius: 5px;
+  shadow-opacity: 0.1;
 `;
 
 const ModalText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
+  color: ${props => props.theme.colors.secondaryColor};
   font-size: 32px;
   font-weight: bold;
 `;
 
-const Button = styled.TouchableOpacity`
-  height: 40px;
-  width: 40px;
-  border-radius: 50px;
-  border: 3px solid ${props => props.theme.colors.primaryColor};
-  justify-content: center;
-  align-items: center;
-`;
-
 const Body = styled.View`
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  height: 160px;
+  height: 110px;
 `;
 
 const Bottom = styled.TouchableOpacity`
   height: 40px;
   border-top-width: 1px;
-  border-top-color: grey;
+  border-top-color: ${props => props.theme.colors.secondaryColor};
   justify-content: center;
   align-items: center;
 `;
 
 const BottomText = styled.Text`
-  color: ${props => props.theme.colors.primaryColor};
+  color: ${props => props.theme.colors.secondaryColor};
   font-size: 18px;
+  font-weight: bold;
+`;
+
+const InputTitle = styled.TextInput.attrs({
+  placeholderTextColor: props => props.theme.colors.secondaryText,
+  underlineColorAndroid: props => props.theme.colors.secondaryColor,
+  selectionColor: props => props.theme.colors.secondaryColor,
+  color: props => props.theme.colors.secondaryColor,
+  autoCapitalize: 'none',
+  keyboardType: 'numeric',
+  maxLength: 3,
+}) `
+  font-size: 32;
   font-weight: bold;
 `;
 
 type Props = {
   isVisible: boolean,
   distance: number,
-  decreaseDistance: () => void,
-  increaseDistance: () => void,
+  changeDistance: string => void,
   closeDistanceModal: () => void,
 };
 
-const DistanceModal = ({ isVisible, distance, decreaseDistance, increaseDistance, closeDistanceModal }: Props) => (
+const DistanceModal = ({ isVisible, distance, changeDistance, closeDistanceModal }: Props) => (
   <Wrapper>
     <Modal isVisible={isVisible}>
       <ModalContent>
         <Body>
-          <Button onPress={decreaseDistance}>
-            <ModalText>-</ModalText>
-          </Button>
-          <ModalText>{distance} km</ModalText>
-          <Button onPress={increaseDistance}>
-            <ModalText>+</ModalText>
-          </Button>
+          <InputTitle
+            value={distance.toString()}
+            onChangeText={(text) => changeDistance(text)}
+          />
+          <ModalText>
+            {' '}km
+          </ModalText>
         </Body>
         <Bottom onPress={closeDistanceModal}>
           <BottomText>See results</BottomText>

@@ -123,8 +123,7 @@ class EventsScreen extends Component<Props, State> {
         <DistanceModal
           isVisible={isDistanceModalVisible}
           distance={distance}
-          increaseDistance={() => this.setState({ distance: distance + 1 })}
-          decreaseDistance={() => this.setState({ distance: distance - 1 })}
+          changeDistance={(distance) => this.setState({ distance })}
           closeDistanceModal={() => this.closeDistanceModal()}
         />
       </Wrapper>
