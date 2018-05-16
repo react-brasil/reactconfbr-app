@@ -32,7 +32,7 @@ type Props = {
 type State = {
   searchText: string,
   IsSearchVisible: boolean,
-  geolocation: Array<number>,
+  coordinates: Array<number>,
   distance: number,
   isDistanceModalVisible: boolean
 };
@@ -41,7 +41,7 @@ class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
-    geolocation: [ 0, 0],
+    coordinates: [ 0, 0],
     distance: 120,
     isDistanceModalVisible: false,
   };
@@ -68,8 +68,8 @@ class EventsScreen extends Component<Props, State> {
     const { context } = this.props
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        const geolocation = [coords.longitude, coords.latitude];
-        this.setState({ geolocation });
+        const coordinates = [coords.longitude, coords.latitude];
+        this.setState({ coordinates });
       },
       (error) => context.openModal(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -78,10 +78,11 @@ class EventsScreen extends Component<Props, State> {
   }
 
   closeDistanceModal() {
-    const { searchText, geolocation, distance } = this.state;
+    const { searchText, coordinates, distance } = this.state;
 
+    console.log('closeDistanceModal refetch', this.state);
     this.props.relay.refetch(
-      { search: searchText, geolocation, distance },
+      { search: searchText, coordinates, distance },
       null,
       () => {},
       { force: true },
@@ -139,13 +140,13 @@ const EventsScreenRefetchContainer = createRefetchContainer(
       fragment EventsScreen_query on Query @argumentDefinitions(
           first: { type: Int }
           search: { type: String }
-          geolocation: { type: "[String]" }
-          distance: { type: String }
+          coordinates: { type: "[Float]" }
+          distance: { type: Int }
         ) {
         events(
           first: $first,
           search: $search,
-          geolocation: $geolocation,
+          coordinates: $coordinates,
           distance: $distance
         ) @connection(key: "EventsScreen_events", filters: []) {
           edges {
@@ -172,14 +173,14 @@ const EventsScreenRefetchContainer = createRefetchContainer(
     query EventsScreenRefetchQuery(
       $first: Int
       $search: String
-      $geolocation: [String]
-      $distance: String
+      $coordinates: [Float]
+      $distance: Int
       ) {
       ...EventsScreen_query
       @arguments(
         first: $first,
         search: $search,
-        geolocation: $geolocation,
+        coordinates: $coordinates,
         distance: $distance
       )
     }
@@ -191,14 +192,14 @@ export default createQueryRenderer(withContext(withNavigation(EventsScreenRefetc
     query EventsScreenQuery(
       $first: Int
       $search: String
-      $geolocation: [String]
-      $distance: String
+      $coordinates: [Float]
+      $distance: Int
     ) {
       ...EventsScreen_query
       @arguments(
         first: $first,
         search: $search,
-        geolocation: $geolocation,
+        coordinates: $coordinates,
         distance: $distance
       )
     }
@@ -208,6 +209,6 @@ export default createQueryRenderer(withContext(withNavigation(EventsScreenRefetc
     cursor: null,
     search: '',
     distance: 20,
-    geolocation: [0, 0],
+    coordinates: [0, 0],
   },
 });

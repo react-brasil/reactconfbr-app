@@ -221,7 +221,7 @@ class EventAdd extends Component<Props, State> {
     errorText: '',
     schedules: [],
     date: '',
-    location: { cep: '', geolocation: [0, 0] },
+    location: { cep: '', coordinates: [0, 0] },
     description: '',
     publicLimit: '20',
   };
@@ -319,7 +319,7 @@ class EventAdd extends Component<Props, State> {
     .then((responseJson) => {
       let lng = responseJson.results[0].geometry.location.lng
       let lat = responseJson.results[0].geometry.location.lat
-      const location = { ...this.state.location, geolocation: [lng, lat] }
+      const location = { ...this.state.location, coordinates: [lng, lat] }
       console.log('onBlur location', location);
       this.setState({ location });
     })
