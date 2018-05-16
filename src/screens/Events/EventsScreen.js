@@ -28,65 +28,6 @@ type State = {
   IsSearchVisible: boolean,
 };
 
-const UserArrayMock = [
-  {
-    name: 'Francisco Rhodes',
-    image: 'https://i.imgur.com/Gi7x0nZ.png',
-  },
-  {
-    name: 'Raymond Brooks',
-    image: 'https://i.imgur.com/3I2V6lU.png',
-  },
-  {
-    name: 'Michelle McCartney',
-    image: 'https://i.imgur.com/Fcx8lCu.png',
-  },
-  {
-    name: 'Heather Nolan',
-    image: 'https://i.imgur.com/C3YDUHi.png',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-  {
-    name: 'Erik Edwards',
-    image: 'https://i.imgur.com/ZQXbX2t.jpg',
-  },
-];
-
 class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
@@ -94,12 +35,13 @@ class EventsScreen extends Component<Props, State> {
   };
 
   changeSearchText = (searchText: string) => {
-    const refetchVariables = fragmentVariables => ({
-      ...fragmentVariables,
-      search: searchText,
-    });
-
-    this.props.relay.refetch(refetchVariables);
+    console.log('change text', this.props.relay);
+    this.props.relay.refetch(
+      { search: searchText },
+      null,
+      () => {},
+      { force: true },
+    );
 
     this.setState({ searchText });
   };
@@ -127,11 +69,12 @@ class EventsScreen extends Component<Props, State> {
           onChangeSearch={search => this.changeSearchText(search)}
         />
         <ScrollView>
-          {query.events.edges.map(({node}) => (
+          {query.events.edges.map(({ node }, key) => (
               <EventCard
                 title={node.title}
                 description={node.description}
                 publicLimit={node.publicLimit}
+                key={key}
               />
             ))}
         </ScrollView>
@@ -146,8 +89,11 @@ const EventsScreenRefetchContainer = createRefetchContainer(
   EventsScreen,
   {
     query: graphql`
-      fragment EventsScreen_query on Query @argumentDefinitions(first: { type: "Int", defaultValue: 20 }) {
-        events(first: $first) @connection(key: "EventsScreen_events", filters: []) {
+      fragment EventsScreen_query on Query @argumentDefinitions(
+          first: { type: Int }
+          search: { type: String }
+        ) {
+        events(first: $first, search: $search) @connection(key: "EventsScreen_events", filters: []) {
           edges {
             node {
               id
@@ -169,16 +115,29 @@ const EventsScreenRefetchContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query EventsScreenRefetchQuery {
+    query EventsScreenRefetchQuery(
+      $first: Int
+      $search: String
+      ) {
       ...EventsScreen_query
+      @arguments(first: $first, search: $search)
     }
   `,
 );
 
-export default createQueryRenderer(EventsScreenRefetchContainer, {
+export default createQueryRenderer(withNavigation(EventsScreenRefetchContainer), {
   query: graphql`
-    query EventsScreenQuery {
+    query EventsScreenQuery(
+      $first: Int
+      $search: String
+    ) {
       ...EventsScreen_query
+      @arguments(first: $first, search: $search)
     }
   `,
+  variables: {
+    first: 10,
+    cursor: null,
+    search: '',
+  },
 });

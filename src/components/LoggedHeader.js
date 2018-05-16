@@ -55,7 +55,7 @@ const TitleAndIcon = styled.View`
 `;
 
 const SearchInput = styled.TextInput.attrs({
-  autoCapitalize: false,
+  autoCapitalize: 'none',
   autoCorrect: false,
   autoFocus: true,
   placeholderTextColor: props => props.theme.colors.secondaryColor,
@@ -112,7 +112,7 @@ const LoggedHeader = ({
         ? <Title>{title}</Title>
         : <SearchInput
             value={searchValue}
-            onChangeSearch={search => onChangeSearch(search)}
+            onChangeText={onChangeSearch}
           />}
       <Button onPress={showSearch}>
         <Icon visible={IsSearchVisible} />
