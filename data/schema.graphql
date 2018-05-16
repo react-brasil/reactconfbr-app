@@ -110,7 +110,7 @@ type EventEdge {
 """event location"""
 input location {
   cep: String
-  geolocation: [String]
+  geolocation: [Float]
 }
 
 input LoginEmailInput {

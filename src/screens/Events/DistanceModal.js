@@ -58,6 +58,7 @@ type Props = {
   distance: number,
   decreaseDistance: () => void,
   increaseDistance: () => void,
+  closeDistanceModal: () => void,
 };
 
 const DistanceModal = ({ isVisible, distance, decreaseDistance, increaseDistance, closeDistanceModal }: Props) => (

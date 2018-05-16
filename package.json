@@ -10,6 +10,7 @@
   "dependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
     "hoist-non-react-statics": "^2.5.0",
+    "idx": "^2.3.0",
     "react": "16.3.1",
     "react-native": "0.55.1",
     "react-native-linear-gradient": "^2.4.0",

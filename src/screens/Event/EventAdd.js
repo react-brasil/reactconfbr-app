@@ -221,7 +221,7 @@ class EventAdd extends Component<Props, State> {
     errorText: '',
     schedules: [],
     date: '',
-    location: { cep: '', geolocation: [] },
+    location: { cep: '', geolocation: [0, 0] },
     description: '',
     publicLimit: '20',
   };
@@ -229,7 +229,7 @@ class EventAdd extends Component<Props, State> {
   save = async () => {
     const { context } = this.props;
     const { schedules, title, date, location, image, description, publicLimit } = this.state;
-
+    console.log('location onsave', location);
     const input = {
       title,
       date,
@@ -320,9 +320,7 @@ class EventAdd extends Component<Props, State> {
       let lng = responseJson.results[0].geometry.location.lng
       let lat = responseJson.results[0].geometry.location.lat
       const location = { ...this.state.location, geolocation: [lng, lat] }
-      console.log('lng', lng);
-      console.log('lat', lat);
-      console.log('location', location);
+      console.log('onBlur location', location);
       this.setState({ location });
     })
     .catch((error) => {

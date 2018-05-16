@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
+import idx from 'idx';
+
 import createQueryRenderer from '../../relay/RelayUtils';
 import { withContext } from '../../Context';
 import type { ContextType } from '../../Context';
@@ -30,7 +32,7 @@ type Props = {
 type State = {
   searchText: string,
   IsSearchVisible: boolean,
-  geolocation: Array<string>,
+  geolocation: Array<number>,
   distance: number,
   isDistanceModalVisible: boolean
 };
@@ -39,7 +41,7 @@ class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
-    geolocation: [],
+    geolocation: [ 0, 0],
     distance: 120,
     isDistanceModalVisible: false,
   };
@@ -66,7 +68,7 @@ class EventsScreen extends Component<Props, State> {
     const { context } = this.props
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        const geolocation = [coords.longitude.toString(), coords.latitude.toString()];
+        const geolocation = [coords.longitude, coords.latitude];
         this.setState({ geolocation });
       },
       (error) => context.openModal(error.message),
@@ -107,7 +109,7 @@ class EventsScreen extends Component<Props, State> {
           distance={distance}
         />
         <ScrollView>
-          {query.events.edges.map(({ node }, key) => (
+          {idx(query, _ => _.events.edges[0]) && query.events.edges.map(({ node }, key) => (
               <EventCard
                 title={node.title}
                 description={node.description}
@@ -205,7 +207,7 @@ export default createQueryRenderer(withContext(withNavigation(EventsScreenRefetc
     first: 10,
     cursor: null,
     search: '',
-    distance: '20',
-    geolocation: null,
+    distance: 20,
+    geolocation: [0, 0],
   },
 });
