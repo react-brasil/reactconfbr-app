@@ -77,7 +77,7 @@ class EventsScreen extends Component<Props, State> {
     this.props.relay.refetch();
   }
 
-  closeDistanceModal() {
+  seeDistanceResults() {
     const { searchText, coordinates, distance } = this.state;
 
     console.log('closeDistanceModal refetch', this.state);
@@ -124,7 +124,8 @@ class EventsScreen extends Component<Props, State> {
           isVisible={isDistanceModalVisible}
           distance={distance}
           changeDistance={(distance) => this.setState({ distance })}
-          closeDistanceModal={() => this.closeDistanceModal()}
+          closeDistanceModal={() => this.setState({ isDistanceModalVisible: false })}
+          seeDistanceResults={() => this.seeDistanceResults()}
         />
       </Wrapper>
     );

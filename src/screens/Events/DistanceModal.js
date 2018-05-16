@@ -34,18 +34,12 @@ const Body = styled.View`
   height: 110px;
 `;
 
-const Bottom = styled.TouchableOpacity`
+const Bottom = styled.View`
+  flex-direction: row;
   height: 40px;
   border-top-width: 1px;
-  border-top-color: ${props => props.theme.colors.secondaryColor};
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-`;
-
-const BottomText = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-size: 18px;
-  font-weight: bold;
 `;
 
 const InputTitle = styled.TextInput.attrs({
@@ -61,14 +55,24 @@ const InputTitle = styled.TextInput.attrs({
   font-weight: bold;
 `;
 
+const Pill = styled.TouchableOpacity`
+  padding: 8px 18px;
+  align-items: center;
+  border-radius: 20px;
+  border: 2px solid ${props => props.theme.colors.secondaryColor};
+  margin-right: 10;
+  background-color: ${props => props.fill ? props.theme.colors.secondaryColor : 'transparent'}
+`;
+
 type Props = {
   isVisible: boolean,
   distance: number,
   changeDistance: string => void,
   closeDistanceModal: () => void,
+  seeDistanceResults: () => void,
 };
 
-const DistanceModal = ({ isVisible, distance, changeDistance, closeDistanceModal }: Props) => (
+const DistanceModal = ({ isVisible, distance, changeDistance, seeDistanceResults, closeDistanceModal }: Props) => (
   <Wrapper>
     <Modal isVisible={isVisible}>
       <ModalContent>
@@ -81,8 +85,9 @@ const DistanceModal = ({ isVisible, distance, changeDistance, closeDistanceModal
             {' '}km
           </ModalText>
         </Body>
-        <Bottom onPress={closeDistanceModal}>
-          <BottomText>See results</BottomText>
+        <Bottom>
+          <Pill onPress={closeDistanceModal} />
+          <Pill fill onPress={seeDistanceResults} />
         </Bottom>
       </ModalContent>
     </Modal>
