@@ -104,6 +104,8 @@ const LoggedHeader = ({
   onChangeSearch,
   showSearch,
   IsSearchVisible,
+  openDistanceModal,
+  distance,
 }: Props) => (
   <Wrapper>
     <SafeAreaView />
@@ -122,11 +124,8 @@ const LoggedHeader = ({
       <Pill>
         <PillLabel>Date - 29/01/1998</PillLabel>
       </Pill>
-      <Pill>
-        <PillLabel>Range - 20km</PillLabel>
-      </Pill>
-      <Pill>
-        <PillLabel>Address</PillLabel>
+      <Pill onPress={openDistanceModal}>
+        <PillLabel>Range - {distance}km</PillLabel>
       </Pill>
     </PillsContainer>
   </Wrapper>

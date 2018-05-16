@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
 import createQueryRenderer from '../../relay/RelayUtils';
+import { withContext } from '../../Context';
+import type { ContextType } from '../../Context';
 
 import { StatusBar, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
@@ -12,6 +14,7 @@ import LoggedHeader from '../../components/LoggedHeader';
 import ActionButton from '../../components/ActionButton';
 import EventCard from '../../components/EventCardMVP';
 import { ROUTENAMES } from '../../navigation/RouteNames';
+import DistanceModal from './DistanceModal';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -21,21 +24,27 @@ const Wrapper = styled.View`
 type Props = {
   navigation: Object,
   relay: Object,
+  context: ContextType,
 };
 
 type State = {
   searchText: string,
   IsSearchVisible: boolean,
+  geolocation: Array<string>,
+  distance: number,
+  isDistanceModalVisible: boolean
 };
 
 class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
+    geolocation: [],
+    distance: 120,
+    isDistanceModalVisible: false,
   };
 
   changeSearchText = (searchText: string) => {
-    console.log('change text', this.props.relay);
     this.props.relay.refetch(
       { search: searchText },
       null,
@@ -52,10 +61,37 @@ class EventsScreen extends Component<Props, State> {
       IsSearchVisible: !IsSearchVisible,
     });
   };
+
+  componentDidMount() {
+    const { context } = this.props
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const geolocation = [coords.longitude.toString(), coords.latitude.toString()];
+        this.setState({ geolocation });
+      },
+      (error) => context.openModal(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+    this.props.relay.refetch();
+  }
+
+  closeDistanceModal() {
+    const { searchText, geolocation, distance } = this.state;
+
+    this.props.relay.refetch(
+      { search: searchText, geolocation, distance },
+      null,
+      () => {},
+      { force: true },
+    );
+
+    return this.setState({ isDistanceModalVisible: false });
+  }
+
   render() {
     const { navigation, query } = this.props;
     const { schedule, title, date, location, image, description, publicLimit } = query;
-    const { searchText, IsSearchVisible } = this.state;
+    const { searchText, IsSearchVisible, distance, isDistanceModalVisible } = this.state;
 
     console.log('query', query);
     return (
@@ -67,6 +103,8 @@ class EventsScreen extends Component<Props, State> {
           IsSearchVisible={IsSearchVisible}
           showSearch={this.setVisible}
           onChangeSearch={search => this.changeSearchText(search)}
+          openDistanceModal={() => this.setState({ isDistanceModalVisible: true })}
+          distance={distance}
         />
         <ScrollView>
           {query.events.edges.map(({ node }, key) => (
@@ -79,6 +117,13 @@ class EventsScreen extends Component<Props, State> {
             ))}
         </ScrollView>
         <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)}/>
+        <DistanceModal
+          isVisible={isDistanceModalVisible}
+          distance={distance}
+          increaseDistance={() => this.setState({ distance: distance + 1 })}
+          decreaseDistance={() => this.setState({ distance: distance - 1 })}
+          closeDistanceModal={() => this.closeDistanceModal()}
+        />
       </Wrapper>
     );
   }
@@ -92,8 +137,15 @@ const EventsScreenRefetchContainer = createRefetchContainer(
       fragment EventsScreen_query on Query @argumentDefinitions(
           first: { type: Int }
           search: { type: String }
+          geolocation: { type: "[String]" }
+          distance: { type: String }
         ) {
-        events(first: $first, search: $search) @connection(key: "EventsScreen_events", filters: []) {
+        events(
+          first: $first,
+          search: $search,
+          geolocation: $geolocation,
+          distance: $distance
+        ) @connection(key: "EventsScreen_events", filters: []) {
           edges {
             node {
               id
@@ -118,26 +170,42 @@ const EventsScreenRefetchContainer = createRefetchContainer(
     query EventsScreenRefetchQuery(
       $first: Int
       $search: String
+      $geolocation: [String]
+      $distance: String
       ) {
       ...EventsScreen_query
-      @arguments(first: $first, search: $search)
+      @arguments(
+        first: $first,
+        search: $search,
+        geolocation: $geolocation,
+        distance: $distance
+      )
     }
   `,
 );
 
-export default createQueryRenderer(withNavigation(EventsScreenRefetchContainer), {
+export default createQueryRenderer(withContext(withNavigation(EventsScreenRefetchContainer)), {
   query: graphql`
     query EventsScreenQuery(
       $first: Int
       $search: String
+      $geolocation: [String]
+      $distance: String
     ) {
       ...EventsScreen_query
-      @arguments(first: $first, search: $search)
+      @arguments(
+        first: $first,
+        search: $search,
+        geolocation: $geolocation,
+        distance: $distance
+      )
     }
   `,
   variables: {
     first: 10,
     cursor: null,
     search: '',
+    distance: '20',
+    geolocation: null,
   },
 });
