@@ -127,7 +127,7 @@ const InputCep = styled(TextInputMask).attrs({
   selectionColor: props => props.theme.colors.secondaryColor,
   color: props => props.theme.colors.secondaryColor,
   autoCapitalize: 'none',
-  mask: '[00]-[000][000]',
+  mask: '[00][000][000]',
 }) `
   font-size: 20;
 `;
@@ -221,15 +221,15 @@ class EventAdd extends Component<Props, State> {
     errorText: '',
     schedules: [],
     date: '',
-    location: { cep: '', geolocation: [] },
+    location: { cep: '', coordinates: [0, 0] },
     description: '',
     publicLimit: '20',
   };
 
   save = async () => {
-    const { navigation, context } = this.props;
+    const { context } = this.props;
     const { schedules, title, date, location, image, description, publicLimit } = this.state;
-
+    console.log('location onsave', location);
     const input = {
       title,
       date,
@@ -303,6 +303,32 @@ class EventAdd extends Component<Props, State> {
     this.setState({ schedules: newschedules });
   };
 
+  getLocation = () => {
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=88075220&key=AIzaSyCuvQjcYHf8cktJBnNG7TC_6pfopL-C3OE', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstParam: 'yourValue',
+        secondParam: 'yourOtherValue',
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      let lng = responseJson.results[0].geometry.location.lng
+      let lat = responseJson.results[0].geometry.location.lat
+      const location = { ...this.state.location, coordinates: [lng, lat] }
+      console.log('onBlur location', location);
+      this.setState({ location });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
   render() {
     const { navigation } = this.props;
     const { schedules, errorText, location } = this.state;
@@ -325,8 +351,9 @@ class EventAdd extends Component<Props, State> {
             </Row>
             <Row>
               <InputCep
-                placeholder="00-0000000"
+                placeholder="000000000"
                 onChangeText={(text) => this.setState({ location: { ...location, cep: text } })}
+                onBlur={this.getLocation}
               />
               <InputDate
                 placeholder="DD/MM HH:MM"

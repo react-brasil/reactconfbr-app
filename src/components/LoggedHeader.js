@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../utils/design/images';
-import * as Btn from './Button';
 
 const Wrapper = styled(LinearGradient).attrs({
   colors: ['#53B1FF', '#651FFF'],
@@ -55,7 +54,7 @@ const TitleAndIcon = styled.View`
 `;
 
 const SearchInput = styled.TextInput.attrs({
-  autoCapitalize: false,
+  autoCapitalize: 'none',
   autoCorrect: false,
   autoFocus: true,
   placeholderTextColor: props => props.theme.colors.secondaryColor,
@@ -104,6 +103,8 @@ const LoggedHeader = ({
   onChangeSearch,
   showSearch,
   IsSearchVisible,
+  openDistanceModal,
+  distance,
 }: Props) => (
   <Wrapper>
     <SafeAreaView />
@@ -112,7 +113,7 @@ const LoggedHeader = ({
         ? <Title>{title}</Title>
         : <SearchInput
             value={searchValue}
-            onChangeSearch={search => onChangeSearch(search)}
+            onChangeText={onChangeSearch}
           />}
       <Button onPress={showSearch}>
         <Icon visible={IsSearchVisible} />
@@ -122,11 +123,8 @@ const LoggedHeader = ({
       <Pill>
         <PillLabel>Date - 29/01/1998</PillLabel>
       </Pill>
-      <Pill>
-        <PillLabel>Range - 20km</PillLabel>
-      </Pill>
-      <Pill>
-        <PillLabel>Address</PillLabel>
+      <Pill onPress={openDistanceModal}>
+        <PillLabel>Range - {distance}km</PillLabel>
       </Pill>
     </PillsContainer>
   </Wrapper>

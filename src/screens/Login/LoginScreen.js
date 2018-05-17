@@ -96,7 +96,7 @@ class LoginScreen extends Component<Props, State> {
     const { navigation } = this.props;
 
     if (!email || !password) {
-      console.log('this.props', this.props)
+      this.props.context.openModal('Favor preencher todos os campos');
     }
 
     const input = {
