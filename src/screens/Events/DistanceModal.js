@@ -37,7 +37,6 @@ const Body = styled.View`
 const Bottom = styled.View`
   flex-direction: row;
   height: 40px;
-  border-top-width: 1px;
   justify-content: space-around;
   align-items: center;
 `;
