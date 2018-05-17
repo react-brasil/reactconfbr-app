@@ -47,14 +47,11 @@ class EventsScreen extends Component<Props, State> {
   };
 
   changeSearchText = (searchText: string) => {
-    this.props.relay.refetch(
-      { search: searchText },
-      null,
-      () => {},
-      { force: true },
-    );
+    const { coordinates, distance } = this.state;
 
-    this.setState({ searchText });
+    this.props.relay.refetch({ search: searchText, coordinates, distance }, null, () => {}, { force: true });
+
+    return this.setState({ searchText });
   };
 
   setVisible = () => {
