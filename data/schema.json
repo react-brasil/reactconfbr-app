@@ -120,6 +120,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "days",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "coordinates",
                   "description": null,
                   "type": {
