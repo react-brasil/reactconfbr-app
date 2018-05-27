@@ -1,417 +1,265 @@
-// @flow
-
-import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
-
+import * as React from 'react';
+import { SafeAreaView, StatusBar, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import { withNavigation } from 'react-navigation';
-import { withContext } from '../../Context';
-import type { ContextType } from '../../Context';
-
-import ActionButton from '../../components/ActionButton';
-import SaveButton from '../../components/SaveButton';
+import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../../utils/design/images';
-import ErrorModal from '../../components/ErrorModal';
-import GradientWrapper from '../../components/GradientWrapper';
-import EventAddMutation from './EventAddMutation';
-import TextInputMask from 'react-native-text-input-mask';
+import KeyBoardSpacer from 'react-native-keyboard-spacer';
+import DatePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
-const Wrapper = styled.View`
+const Wrapper = styled(LinearGradient).attrs({
+  colors: ['rgb(41, 123, 247)', '#651FFF'],
+  start: { x: 0.0, y: 0.25 },
+  end: { x: 0.5, y: 1.0 },
+}) `
   flex: 1;
-`
-const ForgotButton = styled.TouchableOpacity`
 `;
 
-const ImageWrapper = styled(GradientWrapper) `
-  flex: 0.6;
-  padding: 20px;
-  shadow-color: grey;
-  shadow-offset: 0px 10px;
-  shadow-radius: 0;
-  shadow-opacity: 1;
+const HeaderContainer = styled.View`
+  position: absolute;
+  top: 10;
+  left: 20;
+  right: 20;
+  background-color: transparent;
+  z-index: 1000;
 `;
 
-const TextWrapper = styled.View`
-  margin-top: auto;
-`;
-
-const InputTitle = styled.TextInput.attrs({
-  placeholderTextColor: props => props.theme.colors.secondaryText,
-  underlineColorAndroid: props => props.theme.colors.secondaryColor,
-  selectionColor: props => props.theme.colors.secondaryColor,
-  color: props => props.theme.colors.primaryColor,
-  autoCapitalize: 'none',
-}) `
-  font-size: 36;
-  color: ${props => props.theme.colors.secondaryColor};
-`;
-
-const Description = styled.Text`
-  color: ${props => props.theme.colors.secondaryColor};
-  font-weight: bold;
-  font-size: 20px;
-`;
-
-const Arrow = styled.Image.attrs({
-  source: IMAGES.ARROW,
-}) `
-  width: 30;
-  height: 24;
-  margin-top: 5;
-  tint-color: ${props => props.theme.colors.secondaryColor};
-`;
-
-const Edit = styled.Image.attrs({
-  source: IMAGES.EDIT,
-}) `
-  width: 20;
-  height: 20;
-  margin-top: 5;
-  tint-color: ${props => props.theme.colors.secondaryColor};
-`;
-
-
-const BodyWrapper = styled.View`
-  flex: 6;
-  background-color: ${props => props.theme.colors.secondaryColor};
-`;
-
-const TimeLineWrapper = styled.View`
-  margin: 20px 28px 20px 28px;
-  background-color: ${props => props.theme.colors.secondaryColor};
-  margin-top: -30px;
-  border-radius: 20px;
-  border-radius: 20;
-  shadow-offset: { width: 0, height: 0 };
-  shadow-opacity: 0.15;
-  shadow-radius: 20;
-  elevation: 1;
-  min-height: 300px;
-`;
-
-const HeaderWrapper = styled.View`
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const TimeLine = styled.ScrollView.attrs({
-  contentContainerStyle: () => ({
-    zIndex: 9,
-    marginTop: 20,
-  }),
-}) ``;
-
-const Talk = styled.View`
-  height: 90px;
-  margin: 0 20px 0 20px;
-  border-left-color:  gray;
-  border-left-width: 1px;
+const Header = styled.View`
+  margin-top: 10;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between; 
+  z-index: 1000;
 `;
 
-const InputTalkTitle = styled.TextInput.attrs({
-  placeholderTextColor: props => props.theme.colors.secondaryText,
-  underlineColorAndroid: props => props.theme.colors.secondaryColor,
-  selectionColor: props => props.theme.colors.primaryColor,
-  color: props => props.theme.colors.primaryColor,
-  autoCapitalize: 'none',
-}) `
-  height: 40;
-  width: 100%;
-  font-size: 20;
+const HeaderButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 `;
 
-const InputCep = styled(TextInputMask).attrs({
-  placeholderTextColor: props => props.theme.colors.secondaryText,
-  underlineColorAndroid: props => props.theme.colors.secondaryColor,
-  selectionColor: props => props.theme.colors.secondaryColor,
-  color: props => props.theme.colors.secondaryColor,
-  autoCapitalize: 'none',
-  mask: '[00][000][000]',
+const CloseIcon = styled.Image.attrs({
+  source: IMAGES.CLOSE,
 }) `
-  font-size: 20;
+  width: 26;
+  height: 26;
+  tint-color: white;
 `;
 
-const InputDate = styled(TextInputMask).attrs({
-  placeholderTextColor: props => props.theme.colors.secondaryText,
-  underlineColorAndroid: props => props.theme.colors.secondaryColor,
-  selectionColor: props => props.theme.colors.secondaryColor,
-  color: props => props.theme.colors.secondaryColor,
-  autoCapitalize: 'none',
-  mask: '[00]/[00] [00]:[00]',
-}) `
-  font-size: 20;
-  margin-left: 20px;
+const CreateButton = styled.TouchableOpacity`
+  padding: 8px 20px;
+  z-index: 1000;
+  border-radius: 20;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  margin-right: -10;
 `;
 
-const InputInfoText = styled.TextInput.attrs({
-  placeholderTextColor: props => props.theme.colors.secondaryText,
-  underlineColorAndroid: props => props.theme.colors.secondaryColor,
-  selectionColor: props => props.theme.colors.primaryColor,
-  color: props => props.theme.colors.primaryColor,
-  autoCapitalize: 'none',
-}) `
-  font-size: 14;
+const SmallText = styled.Text`
   color: ${props => props.theme.colors.primaryColor};
+  font-size: 16;
+  font-weight: 800; 
 `;
 
+const EventName = styled.TextInput.attrs({
+  placeholderTextColor: 'rgba(255,255,255,0.43)',
+  placeholder: 'Event Name ...',
+  underlineColorAndroid: 'transparent',
+  selectionColor: 'white',
+}) `
+  font-size: 32px;
+  color: white;
+  font-weight: 800;
+  width: 88%;
+  margin: 20px 25px;
+  margin-top: 80;
+`;
 
-const IconWrapper = styled.View`
+const EventDescription = styled.TextInput.attrs({
+  placeholderTextColor: 'rgba(255,255,255,0.43)',
+  placeholder: 'What’s the plan for the event?',
+  underlineColorAndroid: 'transparent',
+  multiline: true,
+  selectionColor: 'white',
+}) `
+  font-size: 45px;
+  color: white;
+  font-weight: 800;
+  width: 88%;
+  height: 150px;
+  margin: 10px 25px;
+`;
+
+const DateAndLocationRow = styled.View`
   flex: 1;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 30px;
 `;
 
-const Ball = styled.View`
-  height: 16px;
-  width: 16px;
-  border-radius: 50;
-  background-color: #2979FF;
-  margin-left: -8px;
-  margin-top: 6px
-`;
-
-const ContentWrapper = styled.View`
-  flex: 9
+const ValuesContainer = styled.View`
+  flex: 1;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
+  margin-horizontal: 10;
 `;
 
-const BasicInfosWrapper = styled.View`
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  margin-top: 5px;
+const Value = styled.Text`
+  font-size: 20px;
+  color: ${props => props.active ? 'white' : 'rgba(255,255,255,0.43)'};
+  margin: 5px 0px;
+  font-weight: 800;
 `;
 
-const InfosText = styled.Text`
-  color: ${props => props.theme.colors.secondaryText};
-  font-weight: bold;
-  font-size: 14px;
+const BiggerText = styled(Value) `
+  font-size: 27px;
 `;
 
 const Row = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  margin-left: 10;
 `;
 
-type Props = {
-  navigation: Object,
-  context: ContextType,
-};
+const IncreaseButtons = styled.TouchableOpacity`
+  width: 36;
+  height: 36;
+  background-color: white;
+  border-radius: ${36 / 2};
+  align-items: center;
+  justify-content: center;
+  margin: 0px 20px;
+`;
+
+const PlusIcon = styled.Image.attrs({
+  source: IMAGES.ADD,
+}) `
+  width: 20;
+  height: 20;
+  tint-color: ${props => props.theme.colors.primaryColor};
+`;
+
+const MinusIcon = styled.Image.attrs({
+  source: IMAGES.MINUS,
+}) `
+  width: 20;
+  height: 20;
+  tint-color: ${props => props.theme.colors.primaryColor};
+`;
+
+type Schedules = { title: string, talker: string, time: string }
 
 type State = {
-  title: string,
-  errorText: string,
-  schedules: Array<Object>,
-  date: string,
-  location: Object,
-  date: string,
-  image: string,
+  name: string,
   description: string,
-  publicLimit: string
-};
+  date: string,
+  location: {
+    cep: string,
+    coordinates: Array<number>,
+  },
+  address: string,
+  schedules: Array<Schedules>,
+  errorText: string,
+  eventLimit: number,
+  isDatePickerVisible: boolean,
+}
 
+type Props = {};
 
-
-@withNavigation
-class EventAdd extends Component<Props, State> {
-  state = {
-    image: '',
-    title: '',
-    errorText: '',
-    schedules: [],
-    date: '',
-    location: { cep: '', coordinates: [0, 0] },
-    description: '',
-    publicLimit: '20',
-  };
-
-  save = async () => {
-    const { context } = this.props;
-    const { schedules, title, date, location, image, description, publicLimit } = this.state;
-    console.log('location onsave', location);
-    const input = {
-      title,
-      date,
-      location,
-      schedule: schedules,
-
-      // @TODO
-      image,
-      description,
-      publicLimit,
-    };
-
-    console.log('input', input)
-
-    const onCompleted = async res => {
-      const response = res && res.EventAdd;
-      if (response && response.error) {
-        context.openModal('Verifique sua conexão com a internet e tente novamente');
-      } else {
-        context.openSuccessModal('Seu evento foi criado com sucesso');
-      }
-
-    };
-
-    const onError = () => {
-      context.openModal('Verifique sua conexão com a internet e tente novamente');
-    };
-
-    EventAddMutation.commit(input, onCompleted, onError);
-  };
-
-  closeModal = () => {
-    this.setState({
+class EventAdd extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: '',
+      description: '',
+      date: '',
+      location: { cep: '', coordinates: [0, 0] },
+      address: '',
+      eventLimit: 10,
+      schedules: [],
       errorText: '',
-    });
-  };
-
-  handleChangeInputField = (value: string, index: number, element: string) => {
-    const schedules = [...this.state.schedules];
-    let newSchedules;
-    switch (element) {
-      case 'title':
-        newSchedules = Object.assign({}, schedules[index], {
-          title: value,
-        });
-        break;
-      case 'talker':
-        newSchedules = Object.assign({}, schedules[index], {
-          talker: value,
-        });
-        break;
-      case 'time':
-        newSchedules = Object.assign({}, schedules[index], {
-          time: value,
-        });
-        break;
-      default:
-        break;
+      isDatePickerVisible: false,
     }
-    schedules[index] = newSchedules;
-    this.setState({ schedules });
-  };
-
-  addSchedule = () => {
-    const newRange = { title: '', talker: '', time: '' };
-    this.setState({ schedules: [...this.state.schedules, newRange] });
-  };
-
-  removeSchedule = (index: number) => {
-    const newschedules = [...this.state.schedules.filter((s, id) => index !== id)];
-    this.setState({ schedules: newschedules });
-  };
-
-  getLocation = () => {
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=88075220&key=AIzaSyCuvQjcYHf8cktJBnNG7TC_6pfopL-C3OE', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstParam: 'yourValue',
-        secondParam: 'yourOtherValue',
-      }),
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      let lng = responseJson.results[0].geometry.location.lng
-      let lat = responseJson.results[0].geometry.location.lat
-      const location = { ...this.state.location, coordinates: [lng, lat] }
-      console.log('onBlur location', location);
-      this.setState({ location });
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
+    this.timer = null;
   }
 
+  addOne = () => {
+    this.setState({ eventLimit: this.state.eventLimit + 1 });
+    this.timer = setTimeout(this.addOne, 80);
+  }
+
+  stopTimer = () => {
+    clearTimeout(this.timer);
+  }
+
+  handleDatePicked = (date: string) => {
+    this.setState({
+      date,
+      isDatePickerVisible: false,
+    });
+  };
+
+  setDatePicker = () => this.setState({ isDatePickerVisible: !this.isDatePickerVisible });
+
   render() {
-    const { navigation } = this.props;
-    const { schedules, errorText, location } = this.state;
+    const { name, description, address, date, eventLimit, isDatePickerVisible } = this.state;
     return (
       <Wrapper>
-        <ImageWrapper>
+        <StatusBar barStyle="light-content" />
+        <HeaderContainer>
           <SafeAreaView />
-          <HeaderWrapper>
+          <Header>
+            <HeaderButton onPress={() => this.props.navigation.goBack()}>
+              <CloseIcon />
+            </HeaderButton>
+            <CreateButton>
+              <SmallText>CREATE</SmallText>
+            </CreateButton>
+          </Header>
+        </HeaderContainer>
+        <ScrollView>
+          <EventName
+            value={name}
+            maxLength={50}
+            onChangeText={(name: string) => this.setState({ name })}
+          />
+          <EventDescription
+            value={description}
+            maxLength={100}
+            onChangeText={(description: string) => this.setState({ description })}
+          />
+          <DateAndLocationRow>
+            <ValuesContainer>
+              <Value active>WHEN</Value>
+              <TouchableOpacity onPress={this.setDatePicker}>
+                <Value>{date ? moment(date).format('MMM Do YYYY') : 'Pick a date'}</Value>
+              </TouchableOpacity>
+            </ValuesContainer>
+            <ValuesContainer>
+              <Value active>WHERE</Value>
+              <Value>{address ? address : 'Set a location'}</Value>
+            </ValuesContainer>
+          </DateAndLocationRow>
+          <DateAndLocationRow>
+            <BiggerText active>Event Limit: </BiggerText>
             <Row>
-              <ForgotButton onPress={() => navigation.pop()}>
-                <Arrow />
-              </ForgotButton>
-              <InputTitle
-                placeholder="Event Title"
-                onChangeText={(text) => this.setState({ title: text })}
-              />
-              <ForgotButton onPress={() => navigation.pop()}>
-                <Edit />
-              </ForgotButton>
+              <IncreaseButtons onPressIn={this.addOne} onPressOut={this.stopTimer}>
+                <PlusIcon />
+              </IncreaseButtons>
+              <Value active>{eventLimit}</Value>
+              <IncreaseButtons onPress={() => this.setState({ eventLimit: eventLimit === 0 ? eventLimit : eventLimit - 1 })}>
+                <MinusIcon />
+              </IncreaseButtons>
             </Row>
-            <Row>
-              <InputCep
-                placeholder="000000000"
-                onChangeText={(text) => this.setState({ location: { ...location, cep: text } })}
-                onBlur={this.getLocation}
-              />
-              <InputDate
-                placeholder="DD/MM HH:MM"
-                onChangeText={(text) => this.setState({ date: text })}
-              />
-            </Row>
-          </HeaderWrapper>
-          <TextWrapper>
-            <Description></Description>
-            <Description></Description>
-          </TextWrapper>
-        </ImageWrapper>
-        <BodyWrapper>
-          <TimeLineWrapper>
-            <TimeLine>
-              {schedules.map((schedule, index) => (
-                <Talk key={index}>
-                  <IconWrapper>
-                    <Ball />
-                  </IconWrapper>
-                  <ContentWrapper>
-                    <InputTalkTitle
-                      placeholder="Talk title"
-                      onChangeText={(text) => this.handleChangeInputField(text, index, 'title')}
-                    />
-                    <BasicInfosWrapper>
-                      <Row>
-                        <InfosText>By: </InfosText>
-                        <InputInfoText
-                          placeholder=" Author name"
-                          onChangeText={(text) => this.handleChangeInputField(text, index, 'talker')}
-                        />
-                      </Row>
-                      <Row style={{ marginTop: 5 }}>
-                        <InfosText>At: </InfosText>
-                        <InputInfoText
-                          placeholder=" ex: 8:00"
-                          onChangeText={(text) => this.handleChangeInputField(text, index, 'time')}
-                        />
-                      </Row>
-                    </BasicInfosWrapper>
-                  </ContentWrapper>
-                </Talk>
-              ))}
-            </TimeLine>
-          </TimeLineWrapper>
-        </BodyWrapper>
-        {schedules.length > 0 && <SaveButton onPress={() => this.save()} />}
-        <ActionButton onPress={() => this.addSchedule()} />
-        <ErrorModal
-          visible={errorText ? true : false}
-          errorText={errorText}
-          onRequestClose={this.closeModal}
-          timeout={6000}
-        />
+          </DateAndLocationRow>
+        </ScrollView>
+        {Platform.OS === 'ios' && <KeyBoardSpacer />}
+        <DatePicker onCancel={this.setDatePicker} onConfirm={this.handleDatePicked} isVisible={isDatePickerVisible} />
       </Wrapper>
-    );
+    )
   }
 }
 
-export default withContext(EventAdd);
+export default EventAdd
