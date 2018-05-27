@@ -1,21 +1,20 @@
 {
-  "name": "reactConf",
-  "description": "React Navigation + Relay working example",
+  "name": "reactconfbr-app",
+  "description": "React Native SP Events App",
   "version": "0.0.1",
-  "author": {
-    "name": "Sibelius Seraphini",
-    "email": "sibeliusseraphini@gmail.com",
-    "url": "https://github.com/sibelius"
-  },
   "dependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
     "hoist-non-react-statics": "^2.5.0",
     "idx": "^2.3.0",
+    "moment": "^2.22.1",
     "react": "16.3.1",
     "react-native": "0.55.1",
+    "react-native-keyboard-spacer": "^0.4.1",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-modal": "^6.0.0",
+    "react-native-modal-datetime-picker": "^5.1.0",
     "react-native-text-input-mask": "^0.7.0",
+    "react-native-timeline-listview": "^0.2.3",
     "react-navigation": "^1.5.11",
     "react-relay": "1.5.0",
     "styled-components": "^3.2.6"
@@ -42,7 +41,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write --single-quote true --trailing-comma all --print-width 80",
+      "prettier --write --single-quote true --trailing-comma all --print-width 120",
       "git add"
     ]
   },
