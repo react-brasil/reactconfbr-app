@@ -105,6 +105,8 @@ const LoggedHeader = ({
   IsSearchVisible,
   openDistanceModal,
   distance,
+  openDateModal,
+  days,
 }: Props) => (
   <Wrapper>
     <SafeAreaView />
@@ -120,8 +122,8 @@ const LoggedHeader = ({
       </Button>
     </TitleAndIcon>
     <PillsContainer horizontal>
-      <Pill>
-        <PillLabel>Date - 29/01/1998</PillLabel>
+      <Pill onPress={openDateModal}>
+        <PillLabel>Days - {days}</PillLabel>
       </Pill>
       <Pill onPress={openDistanceModal}>
         <PillLabel>Range - {distance}km</PillLabel>
