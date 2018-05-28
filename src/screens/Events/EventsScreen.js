@@ -67,13 +67,13 @@ class EventsScreen extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { context } = this.props
+    const { context } = this.props;
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const coordinates = [coords.longitude, coords.latitude];
         this.setState({ coordinates });
       },
-      (error) => context.openModal(error.message),
+      error => context.openModal(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this.props.relay.refetch();
@@ -81,13 +81,9 @@ class EventsScreen extends Component<Props, State> {
 
   changeDistance(distance) {
     const { searchText, coordinates } = this.state;
-
-    this.props.relay.refetch(
-      { search: searchText, coordinates, distance },
-      null,
-      () => {},
-      { force: true },
-    );
+    
+    console.log('closeDistanceModal refetch', this.state);
+    this.props.relay.refetch({ search: searchText, coordinates, distance }, null, () => {}, { force: true });
 
     return this.setState({ distance, isDistanceModalVisible: false });
   }
@@ -106,9 +102,8 @@ class EventsScreen extends Component<Props, State> {
   }
 
   render() {
-    const { navigation, query } = this.props;
-    const { schedule, title, date, location, image, description, publicLimit } = query;
-    const { searchText, IsSearchVisible, distance, days, isDistanceModalVisible, isDateModalVisible } = this.state;
+    const { query } = this.props;
+    const { searchText, IsSearchVisible, distance, isDistanceModalVisible } = this.state;
 
     return (
       <Wrapper>
@@ -125,19 +120,16 @@ class EventsScreen extends Component<Props, State> {
           days={days}
         />
         <ScrollView>
-          {idx(query, _ => _.events.edges[0]) && query.events.edges.map(({ node }, key) => (
-              <EventCard
-                title={node.title}
-                description={node.description}
-                publicLimit={node.publicLimit}
-                key={key}
-              />
+          {idx(query, _ => _.events.edges[0]) &&
+            query.events.edges.map(({ node }, key) => (
+              <EventCard title={node.title} description={node.description} publicLimit={node.publicLimit} key={key} />
             ))}
         </ScrollView>
-        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)}/>
+        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)} />
         <DistanceModal
           isVisible={isDistanceModalVisible}
-          changeDistance={(distance) => this.changeDistance(distance)}
+          distance={distance}
+          changeDistance={distance => this.setState({ distance })}
           closeDistanceModal={() => this.setState({ isDistanceModalVisible: false })}
         />
         <DateModal
@@ -149,7 +141,6 @@ class EventsScreen extends Component<Props, State> {
     );
   }
 }
-
 
 const EventsScreenRefetchContainer = createRefetchContainer(
   EventsScreen,
@@ -179,7 +170,6 @@ const EventsScreenRefetchContainer = createRefetchContainer(
               }
               title
               date
-              location
               image
               description
               publicLimit

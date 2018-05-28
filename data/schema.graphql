@@ -42,7 +42,7 @@ type Event implements Node {
   title: String
   description: String
   date: String
-  location: String
+  location: Location
   publicLimit: String
 
   """event image"""
@@ -109,8 +109,18 @@ type EventEdge {
 
 """event location"""
 input location {
-  cep: String
   coordinates: [Float]
+  cep: String
+  street: String
+  number: String
+}
+
+"""Location Type"""
+type Location {
+  coordinates: [Float]
+  cep: String
+  street: String
+  number: String
 }
 
 input LoginEmailInput {

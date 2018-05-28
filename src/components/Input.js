@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components/native';
+import TextInputMask from 'react-native-text-input-mask';
 
 const InputWrapper = styled.View`
   padding: 10px;
@@ -10,7 +11,7 @@ const InputWrapper = styled.View`
   margin-top: 30px;
 `;
 
-const RegisterTextInput = styled.TextInput.attrs({
+const RegisterTextInput = styled(TextInputMask).attrs({
   placeholderTextColor: props => props.theme.colors.secondaryColor,
   underlineColorAndroid: props => props.theme.colors.secondaryColor,
   selectionColor: props => props.theme.colors.secondaryColor,
