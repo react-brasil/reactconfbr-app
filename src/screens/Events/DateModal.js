@@ -40,15 +40,6 @@ const Bottom = styled.View`
 const Pill = styled.TouchableOpacity`
   padding: 8px 18px;
   align-items: center;
-  border-radius: 20px;
-  border: 2px solid ${props => props.theme.colors.secondaryColor};
-  margin-right: 10;
-  background-color: ${props => props.fill ? props.theme.colors.secondaryColor : 'transparent'}
-`;
-
-const DistancePill = styled.TouchableOpacity`
-  padding: 8px 18px;
-  align-items: center;
   justify-content: center;
   border-radius: 20px;
   border: 2px solid ${props => props.theme.colors.secondaryColor};
@@ -65,39 +56,47 @@ const PillText = styled.Text`
 `
 const Row = styled.View`
   flex-direction: row;
-  justify-content: space-around;
 `
+
+const ClosePill = styled.TouchableOpacity`
+  padding: 8px 18px;
+  align-items: center;
+  border-radius: 20px;
+  border: 2px solid ${props => props.theme.colors.secondaryColor};
+  margin-right: 10;
+  background-color: ${props => props.fill ? props.theme.colors.secondaryColor : 'transparent'}
+`;
 
 type Props = {
   isVisible: boolean,
-  changeDistance: string => void,
-  closeDistanceModal: () => void,
+  setDate: (number) => void,
+  closeDateModal: void => void,
 };
 
-const DistanceModal = ({ isVisible, changeDistance, closeDistanceModal }: Props) => (
+const DistanceModal = ({ isVisible, setDate, closeDateModal }: Props) => (
   <Wrapper>
     <Modal isVisible={isVisible}>
       <ModalContent>
         <Body>
           <Row>
-            <DistancePill fill onPress={() => changeDistance('20')}>
-              <PillText>20 km</PillText>
-            </DistancePill>
-            <DistancePill fill onPress={() => changeDistance('50')}>
-              <PillText>50 km</PillText>
-            </DistancePill>
+            <Pill fill onPress={() => setDate(3)}>
+              <PillText>3 days</PillText>
+            </Pill>
+            <Pill fill onPress={() => setDate(7)}>
+              <PillText>1 week</PillText>
+            </Pill>
           </Row>
           <Row>
-            <DistancePill fill onPress={() => changeDistance('80')}>
-              <PillText>80 km</PillText>
-            </DistancePill>
-            <DistancePill fill onPress={() => changeDistance('120')}>
-              <PillText>120 km</PillText>
-            </DistancePill>
+            <Pill fill onPress={() => setDate(14)}>
+              <PillText>2 weeks</PillText>
+            </Pill>
+            <Pill fill onPress={() => setDate(28)}>
+              <PillText>4 weeks</PillText>
+            </Pill>
           </Row>
         </Body>
         <Bottom>
-          <Pill onPress={closeDistanceModal} />
+          <ClosePill onPress={closeDateModal} />
         </Bottom>
       </ModalContent>
     </Modal>

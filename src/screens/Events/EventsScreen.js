@@ -15,6 +15,7 @@ import ActionButton from '../../components/ActionButton';
 import EventCard from '../../components/EventCardMVP';
 import { ROUTENAMES } from '../../navigation/RouteNames';
 import DistanceModal from './DistanceModal';
+import DateModal from './DateModal';
 
 const TOTAL_REFETCH_ITEMS = 10;
 
@@ -34,6 +35,7 @@ type State = {
   IsSearchVisible: boolean,
   coordinates: Array<number>,
   distance: number,
+  days: number,
   isDistanceModalVisible: boolean,
   isRefreshing: boolean,
   isFetchingEnd: boolean,
@@ -45,8 +47,9 @@ class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
-    coordinates: [0, 0],
-    distance: 120,
+    coordinates: [ 0, 0],
+    distance: 80,
+    days: 7,
     isDistanceModalVisible: false,
     isRefreshing: false,
     isFetchingEnd: false,
@@ -80,13 +83,26 @@ class EventsScreen extends Component<Props, State> {
     this.props.relay.refetch();
   }
 
-  seeDistanceResults() {
-    const { searchText, coordinates, distance } = this.state;
-
+  changeDistance(distance) {
+    const { searchText, coordinates } = this.state;
+    
     console.log('closeDistanceModal refetch', this.state);
     this.props.relay.refetch({ search: searchText, coordinates, distance }, null, () => {}, { force: true });
 
-    return this.setState({ isDistanceModalVisible: false });
+    return this.setState({ distance, isDistanceModalVisible: false });
+  }
+
+  setDate(days) {
+    const { searchText, coordinates, distance } = this.state;
+
+    this.props.relay.refetch(
+      { search: searchText, coordinates, distance, days },
+      null,
+      () => {},
+      { force: true },
+    );
+
+    return this.setState({ days, isDateModalVisible: false });
   }
 
   onRefresh = () => {
@@ -184,7 +200,9 @@ class EventsScreen extends Component<Props, State> {
           showSearch={this.setVisible}
           onChangeSearch={search => this.changeSearchText(search)}
           openDistanceModal={() => this.setState({ isDistanceModalVisible: true })}
+          openDateModal={() => this.setState({ isDateModalVisible: true })}
           distance={distance}
+          days={days}
         />
         <FlatList
           data={query.events.edges}
@@ -200,7 +218,11 @@ class EventsScreen extends Component<Props, State> {
           distance={distance}
           changeDistance={distance => this.setState({ distance })}
           closeDistanceModal={() => this.setState({ isDistanceModalVisible: false })}
-          seeDistanceResults={() => this.seeDistanceResults()}
+        />
+        <DateModal
+          isVisible={isDateModalVisible}
+          setDate={(days) => this.setDate(days)}
+          closeDateModal={() => this.setState({ isDateModalVisible: false })}
         />
       </Wrapper>
     );
@@ -224,6 +246,7 @@ const EventsScreenRefetchContainer = createRefetchContainer(
           search: $search,
           coordinates: $coordinates,
           distance: $distance
+          days: $days
         ) @connection(key: "EventsScreen_events", filters: []) {
           edges {
             node {
@@ -251,6 +274,7 @@ const EventsScreenRefetchContainer = createRefetchContainer(
       $search: String
       $coordinates: [Float]
       $distance: Int
+      $days: Int
       ) {
       ...EventsScreen_query
       @arguments(
@@ -259,6 +283,7 @@ const EventsScreenRefetchContainer = createRefetchContainer(
         search: $search,
         coordinates: $coordinates,
         distance: $distance
+        days: $days
       )
     }
   `,

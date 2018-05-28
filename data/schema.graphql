@@ -185,7 +185,7 @@ type Query {
     id: ID!
   ): Node
   me: User
-  events(after: String, first: Int, before: String, last: Int, search: String, distance: Int, coordinates: [Float]): EventConnection
+  events(after: String, first: Int, before: String, last: Int, search: String, distance: Int, days: Int, coordinates: [Float]): EventConnection
   event(id: ID!): Event
   user(id: ID!): User
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
