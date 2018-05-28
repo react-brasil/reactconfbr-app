@@ -1,9 +1,5 @@
 // @flow
-import {
-  StackNavigator,
-  DrawerNavigator,
-  SwitchNavigator,
-} from 'react-navigation';
+import { StackNavigator, DrawerNavigator, SwitchNavigator } from 'react-navigation';
 //ROUTES HELPER
 import { ROUTENAMES } from './RouteNames';
 // Authentications
@@ -13,6 +9,7 @@ import RegisterScreen from '../screens/Register/RegisterScreen';
 // Logged Screens
 import EventsScreen from '../screens/Events/EventsScreen';
 import EventAdd from '../screens/Event/EventAdd';
+import EventDetails from '../screens/Event/EventDetails';
 
 const NonLoggedAppRouter = StackNavigator(
   {
@@ -25,7 +22,7 @@ const NonLoggedAppRouter = StackNavigator(
     navigationOptions: {
       header: null,
     },
-  }
+  },
 );
 
 const LoggedAppRouter = StackNavigator(
@@ -38,13 +35,14 @@ const LoggedAppRouter = StackNavigator(
     },
     [ROUTENAMES.EVENTS]: { screen: EventsScreen },
     [ROUTENAMES.EVENT_ADD]: { screen: EventAdd },
+    [ROUTENAMES.EVENT_DETTAILS]: { screen: EventDetails },
   },
   {
     initialRouteName: ROUTENAMES.EVENTS,
     navigationOptions: {
       header: null,
     },
-  }
+  },
 );
 
 export const createRootNavigator = (token: string) =>
@@ -54,8 +52,6 @@ export const createRootNavigator = (token: string) =>
       [ROUTENAMES.NON_LOGGED_APP]: NonLoggedAppRouter,
     },
     {
-      initialRouteName: token
-        ? ROUTENAMES.LOGGED_APP
-        : ROUTENAMES.NON_LOGGED_APP,
-    }
+      initialRouteName: token ? ROUTENAMES.LOGGED_APP : ROUTENAMES.NON_LOGGED_APP,
+    },
   );
