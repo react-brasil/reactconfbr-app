@@ -1,20 +1,18 @@
 import * as React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  View,
-} from 'react-native';
+import { SafeAreaView, StatusBar, Platform, ScrollView, TouchableOpacity, Dimensions, View } from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IMAGES } from '../../utils/design/images';
 import KeyBoardSpacer from 'react-native-keyboard-spacer';
 import DatePicker from 'react-native-modal-datetime-picker';
 import Timeline from 'react-native-timeline-listview';
+import type { NavigationScreenProps } from 'react-navigation';
 import moment from 'moment';
+import CEPPickerModal from '../../components/CEPPickerModal';
+import { getLocation } from '../../utils/api';
+import ScheduleAddModal from '../../components/ScheduleAddModal';
+import EventAddMutation from './EventAddMutation';
+import { withContext } from '../../Context';
 
 const { width } = Dimensions.get('window');
 
@@ -22,7 +20,7 @@ const Wrapper = styled(LinearGradient).attrs({
   colors: ['rgb(41, 123, 247)', '#651FFF'],
   start: { x: 0.0, y: 0.25 },
   end: { x: 0.5, y: 1.0 },
-}) `
+})`
   flex: 1;
 `;
 
@@ -49,7 +47,7 @@ const HeaderButton = styled.TouchableOpacity`
 
 const CloseIcon = styled.Image.attrs({
   source: IMAGES.CLOSE,
-}) `
+})`
   width: 26;
   height: 26;
   tint-color: white;
@@ -76,7 +74,7 @@ const EventName = styled.TextInput.attrs({
   placeholder: 'Event Name ...',
   underlineColorAndroid: 'transparent',
   selectionColor: 'white',
-}) `
+})`
   font-size: 32px;
   color: white;
   font-weight: 800;
@@ -91,7 +89,7 @@ const EventDescription = styled.TextInput.attrs({
   underlineColorAndroid: 'transparent',
   multiline: true,
   selectionColor: 'white',
-}) `
+})`
   font-size: 45px;
   color: white;
   font-weight: 800;
@@ -116,12 +114,12 @@ const ValuesContainer = styled.View`
 
 const Value = styled.Text`
   font-size: 20px;
-  color: ${props => props.active ? 'white' : 'rgba(255,255,255,0.43)'};
+  color: ${props => (props.active ? 'white' : 'rgba(255,255,255,0.43)')};
   margin: 5px 0px;
   font-weight: 800;
 `;
 
-const BiggerText = styled(Value) `
+const BiggerText = styled(Value)`
   font-size: 27px;
 `;
 
@@ -144,7 +142,7 @@ const IncreaseButtons = styled.TouchableOpacity`
 
 const PlusIcon = styled.Image.attrs({
   source: IMAGES.ADD,
-}) `
+})`
   width: 20;
   height: 20;
   tint-color: ${props => props.theme.colors.primaryColor};
@@ -152,16 +150,15 @@ const PlusIcon = styled.Image.attrs({
 
 const AddIcon = styled.Image.attrs({
   source: IMAGES.ADD,
-}) `
+})`
   width: 35;
   height: 35;
   tint-color: ${props => props.theme.colors.primaryColor};
 `;
 
-
 const MinusIcon = styled.Image.attrs({
   source: IMAGES.MINUS,
-}) `
+})`
   width: 20;
   height: 20;
   tint-color: ${props => props.theme.colors.primaryColor};
@@ -173,7 +170,7 @@ const ScheduleList = styled(Timeline).attrs({
   lineWidth: 4,
   circleColor: 'rgb(0, 188, 255)',
   showTime: false,
-}) `
+})`
   padding: 10px 20px;
   flex: 1; 
 `;
@@ -188,7 +185,6 @@ const ScheduleBaloon = styled.View`
   border-top-left-radius: 0;
   margin: 10px 0px;
 `;
-
 
 const CommentText = styled.Text`
   font-size: 16;
@@ -215,7 +211,7 @@ const InitialsText = styled.Text`
 const AddButton = styled.TouchableOpacity`
   width: 62;
   height: 62;
-  border-radius: ${62/2};
+  border-radius: ${62 / 2};
   background-color: white;
   align-items: center;
   justify-content: center;
@@ -228,34 +224,46 @@ const Container = styled.View`
   justify-content: center;
 `;
 
-type Schedules = { title: string, talker: string, time: string }
+type Schedules = { title: string, talker: string, time: string };
 
 type State = {
   name: string,
   description: string,
   date: string,
-  location: {
-    cep: string,
-    coordinates: Array<number>,
-  },
+  cep: string,
+  coordinates: Array<number>,
   address: string,
   schedules: Array<Schedules>,
   errorText: string,
   eventLimit: number,
   isDatePickerVisible: boolean,
-}
+  isLocationPickerVisible: boolean,
+  isLoading: boolean,
+  isScheduleModalVisible: boolean,
+  modalTalker: string,
+  modalTime: string,
+  modalTitle: string,
+};
 
-type Props = {};
+type NavigationState = {
+  params: {},
+};
+
+type Props = {
+  navigation: NavigationScreenProps<NavigationState>,
+};
 
 class EventAdd extends React.Component<Props, State> {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       name: '',
       description: '',
       date: '',
-      location: { cep: '', coordinates: [0, 0] },
+      cep: '',
+      coordinates: [0, 0],
       address: '',
+      number: '',
       eventLimit: 10,
       schedules: [
         {
@@ -263,36 +271,27 @@ class EventAdd extends React.Component<Props, State> {
           talker: null,
           time: '19:00',
         },
-        {
-          title: 'React Native for Noobs',
-          talker: 'Jabur',
-          time: '20:00',
-        },
-        {
-          title: 'Coffee Break',
-          talker: null,
-          time: '21:00',
-        },
-        {
-          title: 'Advanced Styled Components',
-          talker: 'Luizinho',
-          time: '22:00',
-        },
       ],
+      modalTalker: '',
+      modalTitle: '',
+      modalTime: '',
       errorText: '',
       isDatePickerVisible: false,
-    }
+      isLocationPickerVisible: false,
+      isLoading: false,
+      isScheduleModalVisible: false,
+    };
     this.timer = null;
   }
 
   addOne = () => {
     this.setState({ eventLimit: this.state.eventLimit + 1 });
     this.timer = setTimeout(this.addOne, 80);
-  }
+  };
 
   stopTimer = () => {
     clearTimeout(this.timer);
-  }
+  };
 
   handleDatePicked = (date: string) => {
     this.setState({
@@ -302,13 +301,26 @@ class EventAdd extends React.Component<Props, State> {
   };
 
   getInitials = name => {
-    return name
-      ? name
-        .split(' ')
-        .slice(0, 2)
-        .map(namePart => namePart.charAt(0).toUpperCase())
-        .join('')
-      : '';
+    return name ? name.split(' ').slice(0, 2).map(namePart => namePart.charAt(0).toUpperCase()).join('') : '';
+  };
+
+  setGeoLocation = () => {
+    const { cep, number, address } = this.state;
+
+    this.setState({
+      isLoading: true,
+    });
+
+    getLocation(address, number, cep, (newAddress: string, lat: number, lng: number) =>
+      this.setState({
+        coordinates: [lat, lng],
+        address: newAddress,
+        cep,
+        number,
+        isLocationPickerVisible: false,
+        isLoading: false,
+      }),
+    );
   };
 
   setDatePicker = () => this.setState({ isDatePickerVisible: !this.isDatePickerVisible });
@@ -324,7 +336,7 @@ class EventAdd extends React.Component<Props, State> {
             <CommentText>{time}</CommentText>
           </View>
         </ScheduleBaloon>
-      )
+      );
     }
 
     return (
@@ -337,11 +349,89 @@ class EventAdd extends React.Component<Props, State> {
           <InitialsText>{this.getInitials(talker)}</InitialsText>
         </ProfileInitials>
       </ScheduleBaloon>
-    )
+    );
+  };
+
+  setLocationModal = () => this.setState({ isLocationPickerVisible: !this.state.isLocationPickerVisible });
+
+  setScheduleModal = () => this.setState({ isScheduleModalVisible: !this.state.isScheduleModalVisible });
+
+  onCloseScheduleModal = () =>
+    this.setState({ modalTalker: '', modalTitle: '', modalTime: '', isScheduleModalVisible: false });
+
+  onCloseModal = () => this.setState({ address: '', cep: '', number: '', isLocationPickerVisible: false });
+
+  onConfirmSchedule = () => {
+    const { modalTalker, modalTitle, modalTime, schedules } = this.state;
+
+    const schedule = {
+      talker: modalTalker,
+      title: modalTitle,
+      time: modalTime,
+    };
+
+    const newSchedules = [...schedules, schedule];
+
+    this.setState({
+      modalTalker: '',
+      modalTitle: '',
+      modalTime: '',
+      schedules: newSchedules,
+      isScheduleModalVisible: false,
+    });
+  };
+
+  save = () => {
+    const { name, description, coordinates, address, date, number, cep, schedules, eventLimit } = this.state;
+
+    const input = {
+      title: name,
+      description,
+      date,
+      schedule: schedules,
+      publicLimit: eventLimit,
+      location: {
+        coordinates,
+        cep,
+        street: address,
+        number,
+      },
+    };
+
+    const onError = (err: string) => {
+      console.log(err);
+      this.context.openModal('An Unexpected Error Ocurred');
+    };
+
+    const onCompleted = (response: Object) => {
+      if (response.error) {
+        return this.context.openModal(response.error);
+      }
+      this.props.navigation.goBack();
+    };
+
+    EventAddMutation.commit(input, onCompleted, onError);
   };
 
   render() {
-    const { name, description, address, date, eventLimit, isDatePickerVisible, schedules } = this.state;
+    const {
+      name,
+      description,
+      address,
+      date,
+      eventLimit,
+      isDatePickerVisible,
+      schedules,
+      isLocationPickerVisible,
+      cep,
+      number,
+      isLoading,
+      isScheduleModalVisible,
+      modalTitle,
+      modalTime,
+      modalTalker,
+    } = this.state;
+    const formatted = address.split('-');
     return (
       <Wrapper>
         <StatusBar barStyle="light-content" />
@@ -351,17 +441,13 @@ class EventAdd extends React.Component<Props, State> {
             <HeaderButton onPress={() => this.props.navigation.goBack()}>
               <CloseIcon />
             </HeaderButton>
-            <CreateButton>
+            <CreateButton onPress={this.save}>
               <SmallText>CREATE</SmallText>
             </CreateButton>
           </Header>
         </HeaderContainer>
         <ScrollView>
-          <EventName
-            value={name}
-            maxLength={50}
-            onChangeText={(name: string) => this.setState({ name })}
-          />
+          <EventName value={name} maxLength={50} onChangeText={(name: string) => this.setState({ name })} />
           <EventDescription
             value={description}
             maxLength={100}
@@ -376,7 +462,9 @@ class EventAdd extends React.Component<Props, State> {
             </ValuesContainer>
             <ValuesContainer>
               <Value active>WHERE</Value>
-              <Value>{address ? address : 'Set a location'}</Value>
+              <TouchableOpacity onPress={this.setLocationModal}>
+                <Value>{address ? formatted[0] : 'Set a location'}</Value>
+              </TouchableOpacity>
             </ValuesContainer>
           </DateAndLocationRow>
           <DateAndLocationRow>
@@ -386,26 +474,55 @@ class EventAdd extends React.Component<Props, State> {
                 <PlusIcon />
               </IncreaseButtons>
               <Value active>{eventLimit}</Value>
-              <IncreaseButtons onPress={() => this.setState({ eventLimit: eventLimit === 0 ? eventLimit : eventLimit - 1 })}>
+              <IncreaseButtons
+                onPress={() => this.setState({ eventLimit: eventLimit === 0 ? eventLimit : eventLimit - 1 })}
+              >
                 <MinusIcon />
               </IncreaseButtons>
             </Row>
           </DateAndLocationRow>
-          <ScheduleList
-            data={schedules}
-            renderDetail={this.renderItem}
-          />
+          <ScheduleList data={schedules} renderDetail={this.renderItem} />
           <Container>
-            <AddButton>
+            <AddButton onPress={this.setScheduleModal}>
               <AddIcon />
             </AddButton>
           </Container>
         </ScrollView>
         {Platform.OS === 'ios' && <KeyBoardSpacer />}
-        <DatePicker onCancel={() => this.setState({ isDatePickerVisible: false })} onConfirm={this.handleDatePicked} isVisible={isDatePickerVisible} />
+        <CEPPickerModal
+          isVisible={isLocationPickerVisible}
+          cepValue={cep}
+          address={address}
+          number={number}
+          modalText="Set the location of the event"
+          isLoading={isLoading}
+          onConfirm={this.setGeoLocation}
+          onClose={this.onCloseModal}
+          onChangeAddress={address => this.setState({ address })}
+          onChangeNumber={number => this.setState({ number })}
+          onChangeCep={cep => this.setState({ cep })}
+        />
+        <ScheduleAddModal
+          isVisible={isScheduleModalVisible}
+          title={modalTitle}
+          time={modalTime}
+          talker={modalTalker}
+          modalText="Add a new item to schedule"
+          isLoading={false}
+          onClose={this.onCloseScheduleModal}
+          onConfirm={this.onConfirmSchedule}
+          onChangeTitle={(modalTitle: string) => this.setState({ modalTitle })}
+          onChangeTime={(modalTime: string) => this.setState({ modalTime })}
+          onChangeTalker={(modalTalker: string) => this.setState({ modalTalker })}
+        />
+        <DatePicker
+          onCancel={() => this.setState({ isDatePickerVisible: false })}
+          onConfirm={this.handleDatePicked}
+          isVisible={isDatePickerVisible}
+        />
       </Wrapper>
-    )
+    );
   }
 }
 
-export default EventAdd
+export default withContext(EventAdd);

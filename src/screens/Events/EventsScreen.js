@@ -34,14 +34,14 @@ type State = {
   IsSearchVisible: boolean,
   coordinates: Array<number>,
   distance: number,
-  isDistanceModalVisible: boolean
+  isDistanceModalVisible: boolean,
 };
 
 class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
-    coordinates: [ 0, 0],
+    coordinates: [0, 0],
     distance: 120,
     isDistanceModalVisible: false,
   };
@@ -62,13 +62,13 @@ class EventsScreen extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { context } = this.props
+    const { context } = this.props;
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const coordinates = [coords.longitude, coords.latitude];
         this.setState({ coordinates });
       },
-      (error) => context.openModal(error.message),
+      error => context.openModal(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     this.props.relay.refetch();
@@ -78,22 +78,15 @@ class EventsScreen extends Component<Props, State> {
     const { searchText, coordinates, distance } = this.state;
 
     console.log('closeDistanceModal refetch', this.state);
-    this.props.relay.refetch(
-      { search: searchText, coordinates, distance },
-      null,
-      () => {},
-      { force: true },
-    );
+    this.props.relay.refetch({ search: searchText, coordinates, distance }, null, () => {}, { force: true });
 
     return this.setState({ isDistanceModalVisible: false });
   }
 
   render() {
-    const { navigation, query } = this.props;
-    const { schedule, title, date, location, image, description, publicLimit } = query;
+    const { query } = this.props;
     const { searchText, IsSearchVisible, distance, isDistanceModalVisible } = this.state;
 
-    console.log('query', query);
     return (
       <Wrapper>
         <StatusBar barStyle="light-content" />
@@ -107,20 +100,16 @@ class EventsScreen extends Component<Props, State> {
           distance={distance}
         />
         <ScrollView>
-          {idx(query, _ => _.events.edges[0]) && query.events.edges.map(({ node }, key) => (
-              <EventCard
-                title={node.title}
-                description={node.description}
-                publicLimit={node.publicLimit}
-                key={key}
-              />
+          {idx(query, _ => _.events.edges[0]) &&
+            query.events.edges.map(({ node }, key) => (
+              <EventCard title={node.title} description={node.description} publicLimit={node.publicLimit} key={key} />
             ))}
         </ScrollView>
-        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)}/>
+        <ActionButton onPress={() => this.props.navigation.navigate(ROUTENAMES.EVENT_ADD)} />
         <DistanceModal
           isVisible={isDistanceModalVisible}
           distance={distance}
-          changeDistance={(distance) => this.setState({ distance })}
+          changeDistance={distance => this.setState({ distance })}
           closeDistanceModal={() => this.setState({ isDistanceModalVisible: false })}
           seeDistanceResults={() => this.seeDistanceResults()}
         />
@@ -128,7 +117,6 @@ class EventsScreen extends Component<Props, State> {
     );
   }
 }
-
 
 const EventsScreenRefetchContainer = createRefetchContainer(
   EventsScreen,
@@ -156,7 +144,6 @@ const EventsScreenRefetchContainer = createRefetchContainer(
               }
               title
               date
-              location
               image
               description
               publicLimit

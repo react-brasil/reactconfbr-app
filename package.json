@@ -31,6 +31,7 @@
     "eslint-plugin-react-native": "^2.3.2",
     "jest": "18.1.0",
     "lint-staged": "^3.4.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.2.2",
     "react-devtools": "^2.1.0",
     "react-test-renderer": "16.0.0-alpha.6",
@@ -42,6 +43,7 @@
   "lint-staged": {
     "*.js": [
       "prettier --write --single-quote true --trailing-comma all --print-width 120",
+      "eslint --fix",
       "git add"
     ]
   },
