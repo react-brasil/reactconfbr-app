@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Animated, Easing, SafeAreaView } from 'react-native';
+import { Animated, Easing } from 'react-native';
 
 import styled from 'styled-components/native';
 import { withNavigation } from 'react-navigation';
@@ -10,14 +10,7 @@ import Header from '../../components/common/Header';
 import Button from '../../components/Button';
 import { IMAGES } from '../../utils/design/images';
 import { ROUTENAMES } from '../../navigation/RouteNames';
-import LinearGradient from 'react-native-linear-gradient';
 import GradientWrapper from '../../components/GradientWrapper';
-
-const Wrapper = styled.View`
-  flex: 1;
-  background-color: ${props => props.theme.colors.primaryColor}
-  padding: 20px;
-`;
 
 const LoginButton = styled.TouchableOpacity`
   flex: 1;
@@ -34,11 +27,12 @@ const LoginText = styled.Text`
 
 const TextWrapper = styled.View`
   flex: 2;
+  flex-direction: row;
 `;
 
 const BigText = styled.Text`
   color: ${props => props.theme.colors.secondaryColor};
-  font-size: 34px;
+  font-size: 40px;
   font-weight: 800;
   margin-top: 20px;
 `;
@@ -83,18 +77,10 @@ const ButtonText = styled.Text`
 const AnimatedImage = styled(Animated.Image).attrs({
   source: IMAGES.REACT,
 })`
-  width: 100;
-  height: 88;
+  width: 25;
+  height: 22;
   tint-color: ${props => props.theme.colors.secondaryColor};
-`;
-
-const WrapperGradient = styled(LinearGradient).attrs({
-  colors: ['rgb(41, 123, 247)', '#651FFF'],
-  start: { x: 0.0, y: 0.25 },
-  end: { x: 0.5, y: 1.0 },
-})`
-  flex: 1;
-  padding: 20px;
+  margin-top: 34px;
 `;
 
 type Props = {};
@@ -102,7 +88,7 @@ type Props = {};
 type State = {};
 
 @withNavigation
-export default class AuthScreen extends Component<any, Props, State> {
+export default class AuthScreen extends Component<Props, State> {
   constructor() {
     super();
     this.animationValue = new Animated.Value(0);
@@ -136,12 +122,13 @@ export default class AuthScreen extends Component<any, Props, State> {
           </LoginButton>
         </Header>
         <TextWrapper>
+          <BigText>C</BigText>
           <AnimatedImage
             style={{
               transform: [{ rotate: spin }],
             }}
           />
-          <BigText>Welcome to React Brasil Events</BigText>
+          <BigText>nference</BigText>
         </TextWrapper>
         <ButtonsWrapper>
           <Button fill>
