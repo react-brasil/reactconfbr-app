@@ -37,6 +37,7 @@ type State = {
   distance: number,
   days: number,
   isDistanceModalVisible: boolean,
+  isDateModalVisible: boolean,
   isRefreshing: boolean,
   isFetchingEnd: boolean,
 };
@@ -47,10 +48,11 @@ class EventsScreen extends Component<Props, State> {
   state = {
     searchText: '',
     IsSearchVisible: false,
-    coordinates: [ 0, 0],
+    coordinates: [0, 0],
     distance: 80,
     days: 7,
     isDistanceModalVisible: false,
+    isDateModalVisible: false,
     isRefreshing: false,
     isFetchingEnd: false,
   };
@@ -85,7 +87,7 @@ class EventsScreen extends Component<Props, State> {
 
   changeDistance(distance) {
     const { searchText, coordinates } = this.state;
-    
+
     console.log('closeDistanceModal refetch', this.state);
     this.props.relay.refetch({ search: searchText, coordinates, distance }, null, () => {}, { force: true });
 
@@ -95,12 +97,7 @@ class EventsScreen extends Component<Props, State> {
   setDate(days) {
     const { searchText, coordinates, distance } = this.state;
 
-    this.props.relay.refetch(
-      { search: searchText, coordinates, distance, days },
-      null,
-      () => {},
-      { force: true },
-    );
+    this.props.relay.refetch({ search: searchText, coordinates, distance, days }, null, () => {}, { force: true });
 
     return this.setState({ days, isDateModalVisible: false });
   }
@@ -188,7 +185,15 @@ class EventsScreen extends Component<Props, State> {
 
   render() {
     const { query } = this.props;
-    const { searchText, IsSearchVisible, distance, isDistanceModalVisible, isRefreshing } = this.state;
+    const {
+      searchText,
+      IsSearchVisible,
+      distance,
+      isDistanceModalVisible,
+      isRefreshing,
+      days,
+      isDateModalVisible,
+    } = this.state;
 
     return (
       <Wrapper>
@@ -221,7 +226,7 @@ class EventsScreen extends Component<Props, State> {
         />
         <DateModal
           isVisible={isDateModalVisible}
-          setDate={(days) => this.setDate(days)}
+          setDate={days => this.setDate(days)}
           closeDateModal={() => this.setState({ isDateModalVisible: false })}
         />
       </Wrapper>
@@ -237,6 +242,7 @@ const EventsScreenRefetchContainer = createRefetchContainer(
           search: { type: String }
           coordinates: { type: "[Float]" }
           distance: { type: Int }
+          days: { type: Int }
           count: { type: Int, defaultValue: 10 }
           cursor: { type: String }
         ) {

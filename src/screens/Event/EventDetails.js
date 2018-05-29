@@ -78,6 +78,18 @@ const DateAndLocationRow = styled.View`
   margin: 10px 30px;
 `;
 
+const AttendRow = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 30px;
+  background-color: ${props => props.theme.colors.secondaryColor};
+  border-radius: 20;
+  height: 82px;
+  padding: 0 20px 0 20px;
+`;
+
 const ValuesContainer = styled.View`
   flex: 1;
   flex-direction: column;
@@ -104,7 +116,7 @@ const ScheduleList = styled(Timeline).attrs({
 `;
 
 const ScheduleBaloon = styled.View`
-  background-color: white;
+  background-color: ${props => props.theme.colors.secondaryColor};
   flex-direction: row;
   align-items: center;
   padding-horizontal: 20;
@@ -134,6 +146,15 @@ const InitialsText = styled.Text`
   color: white;
   font-size: 24;
   font-weight: bold
+`;
+
+const IconBall = styled.TouchableOpacity`
+  width: 40;
+  height: 40;
+  border-radius: 20;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.theme.colors.primaryColor};
 `;
 
 type Schedules = { title: string, talker: string, time: string };
@@ -174,8 +195,8 @@ class EventDetails extends Component<Props, State> {
     );
   };
   render() {
-    const { schedule, title, description, date } = this.props.query.event;
-    console.log(this.props.query);
+    const { schedule, title, description, date, location } = this.props.query.event;
+
     return (
       <Wrapper>
         <StatusBar barStyle="light-content" />
@@ -203,10 +224,14 @@ class EventDetails extends Component<Props, State> {
             <ValuesContainer>
               <Value active>WHERE</Value>
               <TouchableOpacity>
-                <Value>-</Value>
+                <Value>{location && location.street && location.street.split('-')[0]}</Value>
               </TouchableOpacity>
             </ValuesContainer>
           </DateAndLocationRow>
+          <AttendRow>
+            <CommentText>Can you go to the event?</CommentText>
+            <IconBall />
+          </AttendRow>
           <ScheduleList data={schedule} renderDetail={this.renderItem} />
         </ScrollView>
       </Wrapper>
@@ -217,6 +242,9 @@ class EventDetails extends Component<Props, State> {
 const EventDetailFragmentCotnainer = createFragmentContainer(EventDetails, {
   query: graphql`
     fragment EventDetails_query on Query @argumentDefinitions(id: { type: "ID!" }) {
+      me {
+        email
+      }
       event(id: $id) {
         title
         location {
@@ -228,6 +256,9 @@ const EventDetailFragmentCotnainer = createFragmentContainer(EventDetails, {
           time
           title
           talker
+        }
+        publicList {
+          name
         }
       }
     }
