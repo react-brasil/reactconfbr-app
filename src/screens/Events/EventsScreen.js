@@ -37,6 +37,7 @@ type State = {
   distance: number,
   days: number,
   isDistanceModalVisible: boolean,
+  isDateModalVisible: boolean,
   isRefreshing: boolean,
   isFetchingEnd: boolean,
 };
@@ -51,6 +52,7 @@ class EventsScreen extends Component<Props, State> {
     distance: 80,
     days: 7,
     isDistanceModalVisible: false,
+    isDateModalVisible: false,
     isRefreshing: false,
     isFetchingEnd: false,
   };
