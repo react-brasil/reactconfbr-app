@@ -169,12 +169,13 @@ class EventsScreen extends Component<Props, State> {
 
   renderItem = ({ item }) => {
     const { node } = item;
-
+    const splittedAddress = node.location.street.split('-');
     return (
       <EventCard
+        atendees={node.publicList}
         title={node.title}
-        description={node.description}
-        publicLimit={node.publicLimit}
+        address={splittedAddress[0]}
+        date={node.date}
         seeButtonAction={() =>
           this.props.navigation.navigate(ROUTENAMES.EVENT_DETTAILS, {
             id: node.id,
@@ -264,9 +265,12 @@ const EventsScreenRefetchContainer = createRefetchContainer(
               }
               title
               date
-              image
-              description
-              publicLimit
+              location {
+                street
+              }
+              publicList {
+                name
+              }
             }
           }
         }
