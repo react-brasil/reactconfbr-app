@@ -1,10 +1,16 @@
+// @flow
 import * as React from 'react';
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
+
+const MakeTouchable = styled.TouchableOpacity`
+  border-radius: 20;
+`;
 
 const Wrapper = styled(LinearGradient).attrs({
-  colors: ['rgb(241, 123, 147)', '#F51FFF'],
+  colors: ['rgb(41, 123, 247)', 'rgb(101,31, 255)'],
   start: { x: 0.0, y: 0.25 },
   end: { x: 0.5, y: 1.0 },
 })`
@@ -19,84 +25,67 @@ const Wrapper = styled(LinearGradient).attrs({
       shadow-opacity: 2px;`, android: css`
         elevation: 5;
   ` })};
-`;
-
-const CardOpacity = styled.View`
   flex-direction: column;
   padding: 22px 15px;
   border-radius: 20;
-  background-color: rgba(0, 0, 0, 0.4);
-`;
-
-const CardDescription = styled.Text`
-  font-size: 14;
-  color: white;
-  font-weight: bold;
-  background-color: transparent;
-  margin-bottom: 5;
-  margin-left: 5;
-`;
-
-const CardTitle = styled.Text`
-  font-size: 16;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 5;
-  margin-left: 5;
-  background-color: transparent;
 `;
 
 const Row = styled.View`
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   flex: 1;
 `;
 
-const ButtonContainer = styled.View`
+const DateText = styled.Text`
+  font-size: 16;
+  color: white;
+  font-weight: bold;
   flex: 1;
+  text-align: center;
+  width: 10;
+  margin: 0px 8px;
+`;
+
+const Container = styled.View`
   flex-direction: column;
+  flex: 4;
+  padding: 0px 10px; 
 `;
 
-const TextContainer = styled.View`
-  flex: 3;
-  flex-direction: column
-`;
-
-const ReadButton = styled.TouchableOpacity`
-  padding-vertical: 5;
-  padding-horizontal: 20;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20;
+const Separator = styled.View`
+  width: 1;
   background-color: white;
 `;
 
-const ButtonText = styled.Text`
-  font-size: 15;
-  font-weight: 800;
-  color: #4f4e4e;
+const Title = styled.Text`
+  font-size: 20;
+  color: white;
+  font-weight: bold;
 `;
 
+const EventAddress = styled.Text`
+  font-size: 14;
+  color: white;
+  font-weight: bold;
+`;
 
-const Atendees = styled.View`
-  margin-left: 10;  
+const AtendeesRow = styled.View`
   flex-direction: row;
   align-items: center;
 `;
 
-const AtendeesNumber = styled.View`
-  padding-vertical: 5;
-  padding-horizontal: 15;
+const Atendees = styled.View`
+  width: 30;
+  height: 30;
+  border-radius: 15;
+  background-color: white;
   align-items: center;
   justify-content: center;
-  border-radius: 20;
-  background-color: white;
 `;
 
-const AtendeesNumberText = styled.Text`
-  font-size: 15;
-  color: black;
+const AttendeesInitials = styled.Text`
+  color: rgb(41, 123, 247);
+  font-size: 14;
+  font-weight: 800;
 `;
 
 type User = {
@@ -107,40 +96,38 @@ type User = {
 type Props = {
   atendees: Array<User>,
   title: string,
-  description: string,
-  bgImage: string,
+  address: string,
+  date: string,
   seeButtonAction: () => void,
 };
 
-const EventCard = ({
-  title,
-  description,
-  publicLimit,
-  seeButtonAction,
+export const getInitials = (name: string) => {
+  return name ? name.split(' ').slice(0, 2).map(namePart => namePart.charAt(0).toUpperCase()).join('') : '';
+};
 
-}: Props) => {
-
+const EventCard = ({ atendees, title, address, date, seeButtonAction }: Props) => {
   return (
-    <Wrapper>
-      <CardOpacity>
+    <MakeTouchable onPress={seeButtonAction}>
+      <Wrapper>
         <Row>
-          <TextContainer>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
-            <Atendees>
-              <AtendeesNumber>
-                <AtendeesNumberText>{publicLimit}</AtendeesNumberText>
-              </AtendeesNumber>
-            </Atendees>
-          </TextContainer>
-          <ButtonContainer>
-            <ReadButton onPress={seeButtonAction}>
-              <ButtonText>SEE</ButtonText>
-            </ReadButton>
-          </ButtonContainer>
+          <DateText>
+            {moment(date).format('DD \n MMM \n YYYY')}
+          </DateText>
+          <Separator />
+          <Container>
+            <EventAddress>{address}</EventAddress>
+            <Title>{title}</Title>
+            <AtendeesRow>
+              {atendees.map((atendee, i) => (
+                <Atendees key={i}>
+                  <AttendeesInitials>{getInitials(atendee.name)}</AttendeesInitials>
+                </Atendees>
+              ))}
+            </AtendeesRow>
+          </Container>
         </Row>
-      </CardOpacity>
-    </Wrapper>
+      </Wrapper>
+    </MakeTouchable>
   );
 };
 
