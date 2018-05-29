@@ -59,6 +59,9 @@ type Event implements Node {
 
   """Users that are waiting for places on the event"""
   waitList: [User]
+
+  """Check if user attended to the event"""
+  isEventAttended: Boolean
 }
 
 input EventAddInput {
