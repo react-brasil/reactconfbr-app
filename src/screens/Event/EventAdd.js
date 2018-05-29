@@ -400,12 +400,12 @@ class EventAdd extends React.Component<Props, State> {
 
     const onError = (err: string) => {
       console.log(err);
-      this.context.openModal('An Unexpected Error Ocurred');
+      this.props.context.openModal('An Unexpected Error Ocurred');
     };
 
     const onCompleted = (response: Object) => {
       if (response.error) {
-        return this.context.openModal(response.error);
+        return this.props.context.openModal(response.error);
       }
       this.props.navigation.goBack();
     };
