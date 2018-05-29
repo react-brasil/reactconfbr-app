@@ -6,8 +6,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import Timeline from 'react-native-timeline-listview';
 import { createFragmentContainer, graphql } from 'react-relay';
 import moment from 'moment';
+import idx from 'idx';
+import AttendToEventMutation from './AttendToEventMutation';
+import CantGoToEventMutation from './CantGoToEventMutation';
 import { IMAGES } from '../../utils/design/images';
 import { createQueryRenderer } from '../../relay/RelayUtils';
+import { withContext } from '../../Context';
 const { width } = Dimensions.get('window');
 
 const Wrapper = styled(LinearGradient).attrs({
@@ -157,15 +161,79 @@ const IconBall = styled.TouchableOpacity`
   background-color: ${props => props.theme.colors.primaryColor};
 `;
 
+const Icon = styled.Image.attrs({
+  source: IMAGES.SAVE,
+})`
+  width: 18;
+  height: 18;
+  tint-color: white;
+`;
+
+const CancelIcon = styled.Image.attrs({
+  source: IMAGES.CLOSE,
+})`
+  width: 18;
+  height: 18;
+  tint-color: white;
+`;
+
 type Schedules = { title: string, talker: string, time: string };
 
 type State = {};
 
 type Props = {};
 
-class EventDetails extends Component<Props, State> {
+@withContext class EventDetails extends Component<Props, State> {
   getInitials = name => {
     return name ? name.split(' ').slice(0, 2).map(namePart => namePart.charAt(0).toUpperCase()).join('') : '';
+  };
+
+  cantGoToEvent = () => {
+    const eventId = idx(this, _ => _.props.navigation.state.params.id);
+
+    const input = {
+      eventId,
+    };
+
+    const onError = (err: string) => {
+      console.log(err);
+      this.props.context.openModal('An Unexpected Error Ocurred');
+    };
+
+    const onCompleted = (response: Object) => {
+      console.log(response);
+      if (response.CantGoToEvent.error) {
+        return this.props.context.openModal(response.error);
+      }
+      this.props.context.openSuccessModal('You canceled to the event');
+      this.props.navigation.goBack();
+    };
+
+    CantGoToEventMutation.commit(input, onCompleted, onError);
+  };
+
+  attendToEvent = () => {
+    const eventId = idx(this, _ => _.props.navigation.state.params.id);
+
+    const input = {
+      eventId,
+    };
+
+    const onError = (err: string) => {
+      console.log(err);
+      this.props.context.openModal('An Unexpected Error Ocurred');
+    };
+
+    const onCompleted = (response: Object) => {
+      console.log(response);
+      if (response.AttendToEvent.error) {
+        return this.props.context.openModal(response.error);
+      }
+      this.props.context.openSuccessModal('You registered to the event');
+      this.props.navigation.goBack();
+    };
+
+    AttendToEventMutation.commit(input, onCompleted, onError);
   };
 
   renderItem = (schedule: Schedules) => {
@@ -195,7 +263,7 @@ class EventDetails extends Component<Props, State> {
     );
   };
   render() {
-    const { schedule, title, description, date, location } = this.props.query.event;
+    const { schedule, title, description, date, location, isEventAttended } = this.props.query.event;
 
     return (
       <Wrapper>
@@ -229,8 +297,19 @@ class EventDetails extends Component<Props, State> {
             </ValuesContainer>
           </DateAndLocationRow>
           <AttendRow>
-            <CommentText>Can you go to the event?</CommentText>
-            <IconBall />
+            {isEventAttended
+              ? <React.Fragment>
+                  <CommentText>Do you want to cancel your attend?</CommentText>
+                  <IconBall onPress={() => this.cantGoToEvent()}>
+                    <CancelIcon />
+                  </IconBall>
+                </React.Fragment>
+              : <React.Fragment>
+                  <CommentText>Can you go to the event?</CommentText>
+                  <IconBall onPress={() => this.attendToEvent()}>
+                    <Icon />
+                  </IconBall>
+                </React.Fragment>}
           </AttendRow>
           <ScheduleList data={schedule} renderDetail={this.renderItem} />
         </ScrollView>
@@ -260,6 +339,7 @@ const EventDetailFragmentCotnainer = createFragmentContainer(EventDetails, {
         publicList {
           name
         }
+        isEventAttended
       }
     }
   `,
