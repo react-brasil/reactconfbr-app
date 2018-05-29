@@ -6,19 +6,17 @@ import { createRootNavigator } from './navigation/Router';
 import Provider from './Context';
 console.disableYellowBox = true;
 
-
 type State = {
   token: '',
 };
 
 class ThemedApp extends React.Component<*, State> {
-
   state = {
     token: '',
   };
 
   componentWillMount() {
-    // AsyncStorage.clear()
+    AsyncStorage.clear();
     AsyncStorage.getItem('token').then(value => {
       this.setState({
         token: value,
@@ -30,11 +28,11 @@ class ThemedApp extends React.Component<*, State> {
 
     const Launch = createRootNavigator(token);
     return (
-        <ThemeProvider theme={theme}>
-          <Provider>
-            <Launch />
-          </Provider>
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Provider>
+          <Launch />
+        </Provider>
+      </ThemeProvider>
     );
   }
 }
