@@ -274,9 +274,9 @@ type Props = {};
             <HeaderButton onPress={() => this.props.navigation.goBack()}>
               <CloseIcon />
             </HeaderButton>
-            <HeaderButton>
+            {/*<HeaderButton>
               <EditIcon />
-            </HeaderButton>
+            </HeaderButton>*/}
           </Header>
         </HeaderContainer>
         <ScrollView>

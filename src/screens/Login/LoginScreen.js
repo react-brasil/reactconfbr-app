@@ -142,7 +142,7 @@ class LoginScreen extends Component<Props, State> {
             <Arrow />
           </ForgotButton>
           <ForgotButton>
-            <ForgotText>Forgot Password</ForgotText>
+            {/*<ForgotText>Forgot Password</ForgotText>*/}
           </ForgotButton>
         </Header>
         <TextWrapper>

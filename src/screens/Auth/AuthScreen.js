@@ -39,7 +39,7 @@ const BigText = styled.Text`
 
 const ButtonsWrapper = styled.View`
   flex: 3;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 const BottomFixedReactLogo = styled.Image.attrs({
@@ -131,10 +131,12 @@ export default class AuthScreen extends Component<Props, State> {
           <BigText>nference</BigText>
         </TextWrapper>
         <ButtonsWrapper>
+        {/*
           <Button fill>
             <FacebookLogo />
             <FacebookButtonText>Continue with Facebook</FacebookButtonText>
           </Button>
+        */}
           <Button onPress={() => navigation.navigate(ROUTENAMES.REGISTER)}>
             <ButtonText>Create an Account</ButtonText>
           </Button>

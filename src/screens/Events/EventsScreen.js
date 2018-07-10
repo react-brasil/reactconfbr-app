@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
+import idx from 'idx';
 import { createQueryRenderer } from '../../relay/RelayUtils';
 import { withContext } from '../../Context';
 import type { ContextType } from '../../Context';
@@ -211,7 +212,7 @@ class EventsScreen extends Component<Props, State> {
           days={days}
         />
         <FlatList
-          data={query.events.edges}
+          data={idx(query, _ => _.events.edges) || []}
           keyExtractor={item => item.node.id}
           renderItem={this.renderItem}
           onRefresh={this.onRefresh}
